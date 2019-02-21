@@ -14,7 +14,6 @@ function Connection(scene){
 	// Pulses
 	self.pulses = [];
 	self.pulse = function(signal){
-
 		// Only send down the signal if the strength is actually good!
 		if(self.isConnected()){
 			signal.distance = 0; // reset signal's distance!
@@ -64,7 +63,6 @@ function Connection(scene){
 
 	// UPDATE
 	self.update = function(){
-
 		// Pythagorean Distance
 		var dx = self.from.nx-self.to.nx;
 		var dy = self.from.ny-self.to.ny;

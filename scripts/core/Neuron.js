@@ -25,6 +25,11 @@ function Neuron(scene){
 	self.flash = new Flash(self);
 	scene.flashes.push(self.flash);
 
+	// Allow dragging
+	self.is_dragging = false;
+	self.mouse_down = false;
+	self.last_mouse_up = 0;
+
 	// To prevent weakening the connections you JUST made.
 	self.strengthenedConnections = [];
 	self.strengthenHebb = function(){
@@ -78,7 +83,6 @@ function Neuron(scene){
 	};
 
 	self.weakenHebb = function(){
-
 		// Get all sender connections that AREN'T the ones we just strengthened
 		var weakenThese = self.senders.filter(function(sender){
 			for(var i=0;i<self.strengthenedConnections.length;i++){
@@ -90,13 +94,12 @@ function Neuron(scene){
 		});
 
 		// Weaken them all
-		for(var i=0;i<weakenThese.length;i++){
+		for(var i = 0; i < weakenThese.length; i++){
 			weakenThese[i].weaken();
 		}
 
 		// Reset Strengthened Connections
 		self.strengthenedConnections = [];
-
 	};
 
 	self.pulse = function(signal,FAKE){
@@ -144,22 +147,27 @@ function Neuron(scene){
 	self.highlightFade = 0.8;
 
 	self.update = function(){
-
 		// Highlight!
 		self.highlight *= self.highlightFade;
-		if(self.highlight<0.01){
+		if (self.highlight < 0.01) {
 			self.highlight = 0;
 		}
 
 		// Hebbian update
-		if(self.hebbian>0){
+		if (self.hebbian > 0) {
 			self.hebbian -= 1/(30*self.hebbSignalDuration);
 			if(self.hebbian<0){
 				publish("/neuron/weakenHebb",[self]); // too slow!
 				self.weakenHebb();
 			}
-		}else{
+		} else {
 			self.hebbian = 0;
+		}
+
+		// For mouse dragging -- to prevent down from being called immediately after
+		// TODO(emily): v hacky help
+		if (self.last_mouse_up > 0) {
+			self.last_mouse_up -= 1;
 		}
 
 		// Animation
@@ -176,10 +184,10 @@ function Neuron(scene){
 
 		// Mouse
 		var gotoHoverAlpha = 0;
-		if(self.isMouseOver()){
+		if (self.isMouseOver()) {
 			canvas.style.cursor = "pointer";
 			gotoHoverAlpha = 1;
-		}else{
+		} else {
 			gotoHoverAlpha = 0;
 		}
 		self.hoverAlpha = self.hoverAlpha*0.5 + gotoHoverAlpha*0.5;
@@ -189,9 +197,9 @@ function Neuron(scene){
 	// CLICK & HOVER
 	self.hoverAlpha = 0;
 	self.isMouseOver = function(){
-
 		// Refractory period!
-		if(self.hebbian>0) return;
+		if (self.hebbian > 0) return;
+		if (self.last_mouse_up > 0) return;
 
 		// If so, is it within that circle?
 		var dx = Mouse.x-self.x;
@@ -200,15 +208,43 @@ function Neuron(scene){
 		return (dx*dx+dy*dy<r*r);
 
 	};
-	self.listener = subscribe("/mouse/down",function(){
-		if(self.isMouseOver()){
-			self.pulse();
-			publish("/neuron/click",[self]);
+
+	self.down_listener = subscribe("/mouse/down", function() {
+		// If you click on a neuron
+		if(self.isMouseOver()) {
+			self.mouse_down = true;
+			self.is_dragging = false;
+		}
+	});
+
+	self.drag_listener = subscribe("/mouse/move", function() {
+		// If mouse is down for the current neuron, make it move around
+		if (self.mouse_down) {
+			self.is_dragging = true;
+			self.x = Mouse.x;
+			self.y = Mouse.y;
+		}
+	});
+
+	self.up_listener = subscribe("/mouse/up", function() {
+		if (self.isMouseOver()) {
+			// If mouse was never dragged, then pulse
+			if (!self.is_dragging) {
+				self.pulse();
+				publish("/neuron/click",[self]);
+			}
+			self.mouse_down = false;
+			self.is_dragging = false;
+
+			// For some reason, without this, down_listener gets called immediately after
+			self.last_mouse_up = 1;
 		}
 	});
 
 	self.kill = function(){
-		unsubscribe(self.listener);
+		unsubscribe(self.down_listener);
+		unsubscribe(self.up_listener);
+		unsubscribe(self.drag_listener);
 	};
 
 
