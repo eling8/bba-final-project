@@ -109,7 +109,7 @@ function Connection(scene){
 	self.fullLineWidth = 5;
 	self.lineWidth = self.fullLineWidth;
 	self.easedLineWidth = self.lineWidth;
-	self.pulseRadius = 8;
+	self.pulseRadius = 9;
 	self.endDistance = 35;
 
 	self.draw = function(ctx){
@@ -149,11 +149,15 @@ function Connection(scene){
 		for(var i = 0; i < self.pulses.length; i++){
 			var pulse = self.pulses[i];
 			ctx.fillStyle = "#fff";
-			if (from.connectionStrokeStyle){
-				ctx.fillStyle = from.connectionStrokeStyle;
+			if (from.neuron_type == NeuronType.INHIBITORY) {
+				ctx.fillStyle = "#d19898";
 			}
+			if (from.neuron_type == NeuronType.EXCITATORY) {
+				ctx.fillStyle = "#c9eaea";
+			}
+
 			ctx.beginPath();
-			ctx.arc(pulse.distance, offsetY, self.pulseRadius*((pulse.strength+1)/5), 0, 2*Math.PI, false);
+			ctx.arc(pulse.distance, offsetY, self.pulseRadius * ((pulse.strength + 1) / 5), 0, 2*Math.PI, false);
 			ctx.fill();
 		}
 

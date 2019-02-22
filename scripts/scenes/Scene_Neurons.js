@@ -79,7 +79,6 @@ function Scene_Hebbian(){
 	}
 
 	function HebbWords(type){
-
 		var self = this;
 		Sprite.call(self,{
 			pivotX:0, pivotY:0,

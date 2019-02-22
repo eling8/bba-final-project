@@ -161,10 +161,10 @@ function Neuron(scene, neuron_type) {
 		self.strengthenedConnections = [];
 	};
 
-	self.pulse = function(signal,FAKE){
+	self.pulse = function(signal, FAKE){
 		// It should lose strength in the neuron
 		// If there's no passed-on signal, create a brand new one.
-		if(signal) {
+		if (signal) {
 			signal.strength--;
 		} else {
 			signal = {
@@ -177,19 +177,19 @@ function Neuron(scene, neuron_type) {
 
 		// Sound Effect!
 		if(!FAKE){
-			var volume = (signal.strength+1)/(self.startingStrength+1); // so it's not zero
+			var volume = (signal.strength + 1)/(self.startingStrength + 1); // so it's not zero
 			createjs.Sound.play("sfx_spark",{volume:volume*0.6});
 		}
 
 		// Smoosh
-		self.smooshVelocity += 0.05*(signal.strength+1);
+		self.smooshVelocity += 0.05 * (signal.strength + 1);
 
 		// Highlight!
 		self.highlight = 1;
 
 		// If there's still strength in the neuron, pass it down immediately.
-		if(signal.strength>0){
-			for(var i=0;i<self.senders.length;i++){
+		if (signal.strength > 0) {
+			for (var i = 0; i < self.senders.length; i++) {
 				var sender = self.senders[i];
 				sender.pulse({
 					strength: signal.strength
@@ -261,6 +261,7 @@ function Neuron(scene, neuron_type) {
 
 	};
 
+	// Click and drag neurons
 	self.down_listener = subscribe("/mouse/down", function() {
 		// If you click on a neuron
 		if(self.isMouseOver()) {
