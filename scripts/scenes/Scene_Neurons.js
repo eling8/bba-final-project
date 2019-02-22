@@ -117,7 +117,6 @@ function Scene_Hebbian(){
 }
 
 function Scene_Propagation(){
-
 	var self = this;
 	BrainScene.call(self);
 
@@ -126,6 +125,27 @@ function Scene_Propagation(){
 	
 	// Whee! One that looks nice & uniform and no "boring" neurons
 	Neuron.unserialize(self,NEURONS_SERIALIZED);
+
+	for(var i = 0; i < self.neurons.length; i++) {
+		var n = self.neurons[i];
+		n.highlightRadius = 70;
+		n.highlightFade = 0.93;
+		n.highlightBaseAlpha = 0.8;
+
+		if (Math.random() < 0.7) {
+			n.is_excitatory = true;
+
+			n.body_image = images.neuron_body_blue;
+			n.connectionStrokeStyle = "#78BCBC";
+			n.highlightFill = "#A2FFFF";
+			n.icon = images.icon_calm;
+		} else {
+			n.body_image = images.neuron_body_red;
+			n.connectionStrokeStyle = "#804444";
+			n.highlightFill = "#CC4F4F";
+			n.icon = images.icon_anxious;
+		}
+	}
 
 	// Scene Transitions
 	self.transitionIn = function(){

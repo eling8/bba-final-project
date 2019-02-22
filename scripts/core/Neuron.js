@@ -30,6 +30,9 @@ function Neuron(scene){
 	self.mouse_down = false;
 	self.last_mouse_up = 0;
 
+	// Excitatory vs inhibitory
+	self.is_excitatory = false;
+
 	// To prevent weakening the connections you JUST made.
 	self.strengthenedConnections = [];
 	self.strengthenHebb = function(){
@@ -267,7 +270,6 @@ function Neuron(scene){
 	self.highlightBaseAlpha = 0.5;
 
 	self.draw = function(ctx){
-
 		// save
 		ctx.save();
 
@@ -290,11 +292,11 @@ function Neuron(scene){
 		ctx.globalAlpha = self.hoverAlpha;
 		ctx.drawImage(images.neuron_hover,-60,-60);
 		ctx.globalAlpha = 1;
-		ctx.drawImage(self.body_image,-50,-50);
+		ctx.drawImage(self.body_image, -50, -50);
 		ctx.globalAlpha = self.highlight;
 		ctx.drawImage(images.neuron_highlight,-50,-50);
 		ctx.restore();
-
+		
 		// Icon, with its own rotation
 		if(self.icon){
 			ctx.rotate(self.iconRotation);
