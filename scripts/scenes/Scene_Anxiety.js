@@ -83,7 +83,7 @@ function Scene_Anxiety_Base(){
 	Neuron.unserialize(self,ANXIETY_SERIALIZED);
 
 	// Modify all connections: already done, and SLOWER.
-	for(var i=0;i<self.connections.length;i++){
+	for(var i = 0; i < self.connections.length; i++){
 		var c = self.connections[i];
 		c.strengthEased = 1;
 		c.speed = 2.5;

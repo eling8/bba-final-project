@@ -8,7 +8,7 @@ function Connection(scene){
 	self.speed = 3.5;
 
 	// Strength
-	self.strength = 1;
+	self.strength = 2;
 	self.strengthEased = 0;
 
 	// Pulses
@@ -46,19 +46,21 @@ function Connection(scene){
 	// Strengthen
 	self.strengthen = function(){
 		self.strength += 1;
-		if(self.strength>1) self.strength=1;
+		// if (self.strength > 1) self.strength = 1;
+		if (self.strength > self.fullLineWidth) self.strength = self.fullLineWidth;
 	};
 
 	// Weaken
 	self.weaken = function(){
-		self.strength -= 0.05;
-		//self.strength -= 1;
-		if(!self.isConnected()) self.strength=0;
+		// self.strength -= 0.05;
+		self.strength -= 1;
+		if(!self.isConnected()) self.strength = 0;
 	};
 
 	// Am I Connected?
 	self.isConnected = function(){
-		return(self.strength>=0.94);
+		// return(self.strength >= 0.94);
+		return(self.strength >= 1);
 	};
 
 	// UPDATE
@@ -70,12 +72,15 @@ function Connection(scene){
 
 		// Have all signals go down the wire
 		// at a constant "actual length" rate
-		for(var i=0;i<self.pulses.length;i++){
+		for(var i = 0; i < self.pulses.length; i++) {
 			var pulse = self.pulses[i];
-			pulse.distance += self.speed;
+			// pulse.distance += self.speed;
+
+			// Speed proportional to strength
+			pulse.distance += 2 + self.strength / 1.5;
 
 			// Oh, you've reached the end?
-			if(pulse.distance>=distance){
+			if(pulse.distance >= distance){
 				
 				// Tell the TO neuron to pulse
 				self.to.pulse(pulse);
@@ -88,19 +93,20 @@ function Connection(scene){
 		}
 
 		// Animation
-		self.lineWidth = (self.strength<1) ? self.fullLineWidth/2 : self.fullLineWidth;
-		self.strengthEased = self.strengthEased*0.9 + self.strength*0.1;
-		self.easedLineWidth = self.easedLineWidth*0.9 + self.lineWidth*0.1;
+		self.lineWidth = Math.min(self.strength, self.fullLineWidth) * 1.5;
+		// self.lineWidth = (self.strength < 1) ? self.fullLineWidth/2 : self.fullLineWidth;
+		self.strengthEased = self.strengthEased * 0.9 + Math.min(self.strength, 1) * 0.1;
+		self.easedLineWidth = self.easedLineWidth * 0.9 + self.lineWidth * 0.1;
 
 		// ACTUALLY REMOVE THIS ONE?
-		if(self.strength<0.1 && self.strengthEased<0.1){
+		if(self.strength < 0.1 && self.strengthEased < 0.1) {
 			self.disconnect();
 		}
 
 	};
 
 	self.strokeStyle = "#555555";
-	self.fullLineWidth = 4;
+	self.fullLineWidth = 5;
 	self.lineWidth = self.fullLineWidth;
 	self.easedLineWidth = self.lineWidth;
 	self.pulseRadius = 8;
@@ -122,8 +128,8 @@ function Connection(scene){
 		ctx.rotate(angle+Math.PI);
 
 		// Draw connection at all?!
-		var endX = (distance*self.strengthEased)-self.endDistance;
-		if(endX>0){
+		var endX = (distance * self.strengthEased) - self.endDistance;
+		if(endX > 0){
 
 			// draw a line
 			var offsetY = 7;
@@ -133,9 +139,9 @@ function Connection(scene){
 			ctx.beginPath();
 			ctx.moveTo(0, offsetY);
 			ctx.lineTo(endX, offsetY);
-			ctx.lineTo(endX+self.pulseRadius, offsetY-self.pulseRadius);
+			ctx.lineTo(endX + self.pulseRadius, offsetY - self.pulseRadius);
 			ctx.moveTo(endX, offsetY);
-			ctx.lineTo(endX+self.pulseRadius, offsetY+self.pulseRadius);
+			ctx.lineTo(endX + self.pulseRadius, offsetY + self.pulseRadius);
 			ctx.stroke();
 
 		}
@@ -144,6 +150,9 @@ function Connection(scene){
 		for(var i=0;i<self.pulses.length;i++){
 			var pulse = self.pulses[i];
 			ctx.fillStyle = "#fff";
+			if (from.connectionStrokeStyle){
+				ctx.fillStyle = from.connectionStrokeStyle;
+			}
 			ctx.beginPath();
 			ctx.arc(pulse.distance, offsetY, self.pulseRadius*((pulse.strength+1)/5), 0, 2*Math.PI, false);
 			ctx.fill();

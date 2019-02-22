@@ -73,7 +73,7 @@ function Neuron(scene){
 					if(!foundConnection){
 						var connection = new Connection();
 						connection.connect(neuron,self);
-						connection.strengthen();
+						// connection.strengthen();
 						connections.push(connection);
 						neuron.strengthenedConnections.push(connection);
 					}
@@ -322,7 +322,7 @@ function Neuron(scene){
 
 };
 
-Neuron.add = function(x,y,scene){
+Neuron.add = function(x, y, scene) {
 
 	scene = scene || Interactive.scene;
 
@@ -346,7 +346,6 @@ Neuron.add = function(x,y,scene){
 };
 
 Neuron.serialize = function(scene,detailed){
-
 	scene = scene || Interactive.scene;
 
 	// Prepare output
@@ -358,18 +357,18 @@ Neuron.serialize = function(scene,detailed){
 
 	// Get positions of all neurons
 	var neurons = scene.neurons;
-	for(var i=0;i<neurons.length;i++){
+	for(var i = 0; i < neurons.length; i++) {
 		var neuron = neurons[i];
-		output.neurons.push([Math.round(neuron.x),Math.round(neuron.y)]);
+		output.neurons.push([Math.round(neuron.x), Math.round(neuron.y)]);
 	}
 
 	// Get all connections, and the IDs of the neurons they're connected to.
 	var connections = scene.connections;
-	for(var i=0;i<connections.length;i++){
+	for(var i = 0; i < connections.length; i++) {
 		var connection = connections[i];
-		if(detailed){
+		if (detailed) {
 			output.connections.push([connection.from.id, connection.to.id, connection.strength]);
-		}else{
+		} else {
 			output.connections.push([connection.from.id, connection.to.id]);
 		}
 	}
@@ -380,7 +379,6 @@ Neuron.serialize = function(scene,detailed){
 };
 
 Neuron.unserialize = function(scene,string,detailed){
-
 	// Prepare input
 	var input = JSON.parse(string);
 
@@ -395,7 +393,7 @@ Neuron.unserialize = function(scene,string,detailed){
 	for(var i=0;i<input.connections.length;i++){
 		var connection = input.connections[i];
 		var newConnection = Connection.add(neurons[connection[0]], neurons[connection[1]], scene);
-		if(detailed){
+		if (detailed) {
 			newConnection.strength = connection[2];
 		}
 	}
