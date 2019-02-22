@@ -129,8 +129,7 @@ function Connection(scene){
 
 		// Draw connection at all?!
 		var endX = (distance * self.strengthEased) - self.endDistance;
-		if(endX > 0){
-
+		if (endX > 0){
 			// draw a line
 			var offsetY = 7;
 			ctx.strokeStyle = self.strokeStyle;
@@ -147,7 +146,7 @@ function Connection(scene){
 		}
 
 		// draw all pulses
-		for(var i=0;i<self.pulses.length;i++){
+		for(var i = 0; i < self.pulses.length; i++){
 			var pulse = self.pulses[i];
 			ctx.fillStyle = "#fff";
 			if (from.connectionStrokeStyle){

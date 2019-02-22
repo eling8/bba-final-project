@@ -1,6 +1,20 @@
-function Neuron(scene){
+var NeuronType = {
+  REGULAR: 1,
+  INHIBITORY: 2,
+  EXCITATORY: 3,
+};
 
+function Neuron(scene, neuron_type) {
 	var self = this;
+
+	// Set neuron type -- if undefined, default to REGULAR
+	self.neuron_type = neuron_type == undefined ? NeuronType.REGULAR : neuron_type;
+
+	// if (Math.random() < 0.7) {
+	// 	self.neuron_type = NeuronType.EXCITATORY;
+	// } else {
+	// 	self.neuron_type = NeuronType.INHIBITORY;
+	// }
 
 	// Transform
 	self.x = 0;
@@ -30,8 +44,50 @@ function Neuron(scene){
 	self.mouse_down = false;
 	self.last_mouse_up = 0;
 
-	// Excitatory vs inhibitory
-	self.is_excitatory = false;
+	// Mouse hover
+	self.hoverAlpha = 0;
+	self.hebbSignalDuration = 2; // 2 seconds, sorta
+
+	// Highlight
+	self.highlightFade = 0.8;
+
+	// Animation
+	self.smoosh = 1;
+	self.smooshVelocity = 0;
+	self.smooshSpring = 0.4;
+	self.smooshDampening = 0.64;
+	self.wobble = Math.random()*Math.PI*2;
+	self.wobbleRadius = Math.random();
+	self.wobbleVelocity = Math.random()*2-1;
+	self.ticker = 0;
+
+	// Draw
+	self.body_image = images.neuron_body;
+
+	// Highlight
+	self.highlightRadius = 25;
+	self.highlightFill = "#fff";
+	self.highlightBaseAlpha = 0.5;
+
+	// Change settings for different neuron types
+	if (self.neuron_type != NeuronType.REGULAR) {
+		self.highlightRadius = 70;	
+		self.highlightFade = 0.93;
+		self.highlightBaseAlpha = 0.7;
+
+		if (self.neuron_type == NeuronType.EXCITATORY) {
+			self.body_image = images.neuron_body_blue;
+			self.connectionStrokeStyle = "#78BCBC";
+			self.highlightFill = "#A2FFFF";
+			self.icon = images.icon_calm;
+		}
+		if (self.neuron_type == NeuronType.INHIBITORY) {
+			self.body_image = images.neuron_body_red;
+			self.connectionStrokeStyle = "#804444";
+			self.highlightFill = "#CC4F4F";
+			self.icon = images.icon_anxious;
+		}
+	}
 
 	// To prevent weakening the connections you JUST made.
 	self.strengthenedConnections = [];
@@ -106,12 +162,11 @@ function Neuron(scene){
 	};
 
 	self.pulse = function(signal,FAKE){
-
 		// It should lose strength in the neuron
 		// If there's no passed-on signal, create a brand new one.
-		if(signal){
+		if(signal) {
 			signal.strength--;
-		}else{
+		} else {
 			signal = {
 				strength: self.startingStrength
 			};
@@ -143,11 +198,6 @@ function Neuron(scene){
 		}
 
 	}
-	
-	self.hebbSignalDuration = 2; // 2 seconds, sorta
-
-	// Highlight
-	self.highlightFade = 0.8;
 
 	self.update = function(){
 		// Highlight!
@@ -198,7 +248,6 @@ function Neuron(scene){
 	};
 
 	// CLICK & HOVER
-	self.hoverAlpha = 0;
 	self.isMouseOver = function(){
 		// Refractory period!
 		if (self.hebbian > 0) return;
@@ -249,25 +298,6 @@ function Neuron(scene){
 		unsubscribe(self.up_listener);
 		unsubscribe(self.drag_listener);
 	};
-
-
-	// Animation
-	self.smoosh = 1;
-	self.smooshVelocity = 0;
-	self.smooshSpring = 0.4;
-	self.smooshDampening = 0.64;
-	self.wobble = Math.random()*Math.PI*2;
-	self.wobbleRadius = Math.random();
-	self.wobbleVelocity = Math.random()*2-1;
-	self.ticker = 0;
-
-	// Draw
-	self.body_image = images.neuron_body;
-
-	// Highlight
-	self.highlightRadius = 25;
-	self.highlightFill = "#fff";
-	self.highlightBaseAlpha = 0.5;
 
 	self.draw = function(ctx){
 		// save
@@ -322,12 +352,11 @@ function Neuron(scene){
 
 };
 
-Neuron.add = function(x, y, scene) {
-
+Neuron.add = function(x, y, neuron_type, scene) {
 	scene = scene || Interactive.scene;
 
 	// Create the neuron
-	var neuron = new Neuron(scene);
+	var neuron = new Neuron(scene, neuron_type);
 	neuron.x = x;
 	neuron.y = y;
 	neuron.scale = 0.5;
@@ -345,7 +374,7 @@ Neuron.add = function(x, y, scene) {
 	
 };
 
-Neuron.serialize = function(scene,detailed){
+Neuron.serialize = function(scene, detailed){
 	scene = scene || Interactive.scene;
 
 	// Prepare output
@@ -359,7 +388,7 @@ Neuron.serialize = function(scene,detailed){
 	var neurons = scene.neurons;
 	for(var i = 0; i < neurons.length; i++) {
 		var neuron = neurons[i];
-		output.neurons.push([Math.round(neuron.x), Math.round(neuron.y)]);
+		output.neurons.push([Math.round(neuron.x), Math.round(neuron.y), neuron.neuron_type]);
 	}
 
 	// Get all connections, and the IDs of the neurons they're connected to.
@@ -378,19 +407,19 @@ Neuron.serialize = function(scene,detailed){
 
 };
 
-Neuron.unserialize = function(scene,string,detailed){
+Neuron.unserialize = function(scene, string, detailed) {
 	// Prepare input
 	var input = JSON.parse(string);
 
 	// Create neurons
-	for(var i=0;i<input.neurons.length;i++){
+	for (var i = 0; i < input.neurons.length; i++) {
 		var neuron = input.neurons[i];
-		Neuron.add(neuron[0], neuron[1], scene);
+		Neuron.add(neuron[0], neuron[1], neuron[2], scene);
 	}
 
 	// Create connections
 	var neurons = scene.neurons;
-	for(var i=0;i<input.connections.length;i++){
+	for(var i = 0; i < input.connections.length; i++) {
 		var connection = input.connections[i];
 		var newConnection = Connection.add(neurons[connection[0]], neurons[connection[1]], scene);
 		if (detailed) {
