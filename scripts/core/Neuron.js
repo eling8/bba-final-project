@@ -92,7 +92,6 @@ function Neuron(scene, neuron_type) {
 	// To prevent weakening the connections you JUST made.
 	self.strengthenedConnections = [];
 	self.strengthenHebb = function(){
-
 		// Hebbian highlight!
 		self.hebbian = 1;
 		self.flash.pulse();
@@ -100,11 +99,11 @@ function Neuron(scene, neuron_type) {
 		// Find NOT-THIS-ONE neurons with hebbians, strengthen the connection from them to this.
 		// There MUST be a connection initialized before.
 		var neurons = scene.neurons;
-		for(var i=0;i<neurons.length;i++){
+		for(var i = 0; i < neurons.length; i++) {
 			var neuron = neurons[i];
 
 			// Is actually hebb-activated and is NOT self.
-			if(neuron.hebbian>0 && neuron!=self){
+			if(neuron.hebbian > 0 && neuron != self) {
 
 				// And is close enough
 				var dx = neuron.x-self.x;
@@ -116,9 +115,9 @@ function Neuron(scene, neuron_type) {
 					// Find a connection FROM that TO this.
 					var foundConnection = false;
 					var connections = scene.connections;
-					for(var j=0;j<connections.length;j++){
+					for (var j=0;j<connections.length;j++) {
 						var connection = connections[j];
-						if(connection.from==neuron && connection.to==self){
+						if (connection.from == neuron && connection.to == self) {
 							connection.strengthen();
 							neuron.strengthenedConnections.push(connection);
 							foundConnection = true;
@@ -141,11 +140,11 @@ function Neuron(scene, neuron_type) {
 
 	};
 
-	self.weakenHebb = function(){
+	self.weakenHebb = function(amount) {
 		// Get all sender connections that AREN'T the ones we just strengthened
 		var weakenThese = self.senders.filter(function(sender){
-			for(var i=0;i<self.strengthenedConnections.length;i++){
-				if(sender==self.strengthenedConnections[i]){
+			for (var i = 0; i < self.strengthenedConnections.length; i++) {
+				if (sender == self.strengthenedConnections[i]) {
 					return false;
 				}
 			}
@@ -154,12 +153,17 @@ function Neuron(scene, neuron_type) {
 
 		// Weaken them all
 		for(var i = 0; i < weakenThese.length; i++){
-			weakenThese[i].weaken();
+			weakenThese[i].weaken(amount);
 		}
 
 		// Reset Strengthened Connections
 		self.strengthenedConnections = [];
 	};
+
+	// Weakens all connections by 0.2 strength every 5 seconds
+	setInterval(function(){ 
+	    self.weakenHebb(0.2);
+	}, 5000);
 
 	self.pulse = function(signal, FAKE){
 		// It should lose strength in the neuron
@@ -194,6 +198,9 @@ function Neuron(scene, neuron_type) {
 				sender.pulse({
 					strength: signal.strength
 				});
+
+				// Strengthen connection because we've used it!
+				sender.strengthen(signal.strength / self.startingStrength);
 			}
 		}
 
@@ -209,10 +216,10 @@ function Neuron(scene, neuron_type) {
 		// Hebbian update
 		if (self.hebbian > 0) {
 			self.hebbian -= 1/(30*self.hebbSignalDuration);
-			if(self.hebbian<0){
-				publish("/neuron/weakenHebb",[self]); // too slow!
-				self.weakenHebb();
-			}
+			// if(self.hebbian < 0){
+			// 	publish("/neuron/weakenHebb",[self]); // too slow!
+			// 	self.weakenHebb();
+			// }
 		} else {
 			self.hebbian = 0;
 		}

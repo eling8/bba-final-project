@@ -44,16 +44,16 @@ function Connection(scene){
 	};
 
 	// Strengthen
-	self.strengthen = function(){
-		self.strength += 1;
+	self.strengthen = function(amount) {
+		self.strength += (amount == undefined ? 1 : amount);
 		// if (self.strength > 1) self.strength = 1;
 		if (self.strength > self.fullLineWidth) self.strength = self.fullLineWidth;
 	};
 
 	// Weaken
-	self.weaken = function(){
-		// self.strength -= 0.05;
-		self.strength -= 1;
+	self.weaken = function(amount) {
+		self.strength -= (amount == undefined ? 1 : amount);
+		// self.strength -= 1;
 		if(!self.isConnected()) self.strength = 0;
 	};
 
@@ -93,7 +93,7 @@ function Connection(scene){
 		}
 
 		// Animation
-		self.lineWidth = Math.min(self.strength, self.fullLineWidth) * 1.5;
+		self.lineWidth = Math.min(self.strength, self.fullLineWidth) * 1.3;
 		// self.lineWidth = (self.strength < 1) ? self.fullLineWidth/2 : self.fullLineWidth;
 		self.strengthEased = self.strengthEased * 0.9 + Math.min(self.strength, 1) * 0.1;
 		self.easedLineWidth = self.easedLineWidth * 0.9 + self.lineWidth * 0.1;
@@ -162,7 +162,7 @@ function Connection(scene){
 			}
 
 			ctx.beginPath();
-			ctx.arc(pulse.distance, offsetY, self.pulseRadius * ((pulse.strength + 1.5) / 5), 0, 2*Math.PI, false);
+			ctx.arc(pulse.distance, offsetY, self.pulseRadius - 4 + pulse.strength * 1.4, 0, 2*Math.PI, false);
 			ctx.fill();
 			ctx.stroke();
 		}
