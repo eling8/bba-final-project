@@ -1,3 +1,5 @@
+# Rewire
+
 All code and art is dedicated to the public domain via
 [CC0](http://creativecommons.org/publicdomain/zero/1.0/),
 with the exception of a few external libraries and audio stuff I didn't make.
@@ -20,7 +22,7 @@ with the exception of a few external libraries and audio stuff I didn't make.
 * Delrian
 * Dylan Field
 * Fahrstuhl
-* George 
+* George
 * Glen Ivey
 * @GuiAmbros
 * Henry Segerman
