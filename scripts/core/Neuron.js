@@ -125,12 +125,14 @@ function Neuron(scene, neuron_type) {
 					}
 
 					// If no such connection, MAKE one.
-					if(!foundConnection){
-						var connection = new Connection();
-						connection.connect(neuron,self);
-						// connection.strengthen();
-						connections.push(connection);
-						neuron.strengthenedConnections.push(connection);
+					if (!foundConnection) {
+						// var connection = new Connection();
+						// connection.connect(neuron,self);
+						var connection = Connection.add(neuron, self, scene);
+						if (connection) {
+							connections.push(connection);
+							neuron.strengthenedConnections.push(connection);
+						}						
 					}
 
 				}
@@ -382,7 +384,7 @@ Neuron.add = function(x, y, neuron_type, scene) {
 	
 };
 
-Neuron.serialize = function(scene, detailed){
+Neuron.serialize = function(scene, detailed) {
 	scene = scene || Interactive.scene;
 
 	// Prepare output

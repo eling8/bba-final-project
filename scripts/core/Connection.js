@@ -174,9 +174,15 @@ function Connection(scene){
 
 };
 
-Connection.add = function(from,to,scene){
-	
+Connection.add = function(from, to, scene) {
 	scene = scene || Interactive.scene;
+
+	// If connection exists for to -> from, don't add
+	for (var i = 0; i < to.senders.length; i++) {
+		if (to.senders[i].to == from) {
+			return null;
+		}
+	}
 
 	// Create the connection
 	var connection = new Connection();

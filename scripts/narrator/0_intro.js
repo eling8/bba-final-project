@@ -63,9 +63,9 @@ Narrator.addStates({
 			// 	Narrator.interrupt().talk("prop5").goto("PROP_EXPLAIN");
 			// });
 		},
-		kill:function(state){
-			unsubscribe(state._listener);
-		}
+		// kill:function(state){
+		// 	unsubscribe(state._listener);
+		// }
 	},
 
 	PROP_CLICK:{
