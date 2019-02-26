@@ -60,6 +60,7 @@ function Neuron(scene, neuron_type) {
 	self.wobbleRadius = Math.random();
 	self.wobbleVelocity = Math.random()*2-1;
 	self.ticker = 0;
+	self.update_counter = 0;
 
 	// Draw
 	self.body_image = images.neuron_body;
@@ -162,11 +163,6 @@ function Neuron(scene, neuron_type) {
 		self.strengthenedConnections = [];
 	};
 
-	// Weakens all connections by 0.2 strength every 5 seconds
-	setInterval(function(){ 
-	    self.weakenHebb(0.2);
-	}, 5000);
-
 	self.pulse = function(signal, FAKE){
 		// It should lose strength in the neuron
 		// If there's no passed-on signal, create a brand new one.
@@ -174,7 +170,8 @@ function Neuron(scene, neuron_type) {
 			signal.strength--;
 		} else {
 			signal = {
-				strength: self.startingStrength
+				strength: self.startingStrength,
+				signal_type: self.neuron_type
 			};
 			if(!FAKE){
 				self.strengthenHebb();
@@ -198,7 +195,8 @@ function Neuron(scene, neuron_type) {
 			for (var i = 0; i < self.senders.length; i++) {
 				var sender = self.senders[i];
 				sender.pulse({
-					strength: signal.strength
+					strength: signal.strength,
+					signal_type: signal.signal_type
 				});
 
 				// Strengthen connection because we've used it!
@@ -214,6 +212,13 @@ function Neuron(scene, neuron_type) {
 		if (self.highlight < 0.01) {
 			self.highlight = 0;
 		}
+
+		// Weakens all connections by 0.1 strength every 3 seconds
+		if (self.update_counter == 90) {
+			self.weakenHebb(0.1);
+			self.update_counter = 0;
+		}
+		self.update_counter += 1;
 
 		// Hebbian update
 		if (self.hebbian > 0) {
