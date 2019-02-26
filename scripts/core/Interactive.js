@@ -35,7 +35,7 @@ window.Interactive = new (function(){
 		if(self.scene) self.scene.update();
 
 		// Narrator update
-		Narrator.update();
+		// Narrator.update();
 
 		// If Scene Transition is done, go to that.
 		if(self.transitionCallback && self.transitionCallback()){
@@ -72,11 +72,11 @@ window.Interactive = new (function(){
 	self.PLAYING = true;
 	self.pause = function(){
 		self.PLAYING = false;
-		Narrator.pause();
+		// Narrator.pause();
 	};
 	self.play = function(){
 		self.PLAYING = true;
-		Narrator.play();
+		// Narrator.play();
 	};
 
 })();
