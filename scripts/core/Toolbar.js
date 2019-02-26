@@ -11,9 +11,9 @@ subscribe("/load",function(ratio){
 });
 
 
-//////////////////////
-//// PLAY & PAUSE ////
-//////////////////////
+//////////////////////////
+//// DRAG NEW NEURONS ////
+//////////////////////////
 
 var add_excitatory = document.getElementById("toolbar_excitatory");
 
@@ -52,6 +52,15 @@ add_inhibitory.addEventListener("mousemove", function(event) {
 		mouse_is_down = false;
 	}
 }, false);
+
+////////////////////////////
+//// SAVE CONFIGURATION ////
+////////////////////////////
+
+var save_button = document.getElementById("toolbar_save");
+save_button.onclick = function(){
+	console.log(Neuron.serialize(Interactive.scene, true));
+};
 
 //////////////////////
 /// VOLUME CONTROL ///
