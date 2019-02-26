@@ -42,7 +42,7 @@ function Neuron(scene, neuron_type) {
 	// Allow dragging
 	self.is_dragging = false;
 	self.mouse_down = false;
-	self.last_mouse_up = 0;
+	// self.last_mouse_up = 0;
 
 	// Mouse hover
 	self.hoverAlpha = 0;
@@ -233,9 +233,9 @@ function Neuron(scene, neuron_type) {
 
 		// For mouse dragging -- to prevent down from being called immediately after
 		// TODO(emily): v hacky help
-		if (self.last_mouse_up > 0) {
-			self.last_mouse_up -= 1;
-		}
+		// if (self.last_mouse_up > 0) {
+		// 	self.last_mouse_up -= 1;
+		// }
 
 		// Animation
 		self.smoosh += self.smooshVelocity;
@@ -265,7 +265,7 @@ function Neuron(scene, neuron_type) {
 	self.isMouseOver = function(){
 		// Refractory period!
 		if (self.hebbian > 0) return;
-		if (self.last_mouse_up > 0) return;
+		// if (self.last_mouse_up > 0) return;
 
 		// If so, is it within that circle?
 		var dx = Mouse.x-self.x;
@@ -304,7 +304,7 @@ function Neuron(scene, neuron_type) {
 			self.is_dragging = false;
 
 			// For some reason, without this, down_listener gets called immediately after
-			self.last_mouse_up = 1;
+			// self.last_mouse_up = 1;
 		}
 	});
 

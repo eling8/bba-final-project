@@ -22,7 +22,7 @@
 	    Mouse.pressed = true;
 	    onMouseMove(event);
 	    publish("/mouse/click"); // ALSO a click, why not.
-	    publish("/mouse/down");
+	    // publish("/mouse/down");
 	},false);
 
 	canvas.addEventListener("mouseup",function(event){

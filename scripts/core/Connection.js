@@ -113,7 +113,6 @@ function Connection(scene){
 	self.endDistance = 35;
 
 	self.draw = function(ctx){
-
 		// save
 		ctx.save();
 
