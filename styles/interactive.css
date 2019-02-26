@@ -178,3 +178,50 @@ div, canvas{
 	margin-top: 12px;
 	margin-right: 10px;
 }
+
+/** TOOLBAR **/
+#toolbar-ui {
+	position: absolute;
+	top: 0;
+	width: 100%;
+	height: 40px;
+}
+#toolbar {
+	width: 100%;
+	height: 40px;
+	background: rgba(255, 255, 255, 0.2);
+}
+#toolbar > div:hover{
+	background-color: rgba(255, 255, 255, 0.5);
+}
+#toolbar_excitatory{
+	float: left;
+	width: 59px;
+	height: 40px;
+}
+#excitatory_img {
+	content: url(../assets/sprites/body_blue.png);
+	max-height: 100%;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	cursor: pointer;
+}
+#toolbar_inhibitory{
+	float: left;
+	width: 59px;
+	height: 40px;
+}
+#inhibitory_img {
+	content: url(../assets/sprites/body_red.png);
+	max-height: 100%;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	cursor: pointer;
+}
+/*#toolbar_forget_bar{
+	float: right;
+	width: 50px;
+    margin-top: 13px;
+}*/

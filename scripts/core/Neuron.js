@@ -214,7 +214,7 @@ function Neuron(scene, neuron_type) {
 		}
 
 		// Weakens all connections by 0.1 strength every 3 seconds
-		if (self.update_counter == 15/*90*/) {
+		if (self.update_counter == 90) {
 			self.weakenHebb(0.1);
 			self.update_counter = 0;
 		}
@@ -312,6 +312,7 @@ function Neuron(scene, neuron_type) {
 		unsubscribe(self.down_listener);
 		unsubscribe(self.up_listener);
 		unsubscribe(self.drag_listener);
+		unsubscribe(self.add_excitatory_listener);
 	};
 
 	self.draw = function(ctx){
@@ -443,3 +444,15 @@ Neuron.unserialize = function(scene, string, detailed) {
 	}
 
 };
+
+var add_excitatory_listener = subscribe("/toolbar/excitatory", function() {
+	var neuron = Neuron.add(Mouse.x, Mouse.y, NeuronType.EXCITATORY);
+	neuron.mouse_down = true;
+	neuron.is_dragging = true;
+});
+
+var add_excitatory_listener = subscribe("/toolbar/inhibitory", function() {
+	var neuron = Neuron.add(Mouse.x, Mouse.y, NeuronType.INHIBITORY);
+	neuron.mouse_down = true;
+	neuron.is_dragging = true;
+});
