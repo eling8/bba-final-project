@@ -131,7 +131,6 @@ function Neuron(scene, neuron_type) {
 						// connection.connect(neuron,self);
 						var connection = Connection.add(neuron, self, scene);
 						if (connection) {
-							connections.push(connection);
 							neuron.strengthenedConnections.push(connection);
 						}						
 					}
@@ -145,14 +144,15 @@ function Neuron(scene, neuron_type) {
 
 	self.weakenHebb = function(amount) {
 		// Get all sender connections that AREN'T the ones we just strengthened
-		var weakenThese = self.senders.filter(function(sender){
-			for (var i = 0; i < self.strengthenedConnections.length; i++) {
-				if (sender == self.strengthenedConnections[i]) {
-					return false;
-				}
-			}
-			return true;
-		});
+		var weakenThese = self.senders; 
+		// 	self.senders.filter(function(sender){
+		// 	for (var i = 0; i < self.strengthenedConnections.length; i++) {
+		// 		if (sender == self.strengthenedConnections[i]) {
+		// 			return false;
+		// 		}
+		// 	}
+		// 	return true;
+		// });
 
 		// Weaken them all
 		for(var i = 0; i < weakenThese.length; i++){
@@ -214,7 +214,7 @@ function Neuron(scene, neuron_type) {
 		}
 
 		// Weakens all connections by 0.1 strength every 3 seconds
-		if (self.update_counter == 90) {
+		if (self.update_counter == 15/*90*/) {
 			self.weakenHebb(0.1);
 			self.update_counter = 0;
 		}

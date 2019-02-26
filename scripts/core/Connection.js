@@ -60,7 +60,7 @@ function Connection(scene){
 	// Am I Connected?
 	self.isConnected = function(){
 		// return(self.strength >= 0.94);
-		return(self.strength >= 1);
+		return(self.strength >= 0.89);
 	};
 
 	// UPDATE
