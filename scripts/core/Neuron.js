@@ -253,10 +253,15 @@ function Neuron(scene, neuron_type) {
 		var gotoHoverAlpha = 0;
 		if (self.isMouseOver()) {
 			canvas.style.cursor = "pointer";
-			gotoHoverAlpha = 1;
+			if (self.mouse_down) {
+				gotoHoverAlpha = 1;
+			} else {
+				gotoHoverAlpha = 0.5;
+			}
 		} else {
 			gotoHoverAlpha = 0;
 		}
+
 		self.hoverAlpha = self.hoverAlpha*0.5 + gotoHoverAlpha*0.5;
 
 	};
