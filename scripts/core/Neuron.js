@@ -178,6 +178,12 @@ function Neuron(scene, neuron_type) {
 			}
 		}
 
+		if (signal.signal_type == NeuronType.INHIBITORY) {
+
+		} else {
+			
+		}
+
 		// Sound Effect!
 		if(!FAKE){
 			var volume = (signal.strength + 1)/(self.startingStrength + 1); // so it's not zero

@@ -56,8 +56,8 @@ Narrator.addStates({
 
 	PROP_INTERRUPTABLE:{
 		start:function(state){
-			Narrator.scene("Propagation")
-				.talk("prop0","prop1","prop2").goto("PROP_CLICK");
+			Narrator.scene("Propagation");
+				// .talk("prop0","prop1","prop2").goto("PROP_CLICK");
 			// state._listener = subscribe("/neuron/click",function(neuron){
 			// 	unsubscribe(state._listener);
 			// 	Narrator.interrupt().talk("prop5").goto("PROP_EXPLAIN");
