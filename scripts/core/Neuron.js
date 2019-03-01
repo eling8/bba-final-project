@@ -225,19 +225,6 @@ function Neuron(scene, neuron_type) {
     self.forget_time.style.width = width + "%";
     self.update_counter += 1;
 
-    /*   var id = setInterval(forget_time, 10):
-   var width = 1
-   function forget_time() {
-     if (width >= 100) {
-       clearInterval(id);
-       self.weakenHebb(0.5);
-     } else {
-       width++;
-       elem.style.width = width + '%';
-     }
-   }
-*/
-
     // Hebbian update
     if (self.hebbian > 0) {
       self.hebbian -= 1 / (30 * self.hebbSignalDuration);
