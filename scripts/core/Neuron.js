@@ -169,6 +169,10 @@ function Neuron(scene, neuron_type, neuron_function) {
   };
 
   self.pulse = function(signal, FAKE) {
+    if (self.neuron_function == NeuronFunction.ENDING) {
+      publish("/level/winLevel");
+    }
+
     // It should lose strength in the neuron
     // If there's no passed-on signal, create a brand new one.
     var new_signal = false;
@@ -308,6 +312,9 @@ function Neuron(scene, neuron_type, neuron_function) {
   self.isMouseOver = function() {
     // Refractory period!
     if (self.hebbian > 0) return;
+
+    // Don't allow clicking on ending neurons
+    if (self.neuron_function == NeuronFunction.ENDING) return;
     // if (self.last_mouse_up > 0) return;
 
     // If so, is it within that circle?
@@ -354,8 +361,6 @@ function Neuron(scene, neuron_type, neuron_function) {
     unsubscribe(self.down_listener);
     unsubscribe(self.up_listener);
     unsubscribe(self.drag_listener);
-    unsubscribe(self.add_excitatory_listener);
-    unsubscribe(self.add_inhibitory_listener);
   };
 
   self.draw = function(ctx) {
@@ -496,13 +501,13 @@ Neuron.unserialize = function(scene, string, detailed) {
   }
 };
 
-var add_excitatory_listener = subscribe("/toolbar/excitatory", function() {
+Neuron.add_excitatory_listener = subscribe("/toolbar/excitatory", function() {
   var neuron = Neuron.add(Mouse.x, Mouse.y, NeuronType.EXCITATORY);
   neuron.mouse_down = true;
   neuron.is_dragging = true;
 });
 
-var add_inhibitory_listener = subscribe("/toolbar/inhibitory", function() {
+Neuron.add_inhibitory_listener = subscribe("/toolbar/inhibitory", function() {
   var neuron = Neuron.add(Mouse.x, Mouse.y, NeuronType.INHIBITORY);
   neuron.mouse_down = true;
   neuron.is_dragging = true;
