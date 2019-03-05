@@ -5,7 +5,6 @@ var NeuronType = {
 };
 
 function Neuron(scene, neuron_type) {
-<<<<<<< Updated upstream
   var self = this;
 
   // Set neuron type -- if undefined, default to REGULAR
