@@ -4,7 +4,14 @@ var NeuronType = {
   EXCITATORY: 3
 };
 
-function Neuron(scene, neuron_type) {
+var NeuronFunction = {
+  REGULAR: 1,
+  STARTING: 2, // for the first neuron in a level, fires at a constant rate
+  ENDING: 3, // for the goal neuron in a level
+  FIXED: 4, // neurons that can't be moved
+};
+
+function Neuron(scene, neuron_type, neuron_function) {
   var self = this;
 
   // Set neuron type -- if undefined, default to REGULAR
@@ -13,6 +20,10 @@ function Neuron(scene, neuron_type) {
   self.activation_level = 0;
   self.firing_threshold = 1;
   self.min_activation = -4;
+
+  // Set neuron function -- if undefined, default to REGULAR
+  self.neuron_function =
+    neuron_function == undefined ? NeuronFunction.REGULAR : neuron_function;
 
   // Transform
   self.x = 0;
@@ -71,7 +82,7 @@ function Neuron(scene, neuron_type) {
 
   // Change settings for different neuron types
   if (self.neuron_type != NeuronType.REGULAR) {
-    self.highlightRadius = 70;
+    self.highlightRadius = 50;
     self.highlightFade = 0.93;
     self.highlightBaseAlpha = 0.7;
 
@@ -198,7 +209,7 @@ function Neuron(scene, neuron_type) {
 
     // If there's still strength in the neuron, pass it down immediately.
     // if (signal.strength > 0) {
-    if (new_signal || self.activation_level >= self.firing_threshold) {
+    if (new_signal || (self.activation_level >= self.firing_threshold && signal.strength > 0)) {
       for (var i = 0; i < self.senders.length; i++) {
         var sender = self.senders[i];
         sender.pulse({
@@ -214,7 +225,7 @@ function Neuron(scene, neuron_type) {
 
     // Weaken highlight if the neuron doesn't propagate due to inhibition
     if (self.activation_level < self.firing_threshold) {
-      self.highlight = 0.25;
+      self.highlight = 0.2;
     } else {
       // If activation is high enough to fire, reset activation level
       self.activation_level = 0;
@@ -230,6 +241,11 @@ function Neuron(scene, neuron_type) {
 
     // Move firing activation level towards zero over time
     self.activation_level *= 0.98;
+
+    // Fire starting neuron once every 1.67 seconds
+    if (self.neuron_function == NeuronFunction.STARTING && self.update_counter % 50 == 0) {
+      self.pulse();
+    }
 
     // Weakens all connections by 0.5 strength every 5 seconds
     var width = 1;
@@ -339,6 +355,7 @@ function Neuron(scene, neuron_type) {
     unsubscribe(self.up_listener);
     unsubscribe(self.drag_listener);
     unsubscribe(self.add_excitatory_listener);
+    unsubscribe(self.add_inhibitory_listener);
   };
 
   self.draw = function(ctx) {
@@ -392,11 +409,11 @@ function Neuron(scene, neuron_type) {
   };
 }
 
-Neuron.add = function(x, y, neuron_type, scene) {
+Neuron.add = function(x, y, neuron_type, neuron_function, scene) {
   scene = scene || Interactive.scene;
 
   // Create the neuron
-  var neuron = new Neuron(scene, neuron_type);
+  var neuron = new Neuron(scene, neuron_type, neuron_function);
   neuron.x = x;
   neuron.y = y;
   neuron.scale = 0.5;
@@ -430,7 +447,8 @@ Neuron.serialize = function(scene, detailed) {
     output.neurons.push([
       Math.round(neuron.x),
       Math.round(neuron.y),
-      neuron.neuron_type
+      neuron.neuron_type,
+      neuron.neuron_function
     ]);
   }
 
@@ -460,7 +478,7 @@ Neuron.unserialize = function(scene, string, detailed) {
   // Create neurons
   for (var i = 0; i < input.neurons.length; i++) {
     var neuron = input.neurons[i];
-    Neuron.add(neuron[0], neuron[1], neuron[2], scene);
+    Neuron.add(neuron[0], neuron[1], neuron[2], neuron[3], scene);
   }
 
   // Create connections
@@ -484,7 +502,7 @@ var add_excitatory_listener = subscribe("/toolbar/excitatory", function() {
   neuron.is_dragging = true;
 });
 
-var add_excitatory_listener = subscribe("/toolbar/inhibitory", function() {
+var add_inhibitory_listener = subscribe("/toolbar/inhibitory", function() {
   var neuron = Neuron.add(Mouse.x, Mouse.y, NeuronType.INHIBITORY);
   neuron.mouse_down = true;
   neuron.is_dragging = true;
