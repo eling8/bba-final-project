@@ -10,12 +10,9 @@ function Neuron(scene, neuron_type) {
   // Set neuron type -- if undefined, default to REGULAR
   self.neuron_type =
     neuron_type == undefined ? NeuronType.REGULAR : neuron_type;
-
-  // if (Math.random() < 0.7) {
-  // 	self.neuron_type = NeuronType.EXCITATORY;
-  // } else {
-  // 	self.neuron_type = NeuronType.INHIBITORY;
-  // }
+  self.activation_level = 0;
+  self.firing_threshold = 1;
+  self.min_activation = -4;
 
   // Transform
   self.x = 0;
@@ -142,13 +139,13 @@ function Neuron(scene, neuron_type) {
   self.weakenHebb = function(amount) {
     // Get all sender connections that AREN'T the ones we just strengthened
     var weakenThese = self.senders;
-    // 	self.senders.filter(function(sender){
-    // 	for (var i = 0; i < self.strengthenedConnections.length; i++) {
-    // 		if (sender == self.strengthenedConnections[i]) {
-    // 			return false;
-    // 		}
-    // 	}
-    // 	return true;
+    //  self.senders.filter(function(sender){
+    //  for (var i = 0; i < self.strengthenedConnections.length; i++) {
+    //    if (sender == self.strengthenedConnections[i]) {
+    //      return false;
+    //    }
+    //  }
+    //  return true;
     // });
 
     // Weaken them all
@@ -163,6 +160,7 @@ function Neuron(scene, neuron_type) {
   self.pulse = function(signal, FAKE) {
     // It should lose strength in the neuron
     // If there's no passed-on signal, create a brand new one.
+    var new_signal = false;
     if (signal) {
       signal.strength--;
     } else {
@@ -173,10 +171,20 @@ function Neuron(scene, neuron_type) {
       if (!FAKE) {
         self.strengthenHebb();
       }
+      new_signal = true;
     }
 
-    if (signal.signal_type == NeuronType.INHIBITORY) {
-    } else {
+    // Highlight!
+    self.highlight = 1;
+
+    // Change neuron's activation level based on type of signal received
+    if (!new_signal) {
+      if (signal.signal_type == NeuronType.INHIBITORY) {
+        self.activation_level -= 1;
+        self.activation_level = Math.max(self.min_activation, self.activation_level);
+      } else { // excitatory
+        self.activation_level += 1;
+      }
     }
 
     // Sound Effect!
@@ -188,21 +196,28 @@ function Neuron(scene, neuron_type) {
     // Smoosh
     self.smooshVelocity += 0.05 * (signal.strength + 1);
 
-    // Highlight!
-    self.highlight = 1;
-
     // If there's still strength in the neuron, pass it down immediately.
-    if (signal.strength > 0) {
+    // if (signal.strength > 0) {
+    if (new_signal || self.activation_level >= self.firing_threshold) {
       for (var i = 0; i < self.senders.length; i++) {
         var sender = self.senders[i];
         sender.pulse({
           strength: signal.strength,
-          signal_type: signal.signal_type
+          signal_type: self.neuron_type
         });
 
         // Strengthen connection because we've used it!
         sender.strengthen(signal.strength / self.startingStrength);
       }
+    }
+
+
+    // Weaken highlight if the neuron doesn't propagate due to inhibition
+    if (self.activation_level < self.firing_threshold) {
+      self.highlight = 0.25;
+    } else {
+      // If activation is high enough to fire, reset activation level
+      self.activation_level = 0;
     }
   };
 
@@ -212,6 +227,9 @@ function Neuron(scene, neuron_type) {
     if (self.highlight < 0.01) {
       self.highlight = 0;
     }
+
+    // Move firing activation level towards zero over time
+    self.activation_level *= 0.98;
 
     // Weakens all connections by 0.5 strength every 5 seconds
     var width = 1;
@@ -229,8 +247,8 @@ function Neuron(scene, neuron_type) {
     if (self.hebbian > 0) {
       self.hebbian -= 1 / (30 * self.hebbSignalDuration);
       // if(self.hebbian < 0){
-      // 	publish("/neuron/weakenHebb",[self]); // too slow!
-      // 	self.weakenHebb();
+      //  publish("/neuron/weakenHebb",[self]); // too slow!
+      //  self.weakenHebb();
       // }
     } else {
       self.hebbian = 0;
@@ -239,7 +257,7 @@ function Neuron(scene, neuron_type) {
     // For mouse dragging -- to prevent down from being called immediately after
     // TODO(emily): v hacky help
     // if (self.last_mouse_up > 0) {
-    // 	self.last_mouse_up -= 1;
+    //  self.last_mouse_up -= 1;
     // }
 
     // Animation
