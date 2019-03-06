@@ -191,8 +191,15 @@ function Neuron(scene, neuron_type, neuron_function) {
     }
     var is_activated = self.activation_level >= self.firing_threshold;
 
+    // If we've activated the ending neuron, win level
     if (is_activated && self.neuron_function == NeuronFunction.ENDING) {
-      publish("/level/winLevel");
+      // But only if every neuron on screen has inputs!!
+      if (Neuron.level_is_complete()) {
+        publish("/level/winLevel");
+      } else {
+        // Show some feedback that all neurons need to be connected
+        console.log("All neurons need to be connected!");
+      }
     }
 
     // Sound Effect!
@@ -401,6 +408,23 @@ function Neuron(scene, neuron_type, neuron_function) {
     // restore
     ctx.restore();
   };
+}
+
+// Returns true if every neuron in the scene has an input, except the starting neuron
+Neuron.level_is_complete = function(scene) {
+  scene = scene || Interactive.scene;
+
+  var neurons = scene.neurons;
+  for (var i = 0; i < neurons.length; i++) {
+    var neuron = neurons[i];
+    if (neuron.neuron_function == NeuronFunction.STARTING) {
+      continue;
+    }
+    if (neuron.receivers.length == 0) {
+      return false;
+    }
+  }
+  return true;
 }
 
 Neuron.add = function(x, y, neuron_type, neuron_function, scene) {
