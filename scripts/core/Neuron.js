@@ -169,10 +169,6 @@ function Neuron(scene, neuron_type, neuron_function) {
   };
 
   self.pulse = function(signal, FAKE) {
-    if (self.neuron_function == NeuronFunction.ENDING) {
-      publish("/level/winLevel");
-    }
-
     // It should lose strength in the neuron
     // If there's no passed-on signal, create a brand new one.
     var new_signal = false;
@@ -201,6 +197,11 @@ function Neuron(scene, neuron_type, neuron_function) {
         self.activation_level += 1;
       }
     }
+    var is_activated = self.activation_level >= self.firing_threshold;
+
+    if (is_activated && self.neuron_function == NeuronFunction.ENDING) {
+      publish("/level/winLevel");
+    }
 
     // Sound Effect!
     if (!FAKE) {
@@ -213,7 +214,7 @@ function Neuron(scene, neuron_type, neuron_function) {
 
     // If there's still strength in the neuron, pass it down immediately.
     // if (signal.strength > 0) {
-    if (new_signal || (self.activation_level >= self.firing_threshold && signal.strength > 0)) {
+    if (new_signal || (is_activated && signal.strength > 0)) {
       for (var i = 0; i < self.senders.length; i++) {
         var sender = self.senders[i];
         sender.pulse({
@@ -228,7 +229,7 @@ function Neuron(scene, neuron_type, neuron_function) {
 
 
     // Weaken highlight if the neuron doesn't propagate due to inhibition
-    if (self.activation_level < self.firing_threshold) {
+    if (!is_activated) {
       self.highlight = 0.2;
     } else {
       // If activation is high enough to fire, reset activation level
