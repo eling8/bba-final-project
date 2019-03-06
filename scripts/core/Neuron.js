@@ -150,14 +150,6 @@ function Neuron(scene, neuron_type, neuron_function) {
   self.weakenHebb = function(amount) {
     // Get all sender connections that AREN'T the ones we just strengthened
     var weakenThese = self.senders;
-    //  self.senders.filter(function(sender){
-    //  for (var i = 0; i < self.strengthenedConnections.length; i++) {
-    //    if (sender == self.strengthenedConnections[i]) {
-    //      return false;
-    //    }
-    //  }
-    //  return true;
-    // });
 
     // Weaken them all
     for (var i = 0; i < weakenThese.length; i++) {
@@ -316,7 +308,6 @@ function Neuron(scene, neuron_type, neuron_function) {
 
     // Don't allow clicking on ending neurons
     if (self.neuron_function == NeuronFunction.ENDING) return;
-    // if (self.last_mouse_up > 0) return;
 
     // If so, is it within that circle?
     var dx = Mouse.x - self.x;
@@ -352,9 +343,6 @@ function Neuron(scene, neuron_type, neuron_function) {
       }
       self.mouse_down = false;
       self.is_dragging = false;
-
-      // For some reason, without this, down_listener gets called immediately after
-      // self.last_mouse_up = 1;
     }
   });
 
