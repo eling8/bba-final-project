@@ -1,6 +1,12 @@
+var ConnectionType = {
+  REGULAR: 1,
+  FIXED: 2, // connections that can't be weakened
+};
+
 function Connection(scene){
-	
 	var self = this;
+
+	self.connection_type = ConnectionType.REGULAR;
 
 	// Connection properties
 	self.from = null;
@@ -52,6 +58,7 @@ function Connection(scene){
 
 	// Weaken
 	self.weaken = function(amount) {
+		if (self.connection_type == ConnectionType.FIXED) return;
 		self.strength -= (amount == undefined ? 1 : amount);
 		// self.strength -= 1;
 		if(!self.isConnected()) self.strength = 0;

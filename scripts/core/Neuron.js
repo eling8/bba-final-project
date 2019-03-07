@@ -294,7 +294,9 @@ function Neuron(scene, neuron_type, neuron_function) {
 
     // Mouse
     var gotoHoverAlpha = 0;
-    if (self.isMouseOver() || (Interactive.delete_on && self.isMouseHover())) {
+    // Don't allow deleting of fixed neurons
+    if ((!Interactive.delete_on && self.isMouseOver())
+        || (Interactive.delete_on && self.isMouseHover() && self.isModifiable())) {
       canvas.style.cursor = "pointer";
       if (self.mouse_down) {
         gotoHoverAlpha = 1;
@@ -328,16 +330,19 @@ function Neuron(scene, neuron_type, neuron_function) {
     return dx * dx + dy * dy < r * r;
   };
 
+  self.isModifiable = function() {
+    return (self.neuron_function == NeuronFunction.REGULAR);
+  }
+
   self.click_listener = subscribe("/mouse/click", function() {
-    if (self.isMouseHover() && Interactive.delete_on) {
-      console.log("DELETE");
-      // Remove from receivers list of all neurons it sends to
+    if (self.isMouseHover() && self.isModifiable() && Interactive.delete_on) {
+      // Disconnect sender connections
       var senders = self.senders;
       for (var i = 0; i < self.senders.length; i++) {
         var connection = self.senders[i].disconnect();
       }
 
-      // Remove from senders list of all neurons it receives from
+      // Disconnect receiver connections
       for (var i = 0; i < self.receivers.length; i++) {
         var connection = self.receivers[i].disconnect();
       }
@@ -349,8 +354,8 @@ function Neuron(scene, neuron_type, neuron_function) {
 
   // Click and drag neurons
   self.down_listener = subscribe("/mouse/down", function() {
-    // If you click on a neuron
-    if (self.isMouseOver()) {
+    // If you click on a neuron -- only if it's modifiable
+    if (self.isMouseOver() && self.isModifiable()) {
       self.mouse_down = true;
       self.is_dragging = false;
     }
@@ -504,7 +509,8 @@ Neuron.serialize = function(scene, detailed) {
       output.connections.push([
         connection.from.id,
         connection.to.id,
-        connection.strength
+        connection.strength,
+        connection.connection_type
       ]);
     } else {
       output.connections.push([connection.from.id, connection.to.id]);
@@ -536,6 +542,7 @@ Neuron.unserialize = function(scene, string, detailed) {
     );
     if (detailed) {
       newConnection.strength = connection[2];
+      newConnection.connection_type = connection[3];
     }
   }
 };
