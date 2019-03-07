@@ -19,7 +19,10 @@ function Neuron(scene, neuron_type, neuron_function) {
     neuron_type == undefined ? NeuronType.REGULAR : neuron_type;
   self.activation_level = 0;
   self.firing_threshold = 1;
-  self.min_activation = -4;
+  self.min_activation = -2;
+
+  // Number of times neuron has pulsed in winning position
+  self.win_pulse_count = 0;
 
   // Set neuron function -- if undefined, default to REGULAR
   self.neuron_function =
@@ -195,7 +198,12 @@ function Neuron(scene, neuron_type, neuron_function) {
     if (is_activated && self.neuron_function == NeuronFunction.ENDING) {
       // But only if every neuron on screen has inputs!!
       if (Neuron.level_is_complete()) {
-        publish("/level/winLevel");
+        self.win_pulse_count += 1;
+
+        // Ending neuron must pulse 4 times before winning
+        if (self.win_pulse_count >= 4) {
+          publish("/level/winLevel");
+        }
       } else {
         // Show some feedback that all neurons need to be connected
         console.log("All neurons need to be connected!");
