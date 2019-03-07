@@ -38,6 +38,16 @@ add_inhibitory.addEventListener("mousemove", function(event) {
 	}
 }, false);
 
+////////////////////////
+//// DELETE NEURONS ////
+////////////////////////
+
+var delete_button = document.getElementById("toolbar_delete");
+delete_button.addEventListener("click", function(event) {
+    Interactive.delete_on = !Interactive.delete_on;
+    delete_button.setAttribute("deleting", Interactive.delete_on ? "true" : "false");
+}, false);
+
 ////////////////////////////
 //// SAVE CONFIGURATION ////
 ////////////////////////////

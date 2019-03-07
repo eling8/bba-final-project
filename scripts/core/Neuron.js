@@ -294,7 +294,7 @@ function Neuron(scene, neuron_type, neuron_function) {
 
     // Mouse
     var gotoHoverAlpha = 0;
-    if (self.isMouseOver()) {
+    if (self.isMouseOver() || (Interactive.delete_on && self.isMouseHover())) {
       canvas.style.cursor = "pointer";
       if (self.mouse_down) {
         gotoHoverAlpha = 1;
@@ -313,6 +313,11 @@ function Neuron(scene, neuron_type, neuron_function) {
     // Refractory period!
     if (self.hebbian > 0) return;
 
+    return self.isMouseHover();
+  };
+
+  // Checks if within circle and right type of neuron
+  self.isMouseHover = function() {
     // Don't allow clicking on ending neurons
     if (self.neuron_function == NeuronFunction.ENDING) return;
 
@@ -322,6 +327,25 @@ function Neuron(scene, neuron_type, neuron_function) {
     var r = 60 * self.scale;
     return dx * dx + dy * dy < r * r;
   };
+
+  self.click_listener = subscribe("/mouse/click", function() {
+    if (self.isMouseHover() && Interactive.delete_on) {
+      console.log("DELETE");
+      // Remove from receivers list of all neurons it sends to
+      var senders = self.senders;
+      for (var i = 0; i < self.senders.length; i++) {
+        var connection = self.senders[i].disconnect();
+      }
+
+      // Remove from senders list of all neurons it receives from
+      for (var i = 0; i < self.receivers.length; i++) {
+        var connection = self.receivers[i].disconnect();
+      }
+
+      // Kill neuron
+      self.kill();
+    }
+  });
 
   // Click and drag neurons
   self.down_listener = subscribe("/mouse/down", function() {
@@ -344,7 +368,7 @@ function Neuron(scene, neuron_type, neuron_function) {
   self.up_listener = subscribe("/mouse/up", function() {
     if (self.isMouseOver()) {
       // If mouse was never dragged, then pulse
-      if (!self.is_dragging) {
+      if (!self.is_dragging && !Interactive.delete_on) {
         self.pulse();
         publish("/neuron/click", [self]);
       }
@@ -357,6 +381,8 @@ function Neuron(scene, neuron_type, neuron_function) {
     unsubscribe(self.down_listener);
     unsubscribe(self.up_listener);
     unsubscribe(self.drag_listener);
+    unsubscribe(self.click_listener);
+    self.dead = true;
   };
 
   self.draw = function(ctx) {
