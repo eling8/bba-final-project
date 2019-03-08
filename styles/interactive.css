@@ -38,7 +38,7 @@ canvas {
 }
 
 #container {
-  background: #000;
+  background: #fff;
   position: relative;
 
   width: 960px;
@@ -48,7 +48,7 @@ canvas {
 }
 
 #canvas {
-  background-color: #000;
+  background-color: #fff;
   display: block;
 
   width: 960px;
@@ -69,7 +69,7 @@ canvas {
 #preloader {
   width: 100%;
   height: 100%;
-  background-color: #000;
+  background-color: #fff;
 }
 #loading_bar {
   width: 360px;
@@ -124,8 +124,8 @@ canvas {
   font-size: 20px;
   font-family: Helvetica, Arial, sans-serif;
   font-weight: 200;
-  background-color: rgba(0, 0, 0, 0.5);
-  color: #fff;
+  background-color: rgba(250, 250, 250, 0.5);
+  color: #000;
   padding: 2px 5px;
   border-radius: 5px;
 }
@@ -260,10 +260,10 @@ canvas {
   display: flex;
   width: 100%;
   height: 40px;
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(0, 0, 0, 0.2);
 }
 #toolbar > div:hover {
-  background-color: rgba(255, 255, 255, 0.5);
+  background-color: rgba(0, 0, 0, 0.5);
 }
 #toolbar_excitatory {
   float: left;

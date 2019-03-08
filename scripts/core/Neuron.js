@@ -261,12 +261,12 @@ function Neuron(scene, neuron_type, neuron_function) {
 
     // Weakens all connections by 0.5 strength every 5 seconds
     var width = 1;
-    if (self.update_counter === 150) {
+    if (self.update_counter === 300) {
       self.weakenHebb(0.5);
       self.update_counter = 0;
       width = 0;
     } else {
-      width = (self.update_counter / 150) * 100;
+      width = (self.update_counter / 300) * 100;
     }
     self.forget_time.style.width = width + "%";
     self.update_counter += 1;
