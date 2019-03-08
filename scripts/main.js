@@ -25,6 +25,9 @@ Preload({
     { id: "hebb_words", src: "assets/images/hebb_words.png" },
     { id: "antihebb_words", src: "assets/images/antihebb_words.png" },
 
+    // Muzu
+    { id: "muzu", src: "assets/images/muzu.png" },
+
     // Misc Crap
     { id: "introBG", src: "assets/images/intro.png" },
     { id: "outroBG", src: "assets/images/outro.png" },
