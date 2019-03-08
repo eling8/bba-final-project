@@ -4,18 +4,26 @@ var NeuronType = {
   EXCITATORY: 3
 };
 
-function Neuron(scene, neuron_type) {
+var NeuronFunction = {
+  REGULAR: 1,
+  STARTING: 2, // for the first neuron in a level, fires at a constant rate
+  ENDING: 3, // for the goal neuron in a level
+  FIXED: 4, // neurons that can't be moved
+};
+
+function Neuron(scene, neuron_type, neuron_function) {
   var self = this;
 
   // Set neuron type -- if undefined, default to REGULAR
   self.neuron_type =
     neuron_type == undefined ? NeuronType.REGULAR : neuron_type;
+  self.activation_level = 0;
+  self.firing_threshold = 1;
+  self.min_activation = -4;
 
-  // if (Math.random() < 0.7) {
-  // 	self.neuron_type = NeuronType.EXCITATORY;
-  // } else {
-  // 	self.neuron_type = NeuronType.INHIBITORY;
-  // }
+  // Set neuron function -- if undefined, default to REGULAR
+  self.neuron_function =
+    neuron_function == undefined ? NeuronFunction.REGULAR : neuron_function;
 
   // Transform
   self.x = 0;
@@ -74,7 +82,7 @@ function Neuron(scene, neuron_type) {
 
   // Change settings for different neuron types
   if (self.neuron_type != NeuronType.REGULAR) {
-    self.highlightRadius = 70;
+    self.highlightRadius = 50;
     self.highlightFade = 0.93;
     self.highlightBaseAlpha = 0.7;
 
@@ -142,14 +150,6 @@ function Neuron(scene, neuron_type) {
   self.weakenHebb = function(amount) {
     // Get all sender connections that AREN'T the ones we just strengthened
     var weakenThese = self.senders;
-    // 	self.senders.filter(function(sender){
-    // 	for (var i = 0; i < self.strengthenedConnections.length; i++) {
-    // 		if (sender == self.strengthenedConnections[i]) {
-    // 			return false;
-    // 		}
-    // 	}
-    // 	return true;
-    // });
 
     // Weaken them all
     for (var i = 0; i < weakenThese.length; i++) {
@@ -163,6 +163,7 @@ function Neuron(scene, neuron_type) {
   self.pulse = function(signal, FAKE) {
     // It should lose strength in the neuron
     // If there's no passed-on signal, create a brand new one.
+    var new_signal = false;
     if (signal) {
       signal.strength--;
     } else {
@@ -173,10 +174,32 @@ function Neuron(scene, neuron_type) {
       if (!FAKE) {
         self.strengthenHebb();
       }
+      new_signal = true;
     }
 
-    if (signal.signal_type == NeuronType.INHIBITORY) {
-    } else {
+    // Highlight!
+    self.highlight = 1;
+
+    // Change neuron's activation level based on type of signal received
+    if (!new_signal) {
+      if (signal.signal_type == NeuronType.INHIBITORY) {
+        self.activation_level -= 1;
+        self.activation_level = Math.max(self.min_activation, self.activation_level);
+      } else { // excitatory
+        self.activation_level += 1;
+      }
+    }
+    var is_activated = self.activation_level >= self.firing_threshold;
+
+    // If we've activated the ending neuron, win level
+    if (is_activated && self.neuron_function == NeuronFunction.ENDING) {
+      // But only if every neuron on screen has inputs!!
+      if (Neuron.level_is_complete()) {
+        publish("/level/winLevel");
+      } else {
+        // Show some feedback that all neurons need to be connected
+        console.log("All neurons need to be connected!");
+      }
     }
 
     // Sound Effect!
@@ -188,21 +211,28 @@ function Neuron(scene, neuron_type) {
     // Smoosh
     self.smooshVelocity += 0.05 * (signal.strength + 1);
 
-    // Highlight!
-    self.highlight = 1;
-
     // If there's still strength in the neuron, pass it down immediately.
-    if (signal.strength > 0) {
+    // if (signal.strength > 0) {
+    if (new_signal || (is_activated && signal.strength > 0)) {
       for (var i = 0; i < self.senders.length; i++) {
         var sender = self.senders[i];
         sender.pulse({
           strength: signal.strength,
-          signal_type: signal.signal_type
+          signal_type: self.neuron_type
         });
 
         // Strengthen connection because we've used it!
         sender.strengthen(signal.strength / self.startingStrength);
       }
+    }
+
+
+    // Weaken highlight if the neuron doesn't propagate due to inhibition
+    if (!is_activated) {
+      self.highlight = 0.2;
+    } else {
+      // If activation is high enough to fire, reset activation level
+      self.activation_level = 0;
     }
   };
 
@@ -211,6 +241,14 @@ function Neuron(scene, neuron_type) {
     self.highlight *= self.highlightFade;
     if (self.highlight < 0.01) {
       self.highlight = 0;
+    }
+
+    // Move firing activation level towards zero over time
+    self.activation_level *= 0.98;
+
+    // Fire starting neuron once every 1.67 seconds
+    if (self.neuron_function == NeuronFunction.STARTING && self.update_counter % 50 == 0) {
+      self.pulse();
     }
 
     // Weakens all connections by 0.5 strength every 5 seconds
@@ -229,8 +267,8 @@ function Neuron(scene, neuron_type) {
     if (self.hebbian > 0) {
       self.hebbian -= 1 / (30 * self.hebbSignalDuration);
       // if(self.hebbian < 0){
-      // 	publish("/neuron/weakenHebb",[self]); // too slow!
-      // 	self.weakenHebb();
+      //  publish("/neuron/weakenHebb",[self]); // too slow!
+      //  self.weakenHebb();
       // }
     } else {
       self.hebbian = 0;
@@ -239,7 +277,7 @@ function Neuron(scene, neuron_type) {
     // For mouse dragging -- to prevent down from being called immediately after
     // TODO(emily): v hacky help
     // if (self.last_mouse_up > 0) {
-    // 	self.last_mouse_up -= 1;
+    //  self.last_mouse_up -= 1;
     // }
 
     // Animation
@@ -256,7 +294,9 @@ function Neuron(scene, neuron_type) {
 
     // Mouse
     var gotoHoverAlpha = 0;
-    if (self.isMouseOver()) {
+    // Don't allow deleting of fixed neurons
+    if ((!Interactive.delete_on && self.isMouseOver())
+        || (Interactive.delete_on && self.isMouseHover() && self.isModifiable())) {
       canvas.style.cursor = "pointer";
       if (self.mouse_down) {
         gotoHoverAlpha = 1;
@@ -274,7 +314,14 @@ function Neuron(scene, neuron_type) {
   self.isMouseOver = function() {
     // Refractory period!
     if (self.hebbian > 0) return;
-    // if (self.last_mouse_up > 0) return;
+
+    return self.isMouseHover();
+  };
+
+  // Checks if within circle and right type of neuron
+  self.isMouseHover = function() {
+    // Don't allow clicking on ending neurons
+    if (self.neuron_function == NeuronFunction.ENDING) return;
 
     // If so, is it within that circle?
     var dx = Mouse.x - self.x;
@@ -283,10 +330,32 @@ function Neuron(scene, neuron_type) {
     return dx * dx + dy * dy < r * r;
   };
 
+  self.isModifiable = function() {
+    return (self.neuron_function == NeuronFunction.REGULAR);
+  }
+
+  self.click_listener = subscribe("/mouse/click", function() {
+    if (self.isMouseHover() && self.isModifiable() && Interactive.delete_on) {
+      // Disconnect sender connections
+      var senders = self.senders;
+      for (var i = 0; i < self.senders.length; i++) {
+        var connection = self.senders[i].disconnect();
+      }
+
+      // Disconnect receiver connections
+      for (var i = 0; i < self.receivers.length; i++) {
+        var connection = self.receivers[i].disconnect();
+      }
+
+      // Kill neuron
+      self.kill();
+    }
+  });
+
   // Click and drag neurons
   self.down_listener = subscribe("/mouse/down", function() {
-    // If you click on a neuron
-    if (self.isMouseOver()) {
+    // If you click on a neuron -- only if it's modifiable
+    if (self.isMouseOver() && self.isModifiable()) {
       self.mouse_down = true;
       self.is_dragging = false;
     }
@@ -304,15 +373,12 @@ function Neuron(scene, neuron_type) {
   self.up_listener = subscribe("/mouse/up", function() {
     if (self.isMouseOver()) {
       // If mouse was never dragged, then pulse
-      if (!self.is_dragging) {
+      if (!self.is_dragging && !Interactive.delete_on) {
         self.pulse();
         publish("/neuron/click", [self]);
       }
       self.mouse_down = false;
       self.is_dragging = false;
-
-      // For some reason, without this, down_listener gets called immediately after
-      // self.last_mouse_up = 1;
     }
   });
 
@@ -320,7 +386,8 @@ function Neuron(scene, neuron_type) {
     unsubscribe(self.down_listener);
     unsubscribe(self.up_listener);
     unsubscribe(self.drag_listener);
-    unsubscribe(self.add_excitatory_listener);
+    unsubscribe(self.click_listener);
+    self.dead = true;
   };
 
   self.draw = function(ctx) {
@@ -374,11 +441,28 @@ function Neuron(scene, neuron_type) {
   };
 }
 
-Neuron.add = function(x, y, neuron_type, scene) {
+// Returns true if every neuron in the scene has an input, except the starting neuron
+Neuron.level_is_complete = function(scene) {
+  scene = scene || Interactive.scene;
+
+  var neurons = scene.neurons;
+  for (var i = 0; i < neurons.length; i++) {
+    var neuron = neurons[i];
+    if (neuron.neuron_function == NeuronFunction.STARTING) {
+      continue;
+    }
+    if (neuron.receivers.length == 0) {
+      return false;
+    }
+  }
+  return true;
+}
+
+Neuron.add = function(x, y, neuron_type, neuron_function, scene) {
   scene = scene || Interactive.scene;
 
   // Create the neuron
-  var neuron = new Neuron(scene, neuron_type);
+  var neuron = new Neuron(scene, neuron_type, neuron_function);
   neuron.x = x;
   neuron.y = y;
   neuron.scale = 0.5;
@@ -412,7 +496,8 @@ Neuron.serialize = function(scene, detailed) {
     output.neurons.push([
       Math.round(neuron.x),
       Math.round(neuron.y),
-      neuron.neuron_type
+      neuron.neuron_type,
+      neuron.neuron_function
     ]);
   }
 
@@ -424,7 +509,8 @@ Neuron.serialize = function(scene, detailed) {
       output.connections.push([
         connection.from.id,
         connection.to.id,
-        connection.strength
+        connection.strength,
+        connection.connection_type
       ]);
     } else {
       output.connections.push([connection.from.id, connection.to.id]);
@@ -442,7 +528,7 @@ Neuron.unserialize = function(scene, string, detailed) {
   // Create neurons
   for (var i = 0; i < input.neurons.length; i++) {
     var neuron = input.neurons[i];
-    Neuron.add(neuron[0], neuron[1], neuron[2], scene);
+    Neuron.add(neuron[0], neuron[1], neuron[2], neuron[3], scene);
   }
 
   // Create connections
@@ -456,17 +542,18 @@ Neuron.unserialize = function(scene, string, detailed) {
     );
     if (detailed) {
       newConnection.strength = connection[2];
+      newConnection.connection_type = connection[3];
     }
   }
 };
 
-var add_excitatory_listener = subscribe("/toolbar/excitatory", function() {
+Neuron.add_excitatory_listener = subscribe("/toolbar/excitatory", function() {
   var neuron = Neuron.add(Mouse.x, Mouse.y, NeuronType.EXCITATORY);
   neuron.mouse_down = true;
   neuron.is_dragging = true;
 });
 
-var add_excitatory_listener = subscribe("/toolbar/inhibitory", function() {
+Neuron.add_inhibitory_listener = subscribe("/toolbar/inhibitory", function() {
   var neuron = Neuron.add(Mouse.x, Mouse.y, NeuronType.INHIBITORY);
   neuron.mouse_down = true;
   neuron.is_dragging = true;

@@ -238,6 +238,28 @@ canvas {
   margin-right: auto;
   cursor: pointer;
 }
+#toolbar_delete {
+  float: left;
+  width: 59px;
+  height: 40px;
+}
+#delete_img {
+  content: url(../assets/ui/trash.png);
+  max-height: 100%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  cursor: pointer;
+}
+#toolbar_delete[deleting="true"] {
+  background-color: rgba(120, 188, 188, 0.5);
+}
+#toolbar_delete[deleting="true"]:hover {
+  background-color: rgba(120, 188, 188, 0.8);
+}
+#toolbar_delete[deleting="false"] {
+  background-color: rgba(255, 255, 255, 0);
+}
 
 #toolbar_forget_bar {
   position: relative;
@@ -265,11 +287,6 @@ canvas {
   background-color: #fbe488;
   z-index: 2;
 }
-/*#toolbar_forget_bar{
-	float: right;
-	width: 50px;
-    margin-top: 13px;
-}*/
 
 #toolbar_save {
   float: right;

@@ -12,6 +12,9 @@ window.Interactive = new (function(){
 	self.transitionCallback = null;
 	self.transitionToScene = null;
 
+	// For deleting neurons & connections
+	self.delete_on = false;
+
 	// Init, Goto, Update, Render
 	self.init = function(){
 		subscribe("/update",self.update);
