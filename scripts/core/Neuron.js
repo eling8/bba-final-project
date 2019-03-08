@@ -186,10 +186,12 @@ function Neuron(scene, neuron_type, neuron_function) {
     // Change neuron's activation level based on type of signal received
     if (!new_signal) {
       if (signal.signal_type == NeuronType.INHIBITORY) {
-        self.activation_level -= 1;
+        self.activation_level -= 1.1;
         self.activation_level = Math.max(self.min_activation, self.activation_level);
       } else { // excitatory
         self.activation_level += 1;
+        self.activation_level = Math.min(self.firing_threshold + 1, self.activation_level);
+        console.log(self.activation_level);
       }
     }
     var is_activated = self.activation_level >= self.firing_threshold;
@@ -240,7 +242,7 @@ function Neuron(scene, neuron_type, neuron_function) {
       self.highlight = 0.2;
     } else {
       // If activation is high enough to fire, reset activation level
-      self.activation_level = 0;
+      // self.activation_level = 0;
     }
   };
 
@@ -252,11 +254,13 @@ function Neuron(scene, neuron_type, neuron_function) {
     }
 
     // Move firing activation level towards zero over time
-    self.activation_level *= 0.98;
+    self.activation_level *= 0.97;
 
     // Fire starting neuron once every 1.67 seconds
     if (self.neuron_function == NeuronFunction.STARTING && self.update_counter % 50 == 0) {
       self.pulse();
+
+      self.win_pulse_count *= 0.5;
     }
 
     // Weakens all connections by 0.5 strength every 5 seconds
@@ -444,7 +448,39 @@ function Neuron(scene, neuron_type, neuron_function) {
       ctx.fill();
     }
 
-    // restore
+    // // restore
+    // ctx.restore();
+    ctx.save();
+
+    // draw bar for end neuron
+    if (self.neuron_function == NeuronFunction.ENDING) {
+      ctx.globalAlpha = 1;
+      ctx.fillStyle = "gray";
+      ctx.fillRect(40, -60, 35, 120);
+
+      ctx.save();
+
+      var scale = self.firing_threshold - self.min_activation + 1;
+      var threshold_height = (self.activation_level - self.min_activation) * 120 / scale;
+      ctx.fillStyle = "#78BCBC";
+      ctx.fillRect(40, 60 - threshold_height, 35, threshold_height);
+
+      // draw threshold at activation = 1
+      ctx.beginPath();
+      ctx.moveTo(40, -30);
+      ctx.lineTo(75, -30);
+      ctx.stroke();
+
+      // draw zero at activation = 0
+      ctx.setLineDash([2.5, 3]);
+      ctx.beginPath();
+      ctx.moveTo(40, 0);
+      ctx.lineTo(75, 0);
+      ctx.stroke();
+
+      ctx.restore();
+    }
+    ctx.restore();
     ctx.restore();
   };
 }
