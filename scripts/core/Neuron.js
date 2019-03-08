@@ -200,8 +200,8 @@ function Neuron(scene, neuron_type, neuron_function) {
       if (Neuron.level_is_complete()) {
         self.win_pulse_count += 1;
 
-        // Ending neuron must pulse 4 times before winning
-        if (self.win_pulse_count >= 4) {
+        // Ending neuron must pulse 3 times before winning
+        if (self.win_pulse_count >= 3) {
           publish("/level/winLevel");
         }
       } else {
@@ -344,17 +344,6 @@ function Neuron(scene, neuron_type, neuron_function) {
 
   self.click_listener = subscribe("/mouse/click", function() {
     if (self.isMouseHover() && self.isModifiable() && Interactive.delete_on) {
-      // Disconnect sender connections
-      var senders = self.senders;
-      for (var i = 0; i < self.senders.length; i++) {
-        var connection = self.senders[i].disconnect();
-      }
-
-      // Disconnect receiver connections
-      for (var i = 0; i < self.receivers.length; i++) {
-        var connection = self.receivers[i].disconnect();
-      }
-
       // Kill neuron
       self.kill();
     }
@@ -395,6 +384,17 @@ function Neuron(scene, neuron_type, neuron_function) {
     unsubscribe(self.up_listener);
     unsubscribe(self.drag_listener);
     unsubscribe(self.click_listener);
+
+    // Disconnect sender connections
+    var senders = self.senders;
+    for (var i = 0; i < self.senders.length; i++) {
+      var connection = self.senders[i].disconnect();
+    }
+
+    // Disconnect receiver connections
+    for (var i = 0; i < self.receivers.length; i++) {
+      var connection = self.receivers[i].disconnect();
+    }
     self.dead = true;
   };
 

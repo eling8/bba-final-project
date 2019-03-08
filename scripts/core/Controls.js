@@ -10,6 +10,30 @@ subscribe("/load",function(ratio){
 	preloadBar.style.left = Math.round(-225*(1-ratio))+"px";
 });
 
+////////////////////////
+//// LEVEL CONTROLS ////
+////////////////////////
+
+var next_level_button = document.getElementById("next_level");
+var level_controls_div = document.getElementById("level_controls");
+var level_listener = subscribe("/level/winLevel", function() {
+	unsubscribe(level_listener);
+	_showLevel(true);
+	console.log("Level passed!");
+});
+next_level_button.onclick = function() {
+	publish("/level/nextLevel");
+	_showLevel(false);
+};
+var _showLevel = function(should_show) {
+	if (should_show) {
+		next_level_button.style.display = "block";
+		level_controls_div.style.display = "block";
+	} else{
+		next_level_button.style.display = "none";
+		level_controls_div.style.display = "none";
+	}
+};
 
 //////////////////////
 //// PLAY & PAUSE ////

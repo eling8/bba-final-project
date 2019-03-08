@@ -12,7 +12,7 @@ Narrator.addStates({
 	LEVEL_1: {
 		start :function(state) {
 			Narrator.scene("Level1");
-			state._listener = subscribe("/level/winLevel", function() {
+			state._listener = subscribe("/level/nextLevel", function() {
 				unsubscribe(state._listener);
 				console.log("Level 1 passed!");
 				Narrator.goto("LEVEL_2");
@@ -28,7 +28,7 @@ Narrator.addStates({
 	LEVEL_2: {
 		start: function(state) {
 			Narrator.scene("Level2");
-			state._listener = subscribe("/level/winLevel", function() {
+			state._listener = subscribe("/level/nextLevel", function() {
 				unsubscribe(state._listener);
 				console.log("Level 2 passed!");
 			});

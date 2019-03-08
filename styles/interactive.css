@@ -196,6 +196,33 @@ canvas {
   margin-right: 10px;
 }
 
+/** LEVEL CONTROLS **/
+
+#level_controls {
+  position: absolute;
+  width: 100%;
+  bottom: 100px;
+  height: 40px;
+  display: none;
+}
+#next_level {
+  cursor: pointer;
+  float: right;
+  width: 100px;
+  margin-right: 50px;
+  margin-top: 3px;
+  text-align: center;
+  padding: 7px;
+  background-color: rgb(255, 255, 255);
+  border-style: solid;
+  border-width: 2px;
+  display: none;
+}
+#next_level:hover {
+  border-color: rgba(255, 255, 255, 1.0);
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
 /** TOOLBAR **/
 #toolbar-ui {
   position: absolute;
