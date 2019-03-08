@@ -43,9 +43,25 @@ add_inhibitory.addEventListener("mousemove", function(event) {
 ////////////////////////
 
 var delete_button = document.getElementById("toolbar_delete");
-delete_button.addEventListener("click", function(event) {
-    Interactive.delete_on = !Interactive.delete_on;
+var toggle_delete = function() {
+	Interactive.delete_on = !Interactive.delete_on;
     delete_button.setAttribute("deleting", Interactive.delete_on ? "true" : "false");
+
+    return Interactive.delete_on;
+}
+delete_button.addEventListener("click", function(event) {
+    var is_delete_on = toggle_delete();
+
+    if (is_delete_on) {
+    	var delete_once = subscribe("/mouse/click", function() {
+    		unsubscribe(delete_once);
+
+    		// Wait 35 ms before toggling Interactive.delete_on to give Neuron time to delete
+    		setTimeout(function() {
+    			toggle_delete();
+    		}, 35);    		
+    	});
+    }
 }, false);
 
 ////////////////////////////
