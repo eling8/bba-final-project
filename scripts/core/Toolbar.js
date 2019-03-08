@@ -62,11 +62,19 @@ save_button.onclick = function(){
 //////////////////////
 
 var level_number = document.getElementById("level_number");
-var curr_level = 1;
-var level_listener = subscribe("/level/showLevel", function() {
+var level_listener = subscribe("/level/showLevel", function(curr_level) {
 	console.log("New level: Level " + curr_level.toString());
 	level_number.innerHTML = "Level " + curr_level.toString();
 	curr_level += 1;
 });
+
+//////////////////////
+//// RESET BUTTON ////
+//////////////////////
+
+var reset_button = document.getElementById("toolbar_reset");
+reset_button.addEventListener("click", function(event) {
+	publish("/level/reset");
+}, false);
 
 })();

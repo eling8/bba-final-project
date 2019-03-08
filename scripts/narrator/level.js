@@ -17,9 +17,13 @@ Narrator.addStates({
 				console.log("Level 1 passed!");
 				Narrator.goto("LEVEL_2");
 			});
+			state._resetListener = subscribe("/level/reset", function() {
+				Narrator.scene("Level1");
+			});
 		},
 		kill: function(state) {
 			unsubscribe(state._listener);
+			unsubscribe(state._resetListener);
 		}
 	},
 
@@ -29,6 +33,9 @@ Narrator.addStates({
 			state._listener = subscribe("/level/nextLevel", function() {
 				unsubscribe(state._listener);
 				console.log("Level 2 passed!");
+			});
+			state._resetListener = subscribe("/level/reset", function() {
+				Narrator.scene("Level2");
 			});
 		},
 		kill: function(state) {
