@@ -17,7 +17,6 @@ subscribe("/load",function(ratio){
 var next_level_button = document.getElementById("next_level");
 var level_controls_div = document.getElementById("level_controls");
 var level_listener = subscribe("/level/winLevel", function() {
-	unsubscribe(level_listener);
 	_showLevel(true);
 	console.log("Level passed!");
 });
