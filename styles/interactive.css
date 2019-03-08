@@ -316,7 +316,7 @@ canvas {
 
 #toolbar_forget_bar {
   position: relative;
-  width: 50%;
+  width: 30%;
   background-color: grey;
   z-index: 1;
 }
@@ -352,4 +352,12 @@ canvas {
   margin-left: auto;
   margin-right: auto;
   cursor: pointer;
+}
+#level_number {
+  position: relative;
+  text-align: center; /* To center it horizontally (if you want) */
+  line-height: 40px; /* To center it vertically */
+  color: white;
+  padding-right: 25px;
+  padding-left: 25px;
 }
