@@ -32,6 +32,7 @@ Narrator.addStates({
       state._listener = subscribe("/level/nextLevel", function() {
         unsubscribe(state._listener);
         console.log("Level 2 passed!");
+        Narrator.goto("LEVEL_END");
       });
       state._resetListener = subscribe("/level/reset", function() {
         Narrator.scene("Level2");
@@ -39,6 +40,19 @@ Narrator.addStates({
     },
     kill: function(state) {
       unsubscribe(state._listener);
+      unsubscribe(state._resetListener);
+    }
+  },
+
+  LEVEL_END: {
+  	start: function(state) {
+      Narrator.scene("LevelEnd");
+      state._resetListener = subscribe("/level/reset", function() {
+    	Narrator.scene("LevelEnd");
+  	  });
+    },
+    kill: function(state) {
+      unsubscribe(state._resetListener);
       unsubscribe(Neuron.add_excitatory_listener);
       unsubscribe(Neuron.add_inhibitory_listener);
     }
