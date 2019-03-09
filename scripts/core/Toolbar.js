@@ -91,6 +91,7 @@ var level_listener = subscribe("/level/showLevel", function(curr_level) {
 var reset_button = document.getElementById("toolbar_reset");
 reset_button.addEventListener("click", function(event) {
 	publish("/level/reset");
+	publish("/alert", ["Level reset!", true]);
 }, false);
 
 ///////////////////
@@ -99,9 +100,9 @@ reset_button.addEventListener("click", function(event) {
 
 var alertDOM = document.getElementById("alert-ui");
 var alertText = document.querySelector("#alert > span");
-var alert_listener = subscribe("/alert", function(alert_string) {
-	// Only show each alert string once
-	if (alertDOM.textContent.trim() === alert_string.trim()) {
+var alert_listener = subscribe("/alert", function(alert_string, force) {
+	// If we don't force this alert, show each alert string once
+	if (!force && (alertDOM.textContent.trim() === alert_string.trim())) {
 		return;
 	}
 	alertText.textContent = alert_string;
@@ -113,11 +114,6 @@ var alert_listener = subscribe("/alert", function(alert_string) {
 		unsubscribe(click_listener);
 		alertDOM.style.display = "none";
 	});
-
-	// // Disappear after 5 seconds
-	// setTimeout(function() {
-	// 	alertDOM.style.display = "none";
-	// }, 5000);
 });
 
 })();
