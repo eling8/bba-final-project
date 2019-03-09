@@ -204,10 +204,12 @@ function Neuron(scene, neuron_type, neuron_function) {
         // Ending neuron must pulse 3 times before winning
         if (self.win_pulse_count >= 3) {
           publish("/level/winLevel");
+          publish("/alert", ["Nice job! You passed this level!"]);
         }
       } else {
         // Show some feedback that all neurons need to be connected
         console.log("All neurons need to be connected!");
+        publish("/alert", ["Almost there! Make sure that all neurons are connected to the start."]);
       }
     }
 
@@ -253,7 +255,7 @@ function Neuron(scene, neuron_type, neuron_function) {
     }
 
     // Move firing activation level towards zero over time
-    self.activation_level *= 0.97;
+    self.activation_level *= 0.95;
 
     // Fire starting neuron once every 1.67 seconds
     if (self.neuron_function == NeuronFunction.STARTING && self.update_counter % 50 == 0) {

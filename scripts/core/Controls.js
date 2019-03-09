@@ -25,6 +25,8 @@ var level_reset_listener = subscribe("/level/reset", function() {
 });
 next_level_button.onclick = function() {
 	publish("/level/nextLevel");
+	// register this as mouse click
+	publish("/mouse/click");
 	_showLevel(false);
 };
 var _showLevel = function(should_show) {

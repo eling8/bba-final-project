@@ -93,4 +93,31 @@ reset_button.addEventListener("click", function(event) {
 	publish("/level/reset");
 }, false);
 
+///////////////////
+//// ALERT BAR ////
+///////////////////
+
+var alertDOM = document.getElementById("alert-ui");
+var alertText = document.querySelector("#alert > span");
+var alert_listener = subscribe("/alert", function(alert_string) {
+	// Only show each alert string once
+	if (alertDOM.textContent.trim() === alert_string.trim()) {
+		return;
+	}
+	alertText.textContent = alert_string;
+	alertText.innerText = alert_string;
+	alertDOM.style.display = "block";
+
+	// Disappear after clicking
+	var click_listener = subscribe("/mouse/click", function() {
+		unsubscribe(click_listener);
+		alertDOM.style.display = "none";
+	});
+
+	// // Disappear after 5 seconds
+	// setTimeout(function() {
+	// 	alertDOM.style.display = "none";
+	// }, 5000);
+});
+
 })();
