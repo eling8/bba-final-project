@@ -191,7 +191,6 @@ function Neuron(scene, neuron_type, neuron_function) {
       } else { // excitatory
         self.activation_level += 1;
         self.activation_level = Math.min(self.firing_threshold + 1, self.activation_level);
-        console.log(self.activation_level);
       }
     }
     var is_activated = self.activation_level >= self.firing_threshold;

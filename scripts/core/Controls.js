@@ -20,6 +20,9 @@ var level_listener = subscribe("/level/winLevel", function() {
 	_showLevel(true);
 	console.log("Level passed!");
 });
+var level_reset_listener = subscribe("/level/reset", function() {
+	_showLevel(false);
+});
 next_level_button.onclick = function() {
 	publish("/level/nextLevel");
 	_showLevel(false);
