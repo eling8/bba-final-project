@@ -40,7 +40,7 @@ function Neuron(scene, neuron_type, neuron_function) {
   // Connections & Pulsing
   self.senders = [];
   self.receivers = [];
-  self.startingStrength = 4;
+  self.startingStrength = 5;
   self.highlight = 0;
 
   // Hebbian
