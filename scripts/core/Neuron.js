@@ -423,6 +423,11 @@ function Neuron(scene, neuron_type, neuron_function) {
     // Body, hover, highlight.
     ctx.save();
     ctx.rotate(self.rotation);
+    // DELETE
+    if (Interactive.delete_on && self.neuron_function == NeuronFunction.REGULAR) {
+      ctx.globalAlpha = 0.8;
+      ctx.drawImage(images.neuron_delete, -60, -60);
+    }
     ctx.globalAlpha = self.hoverAlpha;
     ctx.drawImage(images.neuron_hover, -60, -60);
     ctx.globalAlpha = 1;
@@ -459,7 +464,7 @@ function Neuron(scene, neuron_type, neuron_function) {
       ctx.globalAlpha = 1;
       ctx.fillStyle = "gray";
       if (self.activation_level >= self.firing_threshold) {
-        ctx.fillStyle = "#fbe488";
+        ctx.fillStyle = "#fbe488"; // yellow
       }
       ctx.fillRect(40, -60, 35, 120);
 
