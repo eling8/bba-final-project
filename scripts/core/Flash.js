@@ -29,7 +29,7 @@ function Flash(neuron){
 		// Scale
 		var wobbledScale = self.scale * (1+Math.sin(self.wobble)*0.01);
 		ctx.scale(wobbledScale,wobbledScale);
-		var hebbScale = self.neuron.hebbianRadius/200;
+		var hebbScale = self.neuron.hebbianRadius/350;
 		ctx.scale(hebbScale,hebbScale);
 
 		// Draw flash
