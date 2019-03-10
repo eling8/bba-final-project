@@ -85,14 +85,14 @@ function Neuron(scene, neuron_type, neuron_function) {
 
   // Change settings for different neuron types
   if (self.neuron_type != NeuronType.REGULAR) {
-    self.highlightRadius = 50;
+    self.highlightRadius = 35;
     self.highlightFade = 0.93;
     self.highlightBaseAlpha = 0.7;
 
     if (self.neuron_type == NeuronType.EXCITATORY) {
       self.body_image = images.neuron_body_blue;
       self.connectionStrokeStyle = "#78BCBC";
-      self.highlightFill = "#A2FFFF";
+      self.highlightFill = "#53cccc";// "#A2FFFF";
       self.icon = images.icon_calm;
     }
     if (self.neuron_type == NeuronType.INHIBITORY) {
@@ -239,7 +239,7 @@ function Neuron(scene, neuron_type, neuron_function) {
 
 
     // Weaken highlight if the neuron doesn't propagate due to inhibition
-    if (!is_activated) {
+    if (!is_activated && !new_signal) {
       self.highlight = 0.2;
     } else {
       // If activation is high enough to fire, reset activation level
