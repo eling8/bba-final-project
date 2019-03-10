@@ -18,6 +18,17 @@ function Scene_Level2() {
 	Neuron.unserialize(self, NEURONS_SERIALIZED, true);
 }
 
+function Scene_LevelEnd() {
+	var self = this;
+	LevelScene.call(self);
+
+	publish("/level/showLevel", [0]);
+	publish("/alert", ["That's it for now! Feel free to create your own levels here."])
+	
+	NEURONS_SERIALIZED = '{"neurons":[],"connections":[]}'
+	Neuron.unserialize(self, NEURONS_SERIALIZED, true);
+}
+
 function LevelScene() {
 	var self = this;
 	BrainScene.call(self);
