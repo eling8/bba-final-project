@@ -453,10 +453,14 @@ function Neuron(scene, neuron_type, neuron_function) {
     // ctx.restore();
     ctx.save();
 
-    // draw bar for end neuron
-    if (self.neuron_function == NeuronFunction.ENDING) {
+    // draw bar for end neuron, or when mouse is hovering but not pressed (except for starting neuron)
+    if (self.neuron_function == NeuronFunction.ENDING 
+        || (self.isMouseHover() && !self.mouse_down && self.neuron_function != NeuronFunction.STARTING)) {
       ctx.globalAlpha = 1;
       ctx.fillStyle = "gray";
+      if (self.activation_level >= self.firing_threshold) {
+        ctx.fillStyle = "#fbe488";
+      }
       ctx.fillRect(40, -60, 35, 120);
 
       ctx.save();
