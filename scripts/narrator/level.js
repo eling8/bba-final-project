@@ -9,10 +9,21 @@ Narrator.addNarration({
 });
 
 Narrator.addStates({
+  LEVEL_INTRO: {
+    start: function(state) {
+      Narrator.scene("LevelIntro")
+        .talk("intro0")
+        .scene("Neurons")
+        .talk("intro1")
+        .scene("Synapses")
+        .talk("intro2", "intro3")
+        .goto("LEVEL_1");
+    }
+  },
+
   LEVEL_1: {
     start: function(state) {
       Narrator.scene("Level1").talk("intro0", "intro1");
-      Narrator.scene("Level1").talk("intro2", "intro3");
       state._listener = subscribe("/level/nextLevel", function() {
         unsubscribe(state._listener);
         console.log("Level 1 passed!");
@@ -47,11 +58,11 @@ Narrator.addStates({
   },
 
   LEVEL_END: {
-  	start: function(state) {
+    start: function(state) {
       Narrator.scene("LevelEnd");
       state._resetListener = subscribe("/level/reset", function() {
-    	Narrator.scene("LevelEnd");
-  	  });
+        Narrator.scene("LevelEnd");
+      });
     },
     kill: function(state) {
       unsubscribe(state._resetListener);

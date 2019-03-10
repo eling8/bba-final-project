@@ -28,6 +28,7 @@ Preload({
 
     // Muzu
     { id: "muzu", src: "assets/images/muzu.png" },
+    { id: "muzu_brain", src: "assets/images/muzu_brain.png" },
 
     // Misc Crap
     { id: "introBG", src: "assets/images/intro.png" },
@@ -63,5 +64,5 @@ subscribe("/init", function() {
 
   // Initialize Shtuff
   Interactive.init();
-  Narrator.goto("LEVEL_1");
+  Narrator.goto("LEVEL_INTRO");
 });
