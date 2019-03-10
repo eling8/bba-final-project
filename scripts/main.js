@@ -9,6 +9,7 @@ Preload({
     { id: "neuron_body_red", src: "assets/sprites/body_red.png" },
     { id: "neuron_body_blue", src: "assets/sprites/body_blue.png" },
     { id: "neuron_hover", src: "assets/sprites/body_hover.png" },
+    { id: "neuron_delete", src: "assets/sprites/body_delete.png" },
     { id: "neuron_highlight", src: "assets/sprites/body_highlight.png" },
     { id: "flash", src: "assets/sprites/hebb_flash.png" },
 
