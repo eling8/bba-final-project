@@ -78,6 +78,7 @@ Narrator.addStates({
       });
     },
     kill: function(state) {
+      unsubscribe(state._winListener);
       unsubscribe(state._listener);
       unsubscribe(state._resetListener);
     }

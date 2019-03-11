@@ -29,6 +29,7 @@ Preload({
     // Muzu
     { id: "muzu", src: "assets/images/muzu.png" },
     { id: "muzu_brain", src: "assets/images/muzu_brain.png" },
+    { id: "muzu_brain_small", src: "assets/images/muzu_brain_small.png" },
 
     // Misc Crap
     { id: "introBG", src: "assets/images/intro.png" },
