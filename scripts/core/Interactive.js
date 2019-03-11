@@ -13,6 +13,7 @@ window.Interactive = new function() {
 
   // For deleting neurons & connections
   self.delete_on = false;
+  self.forget_on = true; // whether we should forget connections, toggle with publish("/toolbar/show")
 
   // Init, Goto, Update, Render
   self.init = function() {

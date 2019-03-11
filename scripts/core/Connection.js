@@ -99,7 +99,7 @@ function Connection(scene) {
     self.lineWidth = Math.min(self.strength, self.fullLineWidth) * 1.3;
     // self.lineWidth = (self.strength < 1) ? self.fullLineWidth/2 : self.fullLineWidth;
     self.strengthEased =
-      self.strengthEased * 0.9 + Math.min(self.strength, 1) * 0.1;
+    self.strengthEased * 0.9 + Math.min(self.strength, 1) * 0.1;
     self.easedLineWidth = self.easedLineWidth * 0.9 + self.lineWidth * 0.1;
 
     // ACTUALLY REMOVE THIS ONE?

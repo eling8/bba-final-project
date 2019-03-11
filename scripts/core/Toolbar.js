@@ -45,6 +45,7 @@ var show_toolbar = subscribe("/toolbar/show", function(show_excite, show_inhibit
 	add_inhibitory.style.display = show_inhibit ? "block" : "none";
 	delete_button.style.display = show_delete ? "block" : "none";
 	forget_bar.style.display = show_forget ? "block" : "none";
+	Interactive.forget_on = show_forget;
 });
 
 ////////////////////////

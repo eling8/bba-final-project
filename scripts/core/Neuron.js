@@ -267,7 +267,10 @@ function Neuron(scene, neuron_type, neuron_function) {
     // Weakens all connections by 0.5 strength every 5 seconds
     var width = 1;
     if (self.update_counter === 300) {
-      self.weakenHebb(0.5);
+      // Only forget if Interactive.forget_on is true!
+      if (Interactive.forget_on) {
+        self.weakenHebb(0.5);
+      }
       self.update_counter = 0;
       width = 0;
     } else {
