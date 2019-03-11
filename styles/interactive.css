@@ -214,12 +214,14 @@ canvas {
   height: 40px;
   background-image: url(../assets/ui/captions.png);
   cursor: pointer;
+  display: none; /* disable for game */
 }
 #control_captions_select {
   float: right;
   width: 100px;
   margin-top: 12px;
   margin-right: 10px;
+  display: none; /* disable for game */
 }
 
 /** LEVEL CONTROLS **/
