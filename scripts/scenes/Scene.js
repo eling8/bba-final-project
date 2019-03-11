@@ -86,17 +86,6 @@ function BrainScene() {
     ctx.save();
     _prevRender.call(self, ctx); // Camera
 
-    ctx.save();
-    ctx.scale(1.15, 1.05);
-    ctx.drawImage(
-      images.muzu_brain,
-      100,
-      ctx.canvas.clientHeight - 500,
-      700,
-      550
-    );
-    ctx.restore();
-
     // My Things
     _render(self.connections, ctx);
     _render(self.neurons, ctx);
@@ -104,17 +93,7 @@ function BrainScene() {
     _render(self.sprites, ctx);
 
     // Restore
-    ctx.restore();
-
-    // draw Muzu!
-    ctx.drawImage(images.muzu, 30, ctx.canvas.clientHeight - 250, 160, 160);
-    ctx.drawImage(
-      images.muzu_brain_small,
-      70,
-      ctx.canvas.clientHeight - 225,
-      70,
-      45
-    );
+    // ctx.restore();
     ctx.restore();
   };
   var _render = function(array, ctx) {
