@@ -104,6 +104,15 @@ reset_button.addEventListener("click", function(event) {
 	publish("/alert", ["Level reset!", true]);
 }, false);
 
+/////////////////////
+//// HOME BUTTON ////
+/////////////////////
+
+var home_button = document.getElementById("toolbar_home");
+home_button.addEventListener("click", function(event) {
+	Narrator.interrupt().goto("LEVEL_HOME");
+}, false);
+
 ///////////////////
 //// ALERT BAR ////
 ///////////////////

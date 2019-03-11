@@ -2,6 +2,8 @@ function Scene_LevelHome() {
   var self = this;
   LevelScene.call(self);
 
+  publish("/level/showLevel", ["REWIRE"]);
+
   NEURONS_SERIALIZED = '{"neurons":[[180,274,3,4],[284,128,3,4],[202,184,2,4],[449,246,2,4],[366,169,3,4],[435,332,3,4],[314,439,2,4],[398,417,3,4],[235,431,3,4],[280,268,2,4],[295,361,3,4]],"connections":[[0,10,5,1],[0,9,5,1],[10,9,5,1],[9,4,5,1],[0,2,5,1],[0,1,5,1],[9,1,5,1],[4,3,3,1],[10,3,5,1],[5,7,3,1],[0,8,5,1],[6,7,5,1],[8,6,5,1],[10,7,5,1],[4,5,2,1]]}'
   Neuron.unserialize(self, NEURONS_SERIALIZED, true);
 
@@ -44,7 +46,6 @@ function Scene_LevelHome() {
     _prevUpdate.call(self);
 
     self.curr_level_hover = self.isMouseOver();
-    console.log(self.curr_level_hover);
     if (self.curr_level_hover >= 0) {
       canvas.style.cursor = "pointer";
     }

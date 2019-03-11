@@ -370,6 +370,20 @@ canvas {
   cursor: pointer;
 }
 
+#toolbar_home {
+  float: right;
+  width: 50px;
+}
+#home_img {
+  content: url(../assets/ui/home.png);
+  margin-top: 3px;
+  max-height: 80%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  cursor: pointer;
+}
+
 #level_number {
   position: relative;
   text-align: center; /* To center it horizontally (if you want) */
