@@ -11,7 +11,7 @@ function Scene_Neurons() {
 
   publish("/level/showLevel", [1]);
   NEURONS_SERIALIZED =
-    '{"neurons":[[759,274,3,4],[583,232,3,4],[200,232,3,4]],"connections":[]}';
+    '{"neurons":[[482,191,3,1],[337,174,3,1],[633,168,3,1],[589,293,3,1],[688,380,3,1],[400,306,3,1],[270,300,3,1],[717,255,3,1],[517,379,3,1],[333,396,3,1]],"connections":[]}';
   Neuron.unserialize(self, NEURONS_SERIALIZED, true);
 }
 
@@ -21,7 +21,7 @@ function Scene_Synapses() {
 
   publish("/level/showLevel", [1]);
   NEURONS_SERIALIZED =
-    '{"neurons":[[759,274,3,4],[583,232,3,4],[200,232,3,4]],"connections":[[1,0,2,2],[2,1,2,2]]}';
+    '{"neurons":[[482,191,3,1],[337,174,3,1],[633,168,3,1],[589,293,3,1],[688,380,3,1],[400,306,3,1],[270,300,3,1],[717,255,3,1],[517,379,3,1],[333,396,3,1]],"connections":[[1,0,2,1],[2,0,2,1],[1,5,2,1],[5,6,2,1],[6,9,2,1],[9,8,2,1],[1,6,2,1],[0,8,2,1],[8,5,2,1],[5,0,2,1],[0,3,2,1],[2,3,2,1],[4,3,2,1],[8,3,2,1],[3,7,2,1],[4,7,2,1],[7,2,2,1],[8,4,2,1]]}';
   Neuron.unserialize(self, NEURONS_SERIALIZED, true);
 }
 
@@ -32,7 +32,7 @@ function Scene_Level1() {
   publish("/level/showLevel", [1]);
 
   NEURONS_SERIALIZED =
-    '{"neurons":[[759,274,3,3],[583,232,3,2]],"connections":[[1,0,2,2]]}';
+    '{"neurons":[[295,261,3,2],[450,261,3,1],[585,262,3,3]],"connections":[]}';
   Neuron.unserialize(self, NEURONS_SERIALIZED, true);
 }
 

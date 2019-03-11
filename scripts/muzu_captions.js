@@ -14,7 +14,10 @@ window.Captions = {
       intro1:
         "In my brain and your brain, there are millions of these things called neurons!",
       intro2: "Neurons are very social. They like to connect with each other.",
-      intro3: "and these connections are called synapses."
+      intro3: "and these connections are called synapses.",
+      intro4:
+        "As new synapses form in our brains, that’s when we can learn new things!",
+      intro5: "For example, let’s venture into the math portion of my brain."
     }
   }
 };

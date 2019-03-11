@@ -4,7 +4,9 @@ Narrator.addNarration({
     intro0: ["0:00.0", "0:03.0"], // Hi there! My name is Muzu. And this is my brain!
     intro1: ["0:03.0", "0:07.0"], //In my brain and your brain, there are millions of these things called neurons!
     intro2: ["0:07.0", "0:11.0"], //Neurons are very social. They like to connect with each other.
-    intro3: ["0:11.0", "0:16.0"] //and these connections are called synapses.
+    intro3: ["0:11.0", "0:16.0"], //and these connections are called synapses.
+    intro4: ["0:16.0", "0:22.0"], //As new synapses form in our brains, that’s when we can learn new things!
+    intro5: ["0:22.0", "0:25.0"] //Let’s venture into the math portion of my brain.
   }
 });
 
@@ -16,7 +18,7 @@ Narrator.addStates({
         .scene("Neurons")
         .talk("intro1")
         .scene("Synapses")
-        .talk("intro2", "intro3")
+        .talk("intro2", "intro3", "intro4", "intro5")
         .goto("LEVEL_1");
     }
   },
