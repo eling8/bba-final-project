@@ -13,8 +13,8 @@ window.Captions = {
       intro0: "Hi there! My name is Muzu. And this here is my brain",
       intro1:
         "In my brain and your brain, there are millions of these things called neurons!",
-      intro2:
-        "Neurons are very social. They like to connect with each other, and these connections are called synapses."
+      intro2: "Neurons are very social. They like to connect with each other.",
+      intro3: "and these connections are called synapses."
     }
   }
 };

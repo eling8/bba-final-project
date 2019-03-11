@@ -3,14 +3,27 @@ Narrator.addNarration({
   markers: {
     intro0: ["0:00.0", "0:03.0"], // Hi there! My name is Muzu. And this is my brain!
     intro1: ["0:03.0", "0:07.0"], //In my brain and your brain, there are millions of these things called neurons!
-    intro2: ["0:07.0", "0:11.0"] //Neurons are very social. They like to connect with each other, and these connections are called synapses.
+    intro2: ["0:07.0", "0:11.0"], //Neurons are very social. They like to connect with each other.
+    intro3: ["0:11.0", "0:16.0"] //and these connections are called synapses.
   }
 });
 
 Narrator.addStates({
+  LEVEL_INTRO: {
+    start: function(state) {
+      Narrator.scene("LevelIntro")
+        .talk("intro0")
+        .scene("Neurons")
+        .talk("intro1")
+        .scene("Synapses")
+        .talk("intro2", "intro3")
+        .goto("LEVEL_1");
+    }
+  },
+
   LEVEL_1: {
     start: function(state) {
-      Narrator.scene("Level1").talk("intro0", "intro1", "intro2");
+      Narrator.scene("Level1").talk("intro0", "intro1");
       state._listener = subscribe("/level/nextLevel", function() {
         unsubscribe(state._listener);
         console.log("Level 1 passed!");
@@ -45,11 +58,11 @@ Narrator.addStates({
   },
 
   LEVEL_END: {
-  	start: function(state) {
+    start: function(state) {
       Narrator.scene("LevelEnd");
       state._resetListener = subscribe("/level/reset", function() {
-    	Narrator.scene("LevelEnd");
-  	  });
+        Narrator.scene("LevelEnd");
+      });
     },
     kill: function(state) {
       unsubscribe(state._resetListener);
