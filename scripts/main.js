@@ -64,5 +64,5 @@ subscribe("/init", function() {
 
   // Initialize Shtuff
   Interactive.init();
-  Narrator.goto("LEVEL_1");
+  Narrator.goto("LEVEL_INTRO");
 });
