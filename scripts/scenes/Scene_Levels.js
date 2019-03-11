@@ -1,3 +1,104 @@
+function Scene_LevelHome() {
+  var self = this;
+  LevelScene.call(self);
+
+  NEURONS_SERIALIZED = '{"neurons":[[180,274,3,4],[284,128,3,4],[202,184,2,4],[449,246,2,4],[366,169,3,4],[435,332,3,4],[314,439,2,4],[398,417,3,4],[235,431,3,4],[280,268,2,4],[295,361,3,4]],"connections":[[0,10,5,1],[0,9,5,1],[10,9,5,1],[9,4,5,1],[0,2,5,1],[0,1,5,1],[9,1,5,1],[4,3,3,1],[10,3,5,1],[5,7,3,1],[0,8,5,1],[6,7,5,1],[8,6,5,1],[10,7,5,1],[4,5,2,1]]}'
+  Neuron.unserialize(self, NEURONS_SERIALIZED, true);
+
+  self.levels = ["Introduction", "Level 1", "Level 2", "Level 3", "Level 4", "Level 5", "Create your own"];
+  self.curr_level_hover = -1;
+
+  // Get bounding boxes of each level box
+  self.getLevelBounds = function() {
+    var bounds = {};
+
+    ctx.font = "18px Raleway";
+    var halfway = Math.floor(self.levels.length / 2) + 1;
+    for (var i = 0; i < halfway; i++) {
+      var text_width = ctx.measureText(self.levels[i]).width;
+      bounds[self.levels[i]] = [530 - 10, 250 + 40 * i - 25, text_width + 20, 35];
+    }
+    for (var i = halfway; i < self.levels.length; i++) {
+      var text_width = ctx.measureText(self.levels[i]).width;
+      bounds[self.levels[i]] = [670 - 10, 250 + 40 * (i - halfway) - 25, text_width + 20, 35];
+    }
+
+    return bounds;
+  };
+  self.level_bounds = self.getLevelBounds();
+
+  // Is mouse hovering over a level box? If so, return level number
+  self.isMouseOver = function() {
+    for (var i = 0; i < self.levels.length; i++) {
+      var bounds = self.level_bounds[self.levels[i]];
+      if (Mouse.x >= bounds[0] && Mouse.x <= bounds[0] + bounds[2] 
+          && Mouse.y >= bounds[1] && Mouse.y <= bounds[1] + bounds[3]) {
+        return i;
+      }
+    }
+    return -1;
+  };
+
+  var _prevUpdate = self.update;
+  self.update = function() {
+    _prevUpdate.call(self);
+
+    self.curr_level_hover = self.isMouseOver();
+    console.log(self.curr_level_hover);
+    if (self.curr_level_hover >= 0) {
+      canvas.style.cursor = "pointer";
+    }
+  }
+
+  // If we click on a level, go to that level!
+  self.clickListener = subscribe("/mouse/click", function() {
+    if (self.curr_level_hover >= 0) {
+      unsubscribe(self.clickListener);
+      switch(self.curr_level_hover) {
+        case 0:
+          Narrator.goto("LEVEL_INTRO");
+          break;
+        case 6:
+          Narrator.goto("LEVEL_END");
+          break;
+        default:
+          Narrator.goto("LEVEL_" + self.curr_level_hover.toString());
+      }
+    }
+  });
+
+  var _prevRender = self.render;
+  self.render = function(ctx) {
+    // Save
+    ctx.save();
+    _prevRender.call(self, ctx); // Camera
+
+    // Show level
+    ctx.font = "50px Raleway";
+    ctx.fillText("REWIRE", 430, 140);
+    ctx.font = "20px Raleway";
+    ctx.fillText("A game about neuroplasticity", 430, 170);
+
+    ctx.font = "18px Raleway";
+    for (var i = 0; i < self.levels.length; i++) {
+      var bounds = self.level_bounds[self.levels[i]];
+      if (self.curr_level_hover == i) {
+        ctx.save();
+        ctx.fillStyle = "#78BCBC";
+        ctx.globalAlpha = 0.5;
+        ctx.fillRect(bounds[0], bounds[1], bounds[2], bounds[3]);
+        ctx.restore();
+      }
+
+      ctx.fillText(self.levels[i], bounds[0] + 10, bounds[1] + 25);
+      ctx.strokeRect(bounds[0], bounds[1], bounds[2], bounds[3]);
+    }
+
+    // Restore
+    ctx.restore();
+  };
+}
+
 function Scene_LevelIntro() {
   var self = this;
   LevelScene.call(self);

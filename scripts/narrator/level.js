@@ -66,6 +66,22 @@ Narrator.addNarration({
 });
 
 Narrator.addStates({
+  LEVEL_HOME: {
+    start: function(state) {
+      // hide all toolbar buttons
+      publish("/toolbar/show", [false, false, false, false]);
+      Narrator.scene("LevelHome");
+
+      state._resetListener = subscribe("/level/reset", function() {
+        unsubscribe(state._resetListener);
+        Narrator.goto("LEVEL_HOME");
+      });
+    },
+    kill: function(state) {
+      unsubscribe(state._resetListener);
+    }
+  },
+
   LEVEL_INTRO: {
     start: function(state) {
       // hide all toolbar buttons
@@ -116,7 +132,7 @@ Narrator.addStates({
       state._listener = subscribe("/level/nextLevel", function() {
         unsubscribe(state._listener);
         console.log("Level 1 passed!");
-        Narrator.interrupt().goto("LEVEL_2_LOAD");
+        Narrator.interrupt().goto("LEVEL_2");
       });
       state._resetListener = subscribe("/level/reset", function() {
         unsubscribe(state._resetListener);
@@ -130,13 +146,13 @@ Narrator.addStates({
     }
   },
 
-  LEVEL_2_LOAD: {
+  LEVEL_2: {
     start: function(state) {
       // hide all except excitatory
       publish("/toolbar/show", [true, false, false, false]);
       state._loadListener = subscribe("/level/loaded", function() {
         unsubscribe(state._loadListener);
-        Narrator.goto("LEVEL_2");
+        Narrator.goto("LEVEL_2_LOADED");
       });
 
       Narrator.interrupt().scene("Level2");
@@ -146,7 +162,7 @@ Narrator.addStates({
     }
   },
 
-  LEVEL_2: {
+  LEVEL_2_LOADED: {
     start: function(state) {
       Narrator.talk("l2p1", "l2p2", "l2p3", "l2p4", "l2p5");
       state.found_connection = false;
@@ -175,7 +191,7 @@ Narrator.addStates({
       });
       state._resetListener = subscribe("/level/reset", function() {
         unsubscribe(state._resetListener);
-        Narrator.interrupt().goto("LEVEL_2_LOAD");
+        Narrator.interrupt().goto("LEVEL_2");
       });
     },
     during: function(state) {
