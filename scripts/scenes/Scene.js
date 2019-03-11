@@ -87,9 +87,10 @@ function BrainScene() {
     _prevRender.call(self, ctx); // Camera
 
     ctx.save();
+    ctx.scale(1.15, 1.05);
     ctx.drawImage(
       images.muzu_brain,
-      150,
+      100,
       ctx.canvas.clientHeight - 500,
       700,
       550
