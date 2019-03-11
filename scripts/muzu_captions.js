@@ -70,7 +70,7 @@ window.Captions = {
         "Now, can you help me create a path all the way from start to finish?",
       l2p12:
         "Whoa! While I was working on math, my brain was making new connections!",
-      l2pend:
+      l2end:
         "I learned something new! Thanks for helping me make my brain stronger."
     }
   }

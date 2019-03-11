@@ -22,6 +22,7 @@ add_excitatory.addEventListener("mousemove", function(event) {
 	}
 }, false);
 
+
 var add_inhibitory = document.getElementById("toolbar_inhibitory");
 add_inhibitory.addEventListener("mousedown", function(event) {
     mouse_is_down = true;
@@ -37,6 +38,14 @@ add_inhibitory.addEventListener("mousemove", function(event) {
 		mouse_is_down = false;
 	}
 }, false);
+
+var forget_bar = document.getElementById("toolbar_forget_bar");
+var show_toolbar = subscribe("/toolbar/show", function(show_excite, show_inhibit, show_delete, show_forget) {
+	add_excitatory.style.display = show_excite ? "block" : "none";
+	add_inhibitory.style.display = show_inhibit ? "block" : "none";
+	delete_button.style.display = show_delete ? "block" : "none";
+	forget_bar.style.display = show_forget ? "block" : "none";
+});
 
 ////////////////////////
 //// DELETE NEURONS ////

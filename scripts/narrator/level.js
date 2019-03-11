@@ -43,6 +43,8 @@ Narrator.addNarration({
 Narrator.addStates({
   LEVEL_INTRO: {
     start: function(state) {
+      // hide all toolbar buttons
+      publish("/toolbar/show", [false, false, false, false]);
       Narrator.scene("LevelIntro")
         .talk("intro0")
         .scene("Neurons")
@@ -56,6 +58,8 @@ Narrator.addStates({
 
   LEVEL_1: {
     start: function(state) {
+      // hide all toolbar buttons
+      publish("/toolbar/show", [false, false, false, false]);
       Narrator.scene("Level1")
         .talk("level1_0", "level1_1", "level1_2")
         .message("/scene/addHebb")
@@ -89,6 +93,8 @@ Narrator.addStates({
 
   LEVEL_2_LOAD: {
     start: function(state) {
+      // hide all except excitatory
+      publish("/toolbar/show", [true, false, false, false]);
       state._loadListener = subscribe("/level/loaded", function() {
         unsubscribe(state._loadListener);
         Narrator.goto("LEVEL_2");
@@ -105,7 +111,6 @@ Narrator.addStates({
     start: function(state) {
       Narrator.talk("l2p1", "l2p2", "l2p3", "l2p4", "l2p5");
       state.found_connection = false;
-      // state.ready_for_connection = false;
 
       state._addOneNeuronListener = subscribe(
         "/toolbar/excitatory",
@@ -137,10 +142,6 @@ Narrator.addStates({
     during: function(state) {
       var connections = Interactive.scene.connections;
 
-      // if (connections.length == 0) {
-      // 	state.ready_for_connection = true;
-      // }
-
       // A new connection was made!
       if (!state.found_connection && connections.length > 0) {
         state.found_connection = true;
@@ -156,6 +157,8 @@ Narrator.addStates({
 
   LEVEL_5: {
     start: function(state) {
+      // show all buttons
+      publish("/toolbar/show", [true, true, true, true]);
       Narrator.scene("Level5");
       state._listener = subscribe("/level/nextLevel", function() {
         unsubscribe(state._listener);
@@ -174,6 +177,8 @@ Narrator.addStates({
 
   LEVEL_END: {
     start: function(state) {
+      // show all buttons
+      publish("/toolbar/show", [true, true, true, true]);
       Narrator.scene("LevelEnd");
       state._resetListener = subscribe("/level/reset", function() {
         Narrator.scene("LevelEnd");
