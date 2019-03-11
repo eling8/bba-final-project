@@ -42,10 +42,10 @@ Narrator.addNarration({
     l3p1: ["0:00.0", "0:03.0"], // Have you ever wondered why you forget how to do things...
     l3p2: ["0:00.0", "0:04.0"], // if you don’t practice them for a while?
     //neurons appear
-    l3p3: ["0:00.0", "0:03.0"], // Well, it all has to do with these neurons in your brain!
-    l3p4: ["0:00.0", "0:03.0"], // If two neuron’s don’t send signals to each other for a long time...
+    l3p3: ["0:00.0", "0:04.0"], // Well, it all has to do with these neurons in your brain!
+    l3p4: ["0:00.0", "0:04.0"], // If two neuron’s don’t send signals to each other for a long time...
     //synapses disappear
-    l3p5: ["0:00.0", "0:05.0"], // Their synapse disappears!
+    l3p5: ["0:00.0", "0:03.0"], // Their synapse disappears!
     l3p6: ["0:00.0", "0:03.0"], // This is called the “use it or lose it” principle
     l3p7: ["0:00.0", "0:04.0"], // And that’s why it’s so important to keep practicing something!
     l3p8: ["0:00.0", "0:04.0"], // So that you can keep those synapses strong!
@@ -61,7 +61,22 @@ Narrator.addNarration({
     l3p16: ["0:00.0", "0:03.0"],
     //"When that happens, my neurons won't fire, and I'll start forgetting!",
     l3p17: ["0:00.0", "0:03.0"], //"You'll have encourage me to start working again.",
-    l3p18: ["0:00.0", "0:03.0"] //"So that I can continue learning!"
+    l3p18: ["0:00.0", "0:03.0"], //"So that I can continue learning!"
+
+    l4p1: ["0:00.0", "0:03.0"], //"So far, we’ve only been working with neurons...",
+    l4p2: ["0:00.0", "0:03.0"], //"that send signals to make other neurons fire.",
+    //excitatory neuron appears
+    l4p3: ["0:00.0", "0:03.0"], //"These are called excitatory neurons.",
+    l4p4: ["0:00.0", "0:03.0"], //"But what about neurons that cause other neurons to NOT fire?",
+    //inhibitory neuron appears
+    l4p5: ["0:00.0", "0:03.0"], //"These are called inhibitory neurons.",
+    l4p6: ["0:00.0", "0:04.0"],
+    //"On the left, the excitatory neuron makes its neighbors firing bar go up.",
+    l4p7: ["0:00.0", "0:04.0"],
+    //"But on the right, the inhibitory neuron makes its neighbors firing bar go down.",
+    l4p8: ["0:00.0", "0:03.0"], //"As I work on my next math problem, ...",
+    l4p9: ["0:00.0", "0:03.0"], //"you’ll have to help me learn by making the last neuron fire...",
+    l4p10: ["0:00.0", "0:03.0"] //"Even when it has inhibitory neurons connected to it!"
   }
 });
 
@@ -222,9 +237,46 @@ Narrator.addStates({
     start: function(state) {
       // show all buttons
       publish("/toolbar/show", [true, false, true, true]);
+
       Interactive.show_thresholds = false; // hide activation bars
 
       Narrator.scene("Level3");
+      Narrator.talk("l3p1", "l3p2")
+        .scene("Synapses")
+        .talk(
+          "l3p3",
+          "l3p4",
+          "l3p5",
+          "l3p6",
+          "l3p7",
+          "l3p8",
+          "l3p9",
+          "l3p10",
+          "l3p11",
+          "l3p12"
+        )
+        .scene("preLevel3")
+        .talk("l3p13");
+      state._listener = subscribe("/level/nextLevel", function() {
+        unsubscribe(state._listener);
+        console.log("Level 3 passed!");
+        Narrator.goto("LEVEL_5");
+      });
+      state._resetListener = subscribe("/level/reset", function() {
+        Narrator.scene("Level5");
+      });
+    },
+    kill: function(state) {
+      unsubscribe(state._listener);
+      unsubscribe(state._resetListener);
+    }
+  },
+
+  LEVEL_4: {
+    start: function(state) {
+      // show all buttons
+      publish("/toolbar/show", [true, true, true, true]);
+      Narrator.scene("Level4");
       state._listener = subscribe("/level/nextLevel", function() {
         unsubscribe(state._listener);
         console.log("Level 3 passed!");
@@ -267,7 +319,7 @@ Narrator.addStates({
       // show all buttons
       publish("/toolbar/show", [true, true, true, true]);
       Interactive.show_thresholds = true; // hide activation bars
-      
+
       Narrator.scene("LevelEnd");
       state._resetListener = subscribe("/level/reset", function() {
         Narrator.scene("LevelEnd");

@@ -83,14 +83,14 @@ window.Captions = {
       l3p4:
         "If two neuron’s don’t send signals to each other for a long time...",
       //synapses disappear
-      l3p5: "Their synapse disappears!",
+      l3p5: "Their synapses disappear!",
       l3p6: "This is called the “use it or lose it” principle",
-      l3p7: "And that’s why it’s so important to keep practicing something!",
+      l3p7: "And that’s why it’s so important to keep practicing something...",
       l3p8: "So that you can keep those synapses strong!",
       l3p9:
         "When I’m not practicing math, the synapses in the math portion of my brain...",
       l3p10: "will weaken a little (by getting thinner)...",
-      l3p11: "Every time the bar at the top reaches the end.",
+      l3p11: "every time the bar at the top reaches the end.",
       //muzu practicing, and neurons fire
       l3p12: "But if I keep practicing, my neurons will fire, ",
       l3p13: "And my synapses will grow and stay strong!",
@@ -100,11 +100,26 @@ window.Captions = {
       l3p16:
         "When that happens, my neurons won't fire, and I'll start forgetting!",
       l3p17: "You'll have encourage me to start working again.",
-      l3p18: "So that I can continue learning!"
+      l3p18: "So that I can continue learning!",
 
       /////////////
       // LEVEL 4: Inhibition //
       /////////////
+
+      l4p1: "So far, we’ve only been working with neurons...",
+      l4p2: "that send signals to make other neurons fire.",
+      //neurons appear
+      l4p3: "These are called excitatory neurons.",
+      l4p4: "But what about neurons that cause other neurons to NOT fire?",
+      //synapses disappear
+      l4p5: "These are called inhibitory neurons.",
+      l4p6:
+        "On the left, the excitatory neuron makes its neighbors firing bar go up.",
+      l4p7:
+        "But on the right, the inhibitory neuron makes its neighbors firing bar go down.",
+      l4p8: "As I work on my next math problem, ...",
+      l4p9: "you’ll have to help me learn by making the last neuron fire...",
+      l4p10: "Even when it has inhibitory neurons connected to it!"
     }
   }
 };
