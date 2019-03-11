@@ -230,6 +230,7 @@ Narrator.addStates({
       unsubscribe(state._winListener);
       unsubscribe(state._listener);
       unsubscribe(state._resetListener);
+      unsubscribe(state._addOneNeuronListener);
     }
   },
 
