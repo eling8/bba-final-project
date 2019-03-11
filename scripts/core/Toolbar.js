@@ -89,8 +89,8 @@ save_button.onclick = function(){
 
 var level_number = document.getElementById("level_number");
 var level_listener = subscribe("/level/showLevel", function(curr_level) {
-	console.log("New level: Level " + curr_level.toString());
-	level_number.innerHTML = "Level " + curr_level.toString();
+	console.log("New level: " + curr_level);
+	level_number.innerHTML = curr_level;
 	curr_level += 1;
 });
 
