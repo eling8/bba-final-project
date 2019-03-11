@@ -60,8 +60,9 @@ Narrator.addStates({
 
   LEVEL_2: {
     start: function(state) {
-      Narrator.scene("Level2").talk("l2p1", "l2p2", "l2p3", "l2p4", "l2p5");
+      Narrator.interrupt().scene("Level2").talk("l2p1", "l2p2", "l2p3", "l2p4", "l2p5");
       state.found_connection = false;
+      state.ready_for_connection = false;
 
       state._addOneNeuronListener = subscribe("/toolbar/excitatory", function () {
       	unsubscribe(state._addOneNeuronListener);
@@ -91,8 +92,13 @@ Narrator.addStates({
     during: function(state) {
 			var connections = Interactive.scene.connections;
 
+			// Make sure that the state resets before we look for new connections
+			if (connections.length == 0) {
+				state.ready_for_connection = true;
+			}
+
 			// A new connection was made!
-			if(!state.found_connection && connections.length > 0) {
+			if(state.ready_for_connection && !state.found_connection && connections.length > 0) {
 				state.found_connection = true;
 				Narrator.interrupt().talk("l2p10", "l2p11");
 			}
