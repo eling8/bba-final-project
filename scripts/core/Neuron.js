@@ -334,7 +334,7 @@ function Neuron(scene, neuron_type, neuron_function) {
   // Checks if within circle and right type of neuron
   self.isMouseHover = function() {
     // Don't allow clicking on ending neurons
-    if (self.neuron_function == NeuronFunction.ENDING) return;
+    // if (self.neuron_function == NeuronFunction.ENDING) return;
 
     // If so, is it within that circle?
     var dx = Mouse.x - self.x;
