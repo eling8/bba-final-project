@@ -85,14 +85,12 @@ Narrator.addStates({
 
   LEVEL_2_LOAD: {
   	start: function(state) {
-  		Narrator.interrupt().scene("Level2");
-
-  		state._loadListener = subscribe("/level/loaded", function(level_num) {
-  			if (level_num == 2) {
-  				unsubscribe(state._loadListener);
-  				Narrator.goto("LEVEL_2");
-  			}
+  		state._loadListener = subscribe("/level/loaded", function() {
+				unsubscribe(state._loadListener);
+				Narrator.goto("LEVEL_2");
   		});
+
+  		Narrator.interrupt().scene("Level2");
   	},
   	kill: function(state) {
   		unsubscribe(state._loadListener);

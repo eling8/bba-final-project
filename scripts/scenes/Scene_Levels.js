@@ -78,7 +78,7 @@ function Scene_Level2() {
     '{"neurons":[[180,248,3,2],[820,260,3,3]],"connections":[]}';
   Neuron.unserialize(self, NEURONS_SERIALIZED, true);
 
-  publish("/level/loaded", [2]);
+  publish("/level/loaded");
 }
 
 function Scene_Level5() {
