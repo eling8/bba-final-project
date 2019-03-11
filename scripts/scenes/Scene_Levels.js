@@ -32,7 +32,7 @@ function Scene_Level1() {
   publish("/level/showLevel", [1]);
 
   NEURONS_SERIALIZED =
-    '{"neurons":[[350,261,3,2],[500,262,3,3]],"connections":[]}';
+    '{"neurons":[[350,261,3,2],[470,261,3,4],[600,262,3,3]],"connections":[]}';
   Neuron.unserialize(self, NEURONS_SERIALIZED, true);
 
   var _listener2 = subscribe("/scene/addHebb", function() {
@@ -73,6 +73,19 @@ function Scene_Level2() {
   LevelScene.call(self);
 
   publish("/level/showLevel", [2]);
+
+  NEURONS_SERIALIZED =
+    '{"neurons":[[180,248,3,2],[820,260,3,3]],"connections":[]}';
+  Neuron.unserialize(self, NEURONS_SERIALIZED, true);
+
+  publish("/level/loaded");
+}
+
+function Scene_Level3() {
+  var self = this;
+  LevelScene.call(self);
+
+  publish("/level/showLevel", [3]);
 
   NEURONS_SERIALIZED =
     '{"neurons":[[180,248,3,2],[820,260,3,3]],"connections":[]}';
