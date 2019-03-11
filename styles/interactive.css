@@ -245,7 +245,7 @@ canvas {
   display: none;
 }
 #next_level:hover {
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: rgb(229, 229, 229);
 }
 
 /** TOOLBAR **/

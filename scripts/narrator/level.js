@@ -69,12 +69,11 @@ Narrator.addStates({
       state._listener = subscribe("/level/nextLevel", function() {
         unsubscribe(state._listener);
         console.log("Level 1 passed!");
-        Narrator.goto("LEVEL_2");
+        Narrator.interrupt().goto("LEVEL_2_LOAD");
       });
       state._resetListener = subscribe("/level/reset", function() {
         unsubscribe(state._resetListener);
-        Narrator.interrupt();
-        Narrator.goto("LEVEL_2");
+        Narrator.interrupt().goto("LEVEL_1");
       });
     },
     kill: function(state) {
@@ -84,11 +83,27 @@ Narrator.addStates({
     }
   },
 
+  LEVEL_2_LOAD: {
+  	start: function(state) {
+  		Narrator.interrupt().scene("Level2");
+
+  		state._loadListener = subscribe("/level/loaded", function(level_num) {
+  			if (level_num == 2) {
+  				unsubscribe(state._loadListener);
+  				Narrator.goto("LEVEL_2");
+  			}
+  		});
+  	},
+  	kill: function(state) {
+  		unsubscribe(state._loadListener);
+  	}
+  },
+
   LEVEL_2: {
     start: function(state) {
-      Narrator.scene("Level2").talk("l2p1", "l2p2", "l2p3", "l2p4", "l2p5");
+      Narrator.talk("l2p1", "l2p2", "l2p3", "l2p4", "l2p5");
       state.found_connection = false;
-      state.ready_for_connection = false;
+      // state.ready_for_connection = false;
 
       state._addOneNeuronListener = subscribe(
         "/toolbar/excitatory",
@@ -114,12 +129,15 @@ Narrator.addStates({
       });
       state._resetListener = subscribe("/level/reset", function() {
         unsubscribe(state._resetListener);
-        Narrator.interrupt();
-        Narrator.goto("LEVEL_2");
+        Narrator.interrupt().goto("LEVEL_2_LOAD");
       });
     },
     during: function(state) {
       var connections = Interactive.scene.connections;
+
+      // if (connections.length == 0) {
+      // 	state.ready_for_connection = true;
+      // }
 
       // A new connection was made!
       if (!state.found_connection && connections.length > 0) {
