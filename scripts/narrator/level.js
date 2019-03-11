@@ -5,6 +5,8 @@ Narrator.addNarration({
     intro1: ["0:03.0", "0:07.0"], //In my brain and your brain, there are millions of these things called neurons!
     intro2: ["0:07.0", "0:11.0"], //Neurons are very social. They like to connect with each other.
     intro3: ["0:11.0", "0:16.0"], //and these connections are called synapses.
+    intro4: ["0:16.0", "0:22.0"], //As new synapses form in our brains, that’s when we can learn new things!
+    intro5: ["0:22.0", "0:25.0"], //Let’s venture into the math portion of my brain.
 
     l2p1: ["0:00.0", "0:03.0"], // Oh no! It looks like these neurons are too far apart!
     l2p2: ["0:00.0", "0:04.0"], // We have to make a path between these two neurons so that I can learn math.
@@ -31,7 +33,7 @@ Narrator.addStates({
         .scene("Neurons")
         .talk("intro1")
         .scene("Synapses")
-        .talk("intro2", "intro3")
+        .talk("intro2", "intro3", "intro4", "intro5")
         .goto("LEVEL_1");
     }
   },

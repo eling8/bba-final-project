@@ -15,6 +15,9 @@ window.Captions = {
         "In my brain and your brain, there are millions of these things called neurons!",
       intro2: "Neurons are very social. They like to connect with each other.",
       intro3: "and these connections are called synapses.",
+      intro4:
+        "As new synapses form in our brains, that’s when we can learn new things!",
+      intro5: "For example, let’s venture into the math portion of my brain.",
 
       /////////////
       // LEVEL 2 //
@@ -32,7 +35,7 @@ window.Captions = {
       // wait until user adds a connection
       l2p10: "Wow! My brain just created a new connection while I was learning!",
       l2p11: "Now, can you help me create a path all the way from start to finish?",
-      l2end: "Whoa! I learned something new! Thanks for helping me make my brain stronger."
+      l2end: "Whoa! I learned something new! Thanks for helping me make my brain stronger.",
     }
   }
 };
