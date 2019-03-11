@@ -69,10 +69,10 @@ window.Interactive = new function() {
   self.PLAYING = true;
   self.pause = function() {
     self.PLAYING = false;
-    // Narrator.pause();
+    Narrator.pause();
   };
   self.play = function() {
     self.PLAYING = true;
-    // Narrator.play();
+    Narrator.play();
   };
 }();
