@@ -50,11 +50,11 @@ Narrator.addStates({
   LEVEL_1: {
     start: function(state) {
       Narrator.scene("Level1").talk("level1_0", "level1_1", "level1_2");
-      // state._winListener = subscribe("/level/winLevel", function() {
-      //   unsubscribe(state._winListener);
-      //   // When we win the level!
-      //   Narrator.interrupt().talk("level1_3", "level1_4", "level1_5");
-      // });
+      state._winListener = subscribe("/level/winLevel", function() {
+        unsubscribe(state._winListener);
+        // When we win the level!
+        Narrator.interrupt().talk("level1_3", "level1_4", "level1_5");
+      });
       state._listener = subscribe("/level/nextLevel", function() {
         unsubscribe(state._listener);
         console.log("Level 1 passed!");
