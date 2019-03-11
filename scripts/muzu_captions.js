@@ -29,7 +29,7 @@ window.Captions = {
       intro11: "For example, let’s venture into the math portion of my brain.",
 
       //////////////////
-      // LEVEL 1 ///////
+      // LEVEL 1: Hebbian learning ///////
       //////////////////
 
       level1_0:
@@ -47,7 +47,7 @@ window.Captions = {
         "Now that you know how to connect two neurons, go ahead and click on the next level!",
 
       /////////////
-      // LEVEL 2 //
+      // LEVEL 2: Dragging on new neurons //
       /////////////
       l2p1: "Oh no! It looks like these neurons are too far apart!",
       l2p2:
@@ -69,9 +69,42 @@ window.Captions = {
       l2p11:
         "Now, can you help me create a path all the way from start to finish?",
       l2p12:
-        "Whoa! While I was working on math, my brain was making new connections!",
-      l2end:
-        "I learned something new! Thanks for helping me make my brain stronger."
+        "Whoa! While I was working on math, my brain was growing stronger!",
+      l2end: "Thanks for your help! Go ahead and click on the next level.",
+
+      /////////////
+      // LEVEL 3: Forgetting //
+      /////////////
+
+      l3p1: "Have you ever wondered why you forget how to do things...",
+      l3p2: "if you don’t practice them for a while?",
+      //neurons appear
+      l3p3: "Well, it all has to do with these neurons in your brain!",
+      l3p4:
+        "If two neuron’s don’t send signals to each other for a long time...",
+      //synapses disappear
+      l3p5: "Their synapse disappears!",
+      l3p6: "This is called the “use it or lose it” principle",
+      l3p7: "And that’s why it’s so important to keep practicing something!",
+      l3p8: "So that you can keep those synapses strong!",
+      l3p9:
+        "When I’m not practicing math, the synapses in the math portion of my brain...",
+      l3p10: "will weaken a little (by getting thinner)...",
+      l3p11: "Every time the bar at the top reaches the end.",
+      //muzu practicing, and neurons fire
+      l3p12: "But if I keep practicing, my neurons will fire, ",
+      l3p13: "And my synapses will grow and stay strong!",
+      //level 3 set up
+      l3p14: "Let's give it a try as I do some math!",
+      l3p15: "While I'm working, I'll get discouraged sometimes and stop",
+      l3p16:
+        "When that happens, my neurons won't fire, and I'll start forgetting!",
+      l3p17: "You'll have encourage me to start working again.",
+      l3p18: "So that I can continue learning!"
+
+      /////////////
+      // LEVEL 4: Inhibition //
+      /////////////
     }
   }
 };

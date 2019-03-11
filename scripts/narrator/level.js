@@ -37,7 +37,31 @@ Narrator.addNarration({
     l2p10: ["0:00.0", "0:03.0"], // Wow! My brain just created a new connection while I was learning!
     l2p11: ["0:00.0", "0:05.0"], // Now, can you help me create a path all the way from start to finish?
     l2p12: ["0:00.0", "0:05.0"], // Whoa! While I was working on math, my brain was making new connections!.
-    l2end: ["0:00.0", "0:05.0"] // Thanks for helping me make my brain stronger.
+    l2end: ["0:00.0", "0:05.0"], // Thanks for helping me make my brain stronger.
+
+    l3p1: ["0:00.0", "0:03.0"], // Have you ever wondered why you forget how to do things...
+    l3p2: ["0:00.0", "0:04.0"], // if you don’t practice them for a while?
+    //neurons appear
+    l3p3: ["0:00.0", "0:03.0"], // Well, it all has to do with these neurons in your brain!
+    l3p4: ["0:00.0", "0:03.0"], // If two neuron’s don’t send signals to each other for a long time...
+    //synapses disappear
+    l3p5: ["0:00.0", "0:05.0"], // Their synapse disappears!
+    l3p6: ["0:00.0", "0:03.0"], // This is called the “use it or lose it” principle
+    l3p7: ["0:00.0", "0:04.0"], // And that’s why it’s so important to keep practicing something!
+    l3p8: ["0:00.0", "0:04.0"], // So that you can keep those synapses strong!
+    l3p9: ["0:00.0", "0:03.0"], // When I’m not practicing math, the synapses in the math portion of my brain...
+    l3p10: ["0:00.0", "0:03.0"], // will weaken a little (by getting thinner)...
+    l3p11: ["0:00.0", "0:05.0"], // Every time the bar at the top reaches the end.
+    //muzu practicing, and neurons fire
+    l3p12: ["0:00.0", "0:05.0"], // But if I keep practicing, my neurons will fire,
+    l3p13: ["0:00.0", "0:05.0"], //And my synapses will grow and stay strong!
+    //level 3 set up
+    l3p14: ["0:00.0", "0:03.0"], //"Let's give it a try as I do some math!",
+    l3p15: ["0:00.0", "0:03.0"], //"While I'm working, I'll get discouraged sometimes and stop",
+    l3p16: ["0:00.0", "0:03.0"],
+    //"When that happens, my neurons won't fire, and I'll start forgetting!",
+    l3p17: ["0:00.0", "0:03.0"], //"You'll have encourage me to start working again.",
+    l3p18: ["0:00.0", "0:03.0"] //"So that I can continue learning!"
   }
 });
 
@@ -59,8 +83,10 @@ Narrator.addStates({
       });
       //wait for them to click on a neuron then: intro7, intro8, intro9, intro10
       state._clickListener = subscribe("/neuron/click", function() {
-      	unsubscribe(state._clickListener);
-      	Narrator.interrupt().talk("intro6", "intro7", "intro8", "intro9", "intro10", "intro11").goto("LEVEL_1");
+        unsubscribe(state._clickListener);
+        Narrator.interrupt()
+          .talk("intro6", "intro7", "intro8", "intro9", "intro10", "intro11")
+          .goto("LEVEL_1");
       });
     },
     kill: function(state) {
@@ -145,7 +171,7 @@ Narrator.addStates({
       state._listener = subscribe("/level/nextLevel", function() {
         unsubscribe(state._listener);
         console.log("Level 2 passed!");
-        Narrator.interrupt().goto("LEVEL_5");
+        Narrator.interrupt().goto("LEVEL_3");
       });
       state._resetListener = subscribe("/level/reset", function() {
         unsubscribe(state._resetListener);
@@ -163,6 +189,26 @@ Narrator.addStates({
     },
     kill: function(state) {
       unsubscribe(state._winListener);
+      unsubscribe(state._listener);
+      unsubscribe(state._resetListener);
+    }
+  },
+
+  LEVEL_3: {
+    start: function(state) {
+      // show all buttons
+      publish("/toolbar/show", [true, false, true, true]);
+      Narrator.scene("Level3");
+      state._listener = subscribe("/level/nextLevel", function() {
+        unsubscribe(state._listener);
+        console.log("Level 3 passed!");
+        Narrator.goto("LEVEL_5");
+      });
+      state._resetListener = subscribe("/level/reset", function() {
+        Narrator.scene("Level5");
+      });
+    },
+    kill: function(state) {
       unsubscribe(state._listener);
       unsubscribe(state._resetListener);
     }
