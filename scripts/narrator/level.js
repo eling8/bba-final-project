@@ -70,6 +70,8 @@ Narrator.addStates({
     start: function(state) {
       // hide all toolbar buttons
       publish("/toolbar/show", [false, false, false, false]);
+      Interactive.show_thresholds = false; // hide activation bars
+
       Narrator.scene("LevelHome");
 
       state._resetListener = subscribe("/level/reset", function() {
@@ -86,6 +88,8 @@ Narrator.addStates({
     start: function(state) {
       // hide all toolbar buttons
       publish("/toolbar/show", [false, false, false, false]);
+      Interactive.show_thresholds = false; // hide activation bars
+
       Narrator.scene("LevelIntro")
         .talk("intro0")
         .scene("Neurons")
@@ -115,6 +119,8 @@ Narrator.addStates({
     start: function(state) {
       // hide all toolbar buttons
       publish("/toolbar/show", [false, false, false, false]);
+      Interactive.show_thresholds = false; // hide activation bars
+
       Narrator.scene("Level1")
         .talk("level1_0", "level1_1", "level1_2")
         .message("/scene/addHebb")
@@ -150,6 +156,8 @@ Narrator.addStates({
     start: function(state) {
       // hide all except excitatory
       publish("/toolbar/show", [true, false, false, false]);
+      Interactive.show_thresholds = false; // hide activation bars
+
       state._loadListener = subscribe("/level/loaded", function() {
         unsubscribe(state._loadListener);
         Narrator.goto("LEVEL_2_LOADED");
@@ -214,6 +222,8 @@ Narrator.addStates({
     start: function(state) {
       // show all buttons
       publish("/toolbar/show", [true, false, true, true]);
+      Interactive.show_thresholds = false; // hide activation bars
+
       Narrator.scene("Level3");
       state._listener = subscribe("/level/nextLevel", function() {
         unsubscribe(state._listener);
@@ -234,6 +244,8 @@ Narrator.addStates({
     start: function(state) {
       // show all buttons
       publish("/toolbar/show", [true, true, true, true]);
+      Interactive.show_thresholds = true; // hide activation bars
+
       Narrator.scene("Level5");
       state._listener = subscribe("/level/nextLevel", function() {
         unsubscribe(state._listener);
@@ -254,6 +266,8 @@ Narrator.addStates({
     start: function(state) {
       // show all buttons
       publish("/toolbar/show", [true, true, true, true]);
+      Interactive.show_thresholds = true; // hide activation bars
+      
       Narrator.scene("LevelEnd");
       state._resetListener = subscribe("/level/reset", function() {
         Narrator.scene("LevelEnd");

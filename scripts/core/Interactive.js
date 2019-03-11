@@ -14,6 +14,7 @@ window.Interactive = new function() {
   // For deleting neurons & connections
   self.delete_on = false;
   self.forget_on = true; // whether we should forget connections, toggle with publish("/toolbar/show")
+  self.show_thresholds = true; // whether to show threshold bar
 
   // Animation
   self.smoosh = 1;

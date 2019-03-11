@@ -463,7 +463,8 @@ function Neuron(scene, neuron_type, neuron_function) {
 
     // draw bar for end neuron, or when mouse is hovering but not pressed (except for starting neuron)
     if (self.neuron_function == NeuronFunction.ENDING 
-        || (self.isMouseHover() && !self.mouse_down && self.neuron_function != NeuronFunction.STARTING)) {
+        || (Interactive.show_thresholds && self.isMouseHover() 
+            && !self.mouse_down && self.neuron_function != NeuronFunction.STARTING)) {
       ctx.globalAlpha = 1;
       ctx.fillStyle = "gray";
       if (self.activation_level >= self.firing_threshold) {
