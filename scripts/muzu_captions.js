@@ -10,7 +10,7 @@ window.Captions = {
       // INTRODUCTION //
       //////////////////
 
-      intro0: "Hi there! My name is Muzu. And this here is my brain",
+      intro0: "Hi there! My name is Muzu. And this here is my brain.",
       intro1:
         "In my brain and your brain, there are millions of these things called neurons!",
       intro2: "They like to connect with each other.",
@@ -23,7 +23,7 @@ window.Captions = {
         "Watch as it sends signals to other neurons through its synapses!",
       intro7:
         "As new synapses form in our brains, that’s when we can learn new things!",
-      intro8: "But the neurons only fire, and the synapses can only grow",
+      intro8: "But the neurons only fire, and the synapses can only grow...",
       intro9: "when I’m working hard learning something.",
       intro10: "Like this!",
       intro11: "For example, let’s venture into the math portion of my brain.",

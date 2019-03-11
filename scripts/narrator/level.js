@@ -9,9 +9,10 @@ Narrator.addNarration({
     intro5: ["0:22.0", "0:26.0"], //Go ahead and click on a neuron to fire it.
     intro6: ["0:22.0", "0:25.0"], //Watch as it sends signals to other neurons through its synapses!
     intro7: ["0:16.0", "0:20.0"], //As new synapses form in our brains, that’s when we can learn new things!
-    intro8: ["0:22.0", "0:26.0"], //But the synapses can only grow when I’m working hard learning something.
-    intro9: ["0:22.0", "0:25.0"], //Like this!
-    intro10: ["0:25.0", "0:28.0"], //For example, let’s venture into the math portion of my brain.
+    intro8: ["0:22.0", "0:26.0"], //But the neurons only fire, and the synapses can only grow
+    intro9: ["0:22.0", "0:25.0"], //when I’m working hard learning something.
+    intro10: ["0:25.0", "0:28.0"], //Like this!
+    intro11: ["0:25.0", "0:28.0"], // For example, let’s venture into the math portion of my brain.
 
     level1_0: ["0:00.0", "0:04.0"], //Right now, there are no connections because I haven’t practiced math in a long time.
     level1_1: ["0:00.0", "0:04.0"], //But as I start practicing, new connections can start forming in my brain!
@@ -50,9 +51,21 @@ Narrator.addStates({
         .scene("Neurons")
         .talk("intro1")
         .scene("Synapses")
-        .talk("intro2", "intro3", "intro4", "intro5", "intro6")
-        //wait for them to click on a neuron then: intro7, intro8, intro9, intro10
-        .goto("LEVEL_1");
+        .talk("intro2", "intro3", "intro4", "intro5");
+
+      state._resetListener = subscribe("/level/reset", function() {
+        unsubscribe(state._resetListener);
+        Narrator.interrupt().goto("LEVEL_INTRO");
+      });
+      //wait for them to click on a neuron then: intro7, intro8, intro9, intro10
+      state._clickListener = subscribe("/neuron/click", function() {
+      	unsubscribe(state._clickListener);
+      	Narrator.interrupt().talk("intro6", "intro7", "intro8", "intro9", "intro10", "intro11").goto("LEVEL_1");
+      });
+    },
+    kill: function(state) {
+      unsubscribe(state._clickListener);
+      unsubscribe(state._resetListener);
     }
   },
 
