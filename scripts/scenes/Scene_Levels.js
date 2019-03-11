@@ -34,6 +34,38 @@ function Scene_Level1() {
   NEURONS_SERIALIZED =
     '{"neurons":[[350,261,3,2],[500,262,3,3]],"connections":[]}';
   Neuron.unserialize(self, NEURONS_SERIALIZED, true);
+
+  var _listener2 = subscribe("/scene/addHebb", function() {
+    unsubscribe(_listener2);
+    //self.sprites.push(new HebbWords("hebb"));
+    self.sprites.push(new HebbComic("hebb"));
+  });
+
+  function HebbComic(type) {
+    var self = this;
+    Sprite.call(self, {
+      pivotX: 0,
+      pivotY: 0,
+      spritesheet: type == "hebb" ? images.hebb : images.antihebb,
+      frameWidth: 260,
+      frameHeight: 400,
+      frameTotal: 1
+    });
+
+    // Start Off
+    self.y = 50;
+    if (type == "hebb") {
+      self.x = 960;
+      self.gotoX = 700;
+    }
+
+    // UPDATE
+    var _prevUpdate = self.update;
+    self.update = function() {
+      self.x = self.x * 0.7 + self.gotoX * 0.3;
+      _prevUpdate.call(self);
+    };
+  }
 }
 
 function Scene_Level2() {
@@ -41,8 +73,9 @@ function Scene_Level2() {
   LevelScene.call(self);
 
   publish("/level/showLevel", [2]);
-  
-  NEURONS_SERIALIZED = '{"neurons":[[119,248,3,2],[829,249,3,3]],"connections":[]}'
+
+  NEURONS_SERIALIZED =
+    '{"neurons":[[119,248,3,2],[829,249,3,3]],"connections":[]}';
   Neuron.unserialize(self, NEURONS_SERIALIZED, true);
 }
 
@@ -51,8 +84,9 @@ function Scene_Level5() {
   LevelScene.call(self);
 
   publish("/level/showLevel", [5]);
-  
-  NEURONS_SERIALIZED = '{"neurons":[[150,295,3,2],[759,274,3,3],[575,350,2,4],[266,187,2,4],[583,232,3,4],[269,425,2,4],[377,447,3,4]],"connections":[[0,3,2,2],[2,1,2,2],[4,1,2,2],[5,6,2,2]]}'
+
+  NEURONS_SERIALIZED =
+    '{"neurons":[[150,295,3,2],[759,274,3,3],[575,350,2,4],[266,187,2,4],[583,232,3,4],[269,425,2,4],[377,447,3,4]],"connections":[[0,3,2,2],[2,1,2,2],[4,1,2,2],[5,6,2,2]]}';
   Neuron.unserialize(self, NEURONS_SERIALIZED, true);
 }
 

@@ -19,7 +19,8 @@ window.Captions = {
         "As new synapses form in our brains, that’s when we can learn new things!",
       intro5:
         "But the synapses can only grow when I’m working hard learning something.",
-      intro6: "For example, let’s venture into the math portion of my brain.",
+      intro6: "Like this!",
+      intro7: "For example, let’s venture into the math portion of my brain.",
 
       //////////////////
       // LEVEL 1 ///////
@@ -29,12 +30,15 @@ window.Captions = {
         "Right now, there are no connections because I haven’t practiced math in a long time.",
       level1_1:
         "But as I start practicing, new connections can start forming in my brain!",
-      level1_2:
-        "To make a connection, click on a neuron, then click on the neuron you want it to form a synapse with.",
+      level1_2: "Can you help me rewire my brain while I work? Try it out!",
       level1_3:
+        "To make a connection, click on a neuron, then click on the neuron you want it to form a synapse with.",
+      level1_4:
         "Wow! While I was working, my brain was making new connections!",
-      level1_4: "I just learned how to do my first math problem!",
-      level1_5: "Thanks for helping me rewire my brain!",
+      // level1_5: "I just learned how to do my first math problem!",
+      // level1_6: "Thanks for helping me rewire my brain!",
+      level1_7:
+        "Now that you know how to connect two neurons, go ahead and click on the next level!",
 
       /////////////
       // LEVEL 2 //
