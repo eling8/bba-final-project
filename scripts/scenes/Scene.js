@@ -107,11 +107,11 @@ function BrainScene() {
     ctx.restore();
 
     // draw Muzu!
-    ctx.drawImage(images.muzu, 30, ctx.canvas.clientHeight - 200, 160, 160);
+    ctx.drawImage(images.muzu, 30, ctx.canvas.clientHeight - 250, 160, 160);
     ctx.drawImage(
       images.muzu_brain_small,
       70,
-      ctx.canvas.clientHeight - 175,
+      ctx.canvas.clientHeight - 225,
       70,
       45
     );

@@ -13,21 +13,27 @@ window.Captions = {
       intro0: "Hi there! My name is Muzu. And this here is my brain",
       intro1:
         "In my brain and your brain, there are millions of these things called neurons!",
-      intro2: "Neurons are very social. They like to connect with each other.",
+      intro2: "They like to connect with each other.",
       intro3: "and these connections are called synapses.",
       intro4:
+        "Neurons are very social. They like to send signals to each other.",
+      intro5: "Go ahead and click on a neuron to fire it.",
+      //listener: when they click on a neuron
+      intro6:
+        "Watch as it sends signals to other neurons through its synapses!",
+      intro7:
         "As new synapses form in our brains, that’s when we can learn new things!",
-      intro5:
-        "But the synapses can only grow when I’m working hard learning something.",
-      intro6: "Like this!",
-      intro7: "For example, let’s venture into the math portion of my brain.",
+      intro8: "But the neurons only fire, and the synapses can only grow",
+      intro9: "when I’m working hard learning something.",
+      intro10: "Like this!",
+      intro11: "For example, let’s venture into the math portion of my brain.",
 
       //////////////////
       // LEVEL 1 ///////
       //////////////////
 
       level1_0:
-        "Right now, there are no connections because I haven’t practiced math in a long time.",
+        "Right now, there are no connections because I haven’t practiced math in a LONG time.",
       level1_1:
         "But as I start practicing, new connections can start forming in my brain!",
       level1_2: "Can you help me rewire my brain while I work? Try it out!",
@@ -35,7 +41,7 @@ window.Captions = {
         "To make a connection, click on a neuron, then click on the neuron you want it to form a synapse with.",
       level1_4:
         "Wow! While I was working, my brain was making new connections!",
-      // level1_5: "I just learned how to do my first math problem!",
+      level1_5: "I just learned a new math problem!",
       // level1_6: "Thanks for helping me rewire my brain!",
       level1_7:
         "Now that you know how to connect two neurons, go ahead and click on the next level!",

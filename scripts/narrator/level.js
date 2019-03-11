@@ -5,17 +5,20 @@ Narrator.addNarration({
     intro1: ["0:03.0", "0:07.0"], //In my brain and your brain, there are millions of these things called neurons!
     intro2: ["0:07.0", "0:11.0"], //Neurons are very social. They like to connect with each other.
     intro3: ["0:11.0", "0:13.0"], //and these connections are called synapses.
-    intro4: ["0:16.0", "0:20.0"], //As new synapses form in our brains, that’s when we can learn new things!
-    intro5: ["0:22.0", "0:26.0"], //But the synapses can only grow when I’m working hard learning something.
-    intro6: ["0:22.0", "0:25.0"], //Like this!
-    intro7: ["0:25.0", "0:28.0"], //For example, let’s venture into the math portion of my brain.
+    intro4: ["0:16.0", "0:20.0"], //Neurons are very social. They like to send signals to each other.
+    intro5: ["0:22.0", "0:26.0"], //Go ahead and click on a neuron to fire it.
+    intro6: ["0:22.0", "0:25.0"], //Watch as it sends signals to other neurons through its synapses!
+    intro7: ["0:16.0", "0:20.0"], //As new synapses form in our brains, that’s when we can learn new things!
+    intro8: ["0:22.0", "0:26.0"], //But the synapses can only grow when I’m working hard learning something.
+    intro9: ["0:22.0", "0:25.0"], //Like this!
+    intro10: ["0:25.0", "0:28.0"], //For example, let’s venture into the math portion of my brain.
 
     level1_0: ["0:00.0", "0:04.0"], //Right now, there are no connections because I haven’t practiced math in a long time.
     level1_1: ["0:00.0", "0:04.0"], //But as I start practicing, new connections can start forming in my brain!
     level1_2: ["0:00.0", "0:03.0"], //Can you help me rewire my brain? Try it out!
     level1_3: ["0:00.0", "0:05.0"], //To make a connection, click on a neuron, then click on the neuron you want it to form a synapse with.
     level1_4: ["0:00.0", "0:03.0"], //"Wow! While I was working, my brain was making new connections!"
-    // level1_5: ["0:00.0", "0:03.0"], //I just learned how to do my first math problem!
+    level1_5: ["0:00.0", "0:03.0"], //I just learned how to do my first math problem!
     // level1_6: ["0:00.0", "0:03.0"], //Thanks for helping me rewire my brain!
     level1_7: ["0:00.0", "0:06.0"], //Go ahead and click on the next level
 
@@ -45,7 +48,8 @@ Narrator.addStates({
         .scene("Neurons")
         .talk("intro1")
         .scene("Synapses")
-        .talk("intro2", "intro3", "intro4", "intro5", "intro6", "intro7")
+        .talk("intro2", "intro3", "intro4", "intro5", "intro6")
+        //wait for them to click on a neuron then: intro7, intro8, intro9, intro10
         .goto("LEVEL_1");
     }
   },
@@ -61,7 +65,7 @@ Narrator.addStates({
         // When we win the level!
         Narrator.interrupt().talk(
           "level1_4",
-          // "level1_5",
+          "level1_5",
           // "level1_6",
           "level1_7"
         );
@@ -84,17 +88,17 @@ Narrator.addStates({
   },
 
   LEVEL_2_LOAD: {
-  	start: function(state) {
-  		state._loadListener = subscribe("/level/loaded", function() {
-				unsubscribe(state._loadListener);
-				Narrator.goto("LEVEL_2");
-  		});
+    start: function(state) {
+      state._loadListener = subscribe("/level/loaded", function() {
+        unsubscribe(state._loadListener);
+        Narrator.goto("LEVEL_2");
+      });
 
-  		Narrator.interrupt().scene("Level2");
-  	},
-  	kill: function(state) {
-  		unsubscribe(state._loadListener);
-  	}
+      Narrator.interrupt().scene("Level2");
+    },
+    kill: function(state) {
+      unsubscribe(state._loadListener);
+    }
   },
 
   LEVEL_2: {
