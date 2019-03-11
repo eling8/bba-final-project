@@ -261,10 +261,10 @@ Narrator.addStates({
       state._listener = subscribe("/level/nextLevel", function() {
         unsubscribe(state._listener);
         console.log("Level 3 passed!");
-        Narrator.goto("LEVEL_5");
+        Narrator.goto("LEVEL_4");
       });
       state._resetListener = subscribe("/level/reset", function() {
-        Narrator.scene("Level5");
+        Narrator.scene("Level3");
       });
     },
     kill: function(state) {
@@ -280,11 +280,11 @@ Narrator.addStates({
       Narrator.scene("Level4");
       state._listener = subscribe("/level/nextLevel", function() {
         unsubscribe(state._listener);
-        console.log("Level 3 passed!");
+        console.log("Level 4 passed!");
         Narrator.goto("LEVEL_5");
       });
       state._resetListener = subscribe("/level/reset", function() {
-        Narrator.scene("Level5");
+        Narrator.scene("Level4");
       });
     },
     kill: function(state) {
