@@ -48,6 +48,7 @@ Preload({
     { id: "3_therapy", src: "assets/voices/3_therapy.mp3" },
     { id: "4_credits", src: "assets/voices/4_credits.mp3" },
     { id: "5_extra", src: "assets/voices/5_extra.mp3" },
+    { id: "silence", src: "assets/voices/silence.mp3" },
 
     // Sounds & Shtuff
     { id: "sfx_spark", src: "assets/sounds/spark.mp3" },
