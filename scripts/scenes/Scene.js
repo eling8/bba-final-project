@@ -96,7 +96,7 @@ function BrainScene() {
     ctx.restore();
 
     // draw Muzu!
-    ctx.drawImage(images.muzu, 30, ctx.canvas.clientHeight - 160, 160, 160);
+    ctx.drawImage(images.muzu, 30, ctx.canvas.clientHeight - 200, 160, 160);
     ctx.restore();
   };
   var _render = function(array, ctx) {

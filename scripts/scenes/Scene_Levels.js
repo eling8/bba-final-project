@@ -32,7 +32,7 @@ function Scene_Level1() {
   publish("/level/showLevel", [1]);
 
   NEURONS_SERIALIZED =
-    '{"neurons":[[295,261,3,2],[450,261,3,1],[585,262,3,3]],"connections":[]}';
+    '{"neurons":[[350,261,3,2],[500,262,3,3]],"connections":[]}';
   Neuron.unserialize(self, NEURONS_SERIALIZED, true);
 }
 
