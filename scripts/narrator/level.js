@@ -88,11 +88,11 @@ Narrator.addStates({
       publish("/toolbar/show", [false, false, false, false]);
       Interactive.show_thresholds = false; // hide activation bars
 
-      Narrator.scene("LevelHome");
+      Narrator.interrupt().scene("LevelHome").message("/muzu", ["brain"]);
 
       state._resetListener = subscribe("/level/reset", function() {
         unsubscribe(state._resetListener);
-        Narrator.goto("LEVEL_HOME");
+        Narrator.interrupt().goto("LEVEL_HOME");
       });
     },
     kill: function(state) {
@@ -106,8 +106,11 @@ Narrator.addStates({
       publish("/toolbar/show", [false, false, false, false]);
       Interactive.show_thresholds = false; // hide activation bars
 
-      Narrator.interrupt().scene("LevelIntro")
+      Narrator.interrupt()
+        .scene("LevelIntro")
+        .message("/muzu", ["cheerful"])
         .talk("intro0")
+        .message("/muzu", ["brain"])
         .scene("Neurons")
         .talk("intro1")
         .scene("Synapses")
@@ -121,7 +124,11 @@ Narrator.addStates({
       state._clickListener = subscribe("/neuron/click", function() {
         unsubscribe(state._clickListener);
         Narrator.interrupt()
-          .talk("intro6", "intro7", "intro8", "intro9", "intro10", "intro11")
+          .talk("intro6", "intro7", "intro8", "intro9")
+          .message("/muzu", ["math"])
+          .talk("intro10")
+          .message("/muzu", ["brain"])
+          .talk("intro11")
           .goto("LEVEL_1");
       });
     },
@@ -137,8 +144,12 @@ Narrator.addStates({
       publish("/toolbar/show", [false, false, false, false]);
       Interactive.show_thresholds = false; // hide activation bars
 
-      Narrator.interrupt().scene("Level1")
-        .talk("level1_0", "level1_1", "level1_2")
+      Narrator.interrupt()
+        .message("/muzu", ["brain"])
+        .scene("Level1")
+        .talk("level1_0")
+        .message("/muzu", ["math"])
+        .talk("level1_1", "level1_2")
         .message("/scene/addHebb")
         .talk("level1_3");
       state._winListener = subscribe("/level/winLevel", function() {
@@ -188,7 +199,13 @@ Narrator.addStates({
 
   LEVEL_2_LOADED: {
     start: function(state) {
-      Narrator.interrupt().talk("l2p1", "l2p2", "l2p3", "l2p4", "l2p5");
+      Narrator.interrupt()
+        .message("/muzu", ["sad"])
+        .talk("l2p1", "l2p2")
+        .message("/muzu", ["confused"])
+        .talk("l2p3")
+        .message("/muzu", ["brain"])
+        .talk("l2p4", "l2p5");
       state.found_connection = false;
 
       state._addOneNeuronListener = subscribe(
@@ -198,7 +215,13 @@ Narrator.addStates({
           // Wait until mouse is released!
           var mouseup_listener = subscribe("/mouse/up", function() {
             unsubscribe(mouseup_listener);
-            Narrator.interrupt().talk("l2p6", "l2p7", "l2p8", "l2p9");
+            Narrator.interrupt()
+              .message("/muzu", ["cheerful"])
+              .talk("l2p6")
+              .message("/muzu", ["brain"])
+              .talk("l2p7", "l2p8")
+              .message("/muzu", ["math"])
+              .talk("l2p9");
           });
         }
       );
@@ -224,7 +247,10 @@ Narrator.addStates({
       // A new connection was made!
       if (!state.found_connection && connections.length > 0) {
         state.found_connection = true;
-        Narrator.interrupt().talk("l2p10", "l2p11");
+        Narrator.interrupt()
+          .message("/muzu", ["cheerful"])
+          .talk("l2p10", "l2p11")
+          .message("/muzu", ["math"]);
       }
     },
     kill: function(state) {
@@ -243,6 +269,7 @@ Narrator.addStates({
       Interactive.show_thresholds = false; // hide activation bars
 
       Narrator.interrupt().scene("LevelIntro")
+        .message("/muzu", ["brain"])
         .talk("l3p1", "l3p2")
         .scene("Synapses")
         .talk(
@@ -283,6 +310,7 @@ Narrator.addStates({
       // show all buttons
       publish("/toolbar/show", [true, true, true, true]);
       Narrator.interrupt().scene("LevelIntro")
+        .message("/muzu", ["brain"])
         .talk("l4p1", "l4p2", "l4p3", "l4p4", "l4p5")
         .scene("preLevel4")
         .talk("l4p6", "l4p7")
@@ -309,7 +337,7 @@ Narrator.addStates({
       publish("/toolbar/show", [true, true, true, true]);
       Interactive.show_thresholds = true; // hide activation bars
 
-      Narrator.interrupt().scene("Level5");
+      Narrator.interrupt().scene("Level5").message("/muzu", ["brain"]);
       state._listener = subscribe("/level/nextLevel", function() {
         unsubscribe(state._listener);
         console.log("Level 5 passed!");
@@ -329,7 +357,7 @@ Narrator.addStates({
     start: function(state) {
       publish("/toolbar/show", [true, true, true, false]);
       Interactive.show_thresholds = true;
-      Narrator.interrupt().scene("Level6");
+      Narrator.interrupt().scene("Level6").message("/muzu", ["brain"]);
       state._listener = subscribe("/level/nextLevel", function() {
         unsubscribe(state._listener);
         console.log("Level 6 passed!");
@@ -351,7 +379,7 @@ Narrator.addStates({
       publish("/toolbar/show", [true, true, true, true]);
       Interactive.show_thresholds = true; // hide activation bars
 
-      Narrator.interrupt().scene("LevelEnd");
+      Narrator.interrupt().scene("LevelEnd").message("/muzu", ["brain"]);
       state._resetListener = subscribe("/level/reset", function() {
         Narrator.interrupt().goto("LEVEL_END");
       });

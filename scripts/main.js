@@ -27,9 +27,16 @@ Preload({
     { id: "antihebb_words", src: "assets/images/antihebb_words.png" },
 
     // Muzu
-    { id: "muzu", src: "assets/images/muzu.png" },
-    { id: "muzu_brain", src: "assets/images/muzu_brain.png" },
-    { id: "muzu_brain_small", src: "assets/images/muzu_brain_small.png" },
+    { id: "muzu", src: "assets/muzu/muzu.png" },
+    { id: "brain_outline", src: "assets/muzu/brain_outline.png" },
+    // { id: "muzu_brain_small", src: "assets/muzu/muzu_brain_small.png" },
+
+    { id: "muzu_angry", src: "assets/muzu/angry.png" },
+    { id: "muzu_brain", src: "assets/muzu/brain.png" },
+    { id: "muzu_cheerful", src: "assets/muzu/cheerful.png" },
+    { id: "muzu_confused", src: "assets/muzu/confused.png" },
+    { id: "muzu_math", src: "assets/muzu/math.png" },
+    { id: "muzu_sad", src: "assets/muzu/sad.png" },
 
     // Misc Crap
     { id: "introBG", src: "assets/images/intro.png" },

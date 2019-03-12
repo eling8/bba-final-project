@@ -28,6 +28,7 @@ var level_listener = subscribe("/level/winLevel", function() {
 	}
 	_showLevel(true);
 	console.log("Level passed!");
+	publish("/muzu", ["cheerful"]);
 	publish("/alert", ["Nice job! You passed this level!"]);
 });
 var level_reset_listener = subscribe("/level/reset", function() {

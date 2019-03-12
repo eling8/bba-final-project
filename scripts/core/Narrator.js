@@ -133,9 +133,9 @@ window.Narrator = new function() {
   };
 
   // MESSAGING
-  self.message = function(message) {
+  self.message = function(message, args) {
     return self.do(function() {
-      publish(message);
+      publish(message, args);
     });
   };
 
