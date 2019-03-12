@@ -384,8 +384,8 @@ Narrator.addStates({
     },
     kill: function(state) {
       unsubscribe(state._resetListener);
-      unsubscribe(Neuron.add_excitatory_listener);
-      unsubscribe(Neuron.add_inhibitory_listener);
+      // unsubscribe(Neuron.add_excitatory_listener);
+      // unsubscribe(Neuron.add_inhibitory_listener);
     }
   }
 });

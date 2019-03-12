@@ -94,12 +94,53 @@ var level_listener = subscribe("/level/showLevel", function(curr_level) {
 	curr_level += 1;
 });
 
+////////////////////////
+//// LEVEL CONTROLS ////
+////////////////////////
+
+var next_level_button = document.getElementById("next_level");
+var level_controls_div = document.getElementById("level_controls");
+var level_listener = subscribe("/level/winLevel", function() {
+	var neurons = Interactive.scene.neurons;
+	for (var i = 0; i < neurons.length; i++) {
+		if (neurons[i].neuron_function == NeuronFunction.ENDING) {
+			if (neurons[i].win_pulse_count < 3) {
+				publish("/alert", ["Make sure to activate all of the ending neurons at once!"]);
+				return;
+			}
+		}
+	}
+	_showLevel(true);
+	console.log("Level passed!");
+	publish("/muzu", ["cheerful"]);
+	publish("/alert", ["Nice job! You passed this level!"]);
+});
+var level_reset_listener = subscribe("/level/reset", function() {
+	_showLevel(false);
+});
+next_level_button.onclick = function() {
+	publish("/level/nextLevel");
+	// register this as mouse click
+	publish("/mouse/click");
+	_showLevel(false);
+};
+var _showLevel = function(should_show) {
+	if (should_show) {
+		next_level_button.style.display = "block";
+		level_controls_div.style.display = "block";
+	} else{
+		next_level_button.style.display = "none";
+		level_controls_div.style.display = "none";
+	}
+};
+
 //////////////////////
 //// RESET BUTTON ////
 //////////////////////
 
 var reset_button = document.getElementById("toolbar_reset");
 reset_button.addEventListener("click", function(event) {
+	_showLevel(false);
 	publish("/level/reset");
 	publish("/alert", ["Level reset!", true]);
 }, false);
@@ -110,6 +151,7 @@ reset_button.addEventListener("click", function(event) {
 
 var home_button = document.getElementById("toolbar_home");
 home_button.addEventListener("click", function(event) {
+	_showLevel(false);
 	Narrator.interrupt().goto("LEVEL_HOME");
 }, false);
 

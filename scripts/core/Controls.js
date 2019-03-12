@@ -10,46 +10,6 @@ subscribe("/load",function(ratio){
 	preloadBar.style.left = Math.round(-225*(1-ratio))+"px";
 });
 
-////////////////////////
-//// LEVEL CONTROLS ////
-////////////////////////
-
-var next_level_button = document.getElementById("next_level");
-var level_controls_div = document.getElementById("level_controls");
-var level_listener = subscribe("/level/winLevel", function() {
-	var neurons = Interactive.scene.neurons;
-	for (var i = 0; i < neurons.length; i++) {
-		if (neurons[i].neuron_function == NeuronFunction.ENDING) {
-			if (neurons[i].win_pulse_count < 3) {
-				publish("/alert", ["Make sure to activate all of the ending neurons at once!"]);
-				return;
-			}
-		}
-	}
-	_showLevel(true);
-	console.log("Level passed!");
-	publish("/muzu", ["cheerful"]);
-	publish("/alert", ["Nice job! You passed this level!"]);
-});
-var level_reset_listener = subscribe("/level/reset", function() {
-	_showLevel(false);
-});
-next_level_button.onclick = function() {
-	publish("/level/nextLevel");
-	// register this as mouse click
-	publish("/mouse/click");
-	_showLevel(false);
-};
-var _showLevel = function(should_show) {
-	if (should_show) {
-		next_level_button.style.display = "block";
-		level_controls_div.style.display = "block";
-	} else{
-		next_level_button.style.display = "none";
-		level_controls_div.style.display = "none";
-	}
-};
-
 //////////////////////
 //// PLAY & PAUSE ////
 //////////////////////
