@@ -114,12 +114,13 @@ window.Captions = {
       //synapses disappear
       l4p5: "These are called inhibitory neurons.",
       l4p6:
-        "On the left, the excitatory neuron makes its neighbors firing bar go up.",
+        "On the left, the excitatory neuron makes its neighbor's firing bar go up.",
       l4p7:
         "But on the right, the inhibitory neuron makes its neighbors firing bar go down.",
       l4p8: "As I work on my next math problem, ...",
       l4p9: "you’ll have to help me learn by making the last neuron fire...",
-      l4p10: "Even when it has inhibitory neurons connected to it!"
+      l4p10: "Even when it has inhibitory neurons connected to it!",
+      l4p11: "Make sure that every neuron is connected to the starting neuron, though!"
     }
   }
 };
