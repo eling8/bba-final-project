@@ -76,8 +76,7 @@ Narrator.addNarration({
     //"But on the right, the inhibitory neuron makes its neighbors firing bar go down.",
     l4p8: ["0:00.0", "0:03.0"], //"As I work on my next math problem, ...",
     l4p9: ["0:00.0", "0:03.0"], //"you’ll have to help me learn by making the last neuron fire...",
-    l4p10: ["0:00.0", "0:03.0"], //"Even when it has inhibitory neurons connected to it!"
-    l4p11: ["0:00.0", "0.04.0"] // Make sure that every neuron is connected to the starting neuron, though!
+    l4p10: ["0:00.0", "0:03.0"] //"Even when it has inhibitory neurons connected to it!"
   }
 });
 
@@ -187,7 +186,7 @@ Narrator.addStates({
 
       state._loadListener = subscribe("/level/loaded", function() {
         unsubscribe(state._loadListener);
-        Narrator.interrupt().goto("LEVEL_2_LOADED");
+        Narrator.goto("LEVEL_2_LOADED");
       });
 
       Narrator.interrupt().scene("Level2");
@@ -284,17 +283,14 @@ Narrator.addStates({
           "l3p11",
           "l3p12"
         )
-        .scene("preLevel3")
-        .talk("l3p13")
-        .scene("Level3")
-        .talk("l3p14", "l3p15", "l3p16", "l3p17", "l3p18");
+        .scene("preLevel3");
       state._listener = subscribe("/level/nextLevel", function() {
         unsubscribe(state._listener);
         console.log("Level 3 passed!");
-        Narrator.interrupt().goto("LEVEL_4");
+        Narrator.goto("LEVEL_4");
       });
       state._resetListener = subscribe("/level/reset", function() {
-        Narrator.interrupt().goto("LEVEL_3");
+        Narrator.scene("Level3");
       });
     },
     kill: function(state) {
@@ -315,14 +311,14 @@ Narrator.addStates({
         .scene("preLevel4")
         .talk("l4p6", "l4p7")
         .scene("Level4")
-        .talk("l4p8", "l4p9", "l4p10", "l4p11");
+        .talk("l4p8", "l4p9", "l4p10");
       state._listener = subscribe("/level/nextLevel", function() {
         unsubscribe(state._listener);
         console.log("Level 4 passed!");
-        Narrator.interrupt().goto("LEVEL_5");
+        Narrator.goto("LEVEL_5");
       });
       state._resetListener = subscribe("/level/reset", function() {
-        Narrator.interrupt().goto("LEVEL_4");
+        Narrator.scene("Level4");
       });
     },
     kill: function(state) {
@@ -341,10 +337,10 @@ Narrator.addStates({
       state._listener = subscribe("/level/nextLevel", function() {
         unsubscribe(state._listener);
         console.log("Level 5 passed!");
-        Narrator.interrupt().goto("LEVEL_6");
+        Narrator.goto("LEVEL_END");
       });
       state._resetListener = subscribe("/level/reset", function() {
-        Narrator.interrupt().goto("LEVEL_5");
+        Narrator.scene("Level5");
       });
     },
     kill: function(state) {
@@ -355,7 +351,7 @@ Narrator.addStates({
 
   LEVEL_6: {
     start: function(state) {
-      publish("/toolbar/show", [true, true, true, false]);
+      publish("/toolbar/show", [true, true, true, true]);
       Interactive.show_thresholds = true;
       Narrator.interrupt().scene("Level6").message("/muzu", ["brain"]);
       state._listener = subscribe("/level/nextLevel", function() {
@@ -381,11 +377,13 @@ Narrator.addStates({
 
       Narrator.interrupt().scene("LevelEnd").message("/muzu", ["brain"]);
       state._resetListener = subscribe("/level/reset", function() {
-        Narrator.interrupt().goto("LEVEL_END");
+        Narrator.scene("LevelEnd");
       });
     },
     kill: function(state) {
       unsubscribe(state._resetListener);
+      unsubscribe(Neuron.add_excitatory_listener);
+      unsubscribe(Neuron.add_inhibitory_listener);
     }
   }
 });
