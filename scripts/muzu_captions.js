@@ -120,7 +120,8 @@ window.Captions = {
       l4p8: "As I work on my next math problem, ...",
       l4p9: "you’ll have to help me learn by making the last neuron fire...",
       l4p10: "Even when it has inhibitory neurons connected to it!",
-      l4p11: "Make sure that every neuron is connected to the starting neuron, though!"
+      l4p11:
+        "Make sure that every neuron is connected to the starting neuron, though!"
     }
   }
 };

@@ -76,8 +76,7 @@ Narrator.addNarration({
     //"But on the right, the inhibitory neuron makes its neighbors firing bar go down.",
     l4p8: ["0:00.0", "0:03.0"], //"As I work on my next math problem, ...",
     l4p9: ["0:00.0", "0:03.0"], //"you’ll have to help me learn by making the last neuron fire...",
-    l4p10: ["0:00.0", "0:03.0"], //"Even when it has inhibitory neurons connected to it!"
-    l4p11: ["0:00.0", "0.04.0"] // Make sure that every neuron is connected to the starting neuron, though!
+    l4p10: ["0:00.0", "0:03.0"] //"Even when it has inhibitory neurons connected to it!"
   }
 });
 
@@ -106,7 +105,7 @@ Narrator.addStates({
       publish("/toolbar/show", [false, false, false, false]);
       Interactive.show_thresholds = false; // hide activation bars
 
-      Narrator.interrupt().scene("LevelIntro")
+      Narrator.scene("LevelIntro")
         .talk("intro0")
         .scene("Neurons")
         .talk("intro1")
@@ -137,7 +136,7 @@ Narrator.addStates({
       publish("/toolbar/show", [false, false, false, false]);
       Interactive.show_thresholds = false; // hide activation bars
 
-      Narrator.interrupt().scene("Level1")
+      Narrator.scene("Level1")
         .talk("level1_0", "level1_1", "level1_2")
         .message("/scene/addHebb")
         .talk("level1_3");
@@ -176,7 +175,7 @@ Narrator.addStates({
 
       state._loadListener = subscribe("/level/loaded", function() {
         unsubscribe(state._loadListener);
-        Narrator.interrupt().goto("LEVEL_2_LOADED");
+        Narrator.goto("LEVEL_2_LOADED");
       });
 
       Narrator.interrupt().scene("Level2");
@@ -188,7 +187,7 @@ Narrator.addStates({
 
   LEVEL_2_LOADED: {
     start: function(state) {
-      Narrator.interrupt().talk("l2p1", "l2p2", "l2p3", "l2p4", "l2p5");
+      Narrator.talk("l2p1", "l2p2", "l2p3", "l2p4", "l2p5");
       state.found_connection = false;
 
       state._addOneNeuronListener = subscribe(
@@ -242,7 +241,7 @@ Narrator.addStates({
 
       Interactive.show_thresholds = false; // hide activation bars
 
-      Narrator.interrupt().scene("LevelIntro")
+      Narrator.scene("LevelIntro")
         .talk("l3p1", "l3p2")
         .scene("Synapses")
         .talk(
@@ -257,17 +256,14 @@ Narrator.addStates({
           "l3p11",
           "l3p12"
         )
-        .scene("preLevel3")
-        .talk("l3p13")
-        .scene("Level3")
-        .talk("l3p14", "l3p15", "l3p16", "l3p17", "l3p18");
+        .scene("preLevel3");
       state._listener = subscribe("/level/nextLevel", function() {
         unsubscribe(state._listener);
         console.log("Level 3 passed!");
-        Narrator.interrupt().goto("LEVEL_4");
+        Narrator.goto("LEVEL_4");
       });
       state._resetListener = subscribe("/level/reset", function() {
-        Narrator.interrupt().goto("LEVEL_3");
+        Narrator.scene("Level3");
       });
     },
     kill: function(state) {
@@ -282,19 +278,19 @@ Narrator.addStates({
 
       // show all buttons
       publish("/toolbar/show", [true, true, true, true]);
-      Narrator.interrupt().scene("LevelIntro")
+      Narrator.scene("LevelIntro")
         .talk("l4p1", "l4p2", "l4p3", "l4p4", "l4p5")
         .scene("preLevel4")
         .talk("l4p6", "l4p7")
         .scene("Level4")
-        .talk("l4p8", "l4p9", "l4p10", "l4p11");
+        .talk("l4p8", "l4p9", "l4p10");
       state._listener = subscribe("/level/nextLevel", function() {
         unsubscribe(state._listener);
         console.log("Level 4 passed!");
-        Narrator.interrupt().goto("LEVEL_5");
+        Narrator.goto("LEVEL_5");
       });
       state._resetListener = subscribe("/level/reset", function() {
-        Narrator.interrupt().goto("LEVEL_4");
+        Narrator.scene("Level4");
       });
     },
     kill: function(state) {
@@ -309,14 +305,14 @@ Narrator.addStates({
       publish("/toolbar/show", [true, true, true, true]);
       Interactive.show_thresholds = true; // hide activation bars
 
-      Narrator.interrupt().scene("Level5");
+      Narrator.scene("Level5");
       state._listener = subscribe("/level/nextLevel", function() {
         unsubscribe(state._listener);
         console.log("Level 5 passed!");
-        Narrator.interrupt().goto("LEVEL_6");
+        Narrator.goto("LEVEL_END");
       });
       state._resetListener = subscribe("/level/reset", function() {
-        Narrator.interrupt().goto("LEVEL_5");
+        Narrator.scene("Level5");
       });
     },
     kill: function(state) {
@@ -327,21 +323,9 @@ Narrator.addStates({
 
   LEVEL_6: {
     start: function(state) {
-      publish("/toolbar/show", [true, true, true, false]);
+      publish("/toolbar/show", [true, true, true, true]);
       Interactive.show_thresholds = true;
-      Narrator.interrupt().scene("Level6");
-      state._listener = subscribe("/level/nextLevel", function() {
-        unsubscribe(state._listener);
-        console.log("Level 6 passed!");
-        Narrator.interrupt().goto("LEVEL_END");
-      });
-      state._resetListener = subscribe("/level/reset", function() {
-        Narrator.interrupt().goto("LEVEL_6");
-      });
-    },
-    kill: function(state) {
-      unsubscribe(state._listener);
-      unsubscribe(state._resetListener);
+      Narrator.scene("Level6");
     }
   },
 
@@ -351,13 +335,15 @@ Narrator.addStates({
       publish("/toolbar/show", [true, true, true, true]);
       Interactive.show_thresholds = true; // hide activation bars
 
-      Narrator.interrupt().scene("LevelEnd");
+      Narrator.scene("LevelEnd");
       state._resetListener = subscribe("/level/reset", function() {
-        Narrator.interrupt().goto("LEVEL_END");
+        Narrator.scene("LevelEnd");
       });
     },
     kill: function(state) {
       unsubscribe(state._resetListener);
+      unsubscribe(Neuron.add_excitatory_listener);
+      unsubscribe(Neuron.add_inhibitory_listener);
     }
   }
 });
