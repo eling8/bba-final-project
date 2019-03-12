@@ -19,6 +19,7 @@ Narrator.addNarration({
     level1_1_1: ["0:00.0", "0:04.0"], // Because I'm working, then new connections can start forming in my brain!
     level1_2: ["0:00.0", "0:03.0"], //Can you help me rewire my brain? Try it out!
     level1_3: ["0:00.0", "0:05.0"], //To make a connection, click on a neuron, then click on the neuron you want it to form a synapse with.
+    level1_3_1: ["0:00.0", "0:04.0"], // "Let's create a complete pathway all the way to the ending neuron on the right!"
     level1_4: ["0:00.0", "0:03.0"], //"Wow! While I was working, my brain was making new connections!"
     level1_5: ["0:00.0", "0:03.0"], //I just learned how to do my first math problem!
     // level1_6: ["0:00.0", "0:03.0"], //Thanks for helping me rewire my brain!
@@ -151,7 +152,7 @@ Narrator.addStates({
         .message("/muzu", ["math"])
         .talk("level1_1", "level1_1_1", "level1_2")
         .message("/scene/addHebb")
-        .talk("level1_3");
+        .talk("level1_3", "level1_3_1");
       state._winListener = subscribe("/level/winLevel", function() {
         unsubscribe(state._winListener);
         // When we win the level!

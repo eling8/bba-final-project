@@ -40,6 +40,8 @@ window.Captions = {
       level1_2: "Can you help me rewire my brain while I work? Let's try it out!",
       level1_3:
         "To make a connection, click on a neuron, then click on the neuron you want it to form a synapse with.",
+      level1_3_1:
+        "Let's create a complete pathway all the way to the ending neuron on the right!",
       level1_4:
         "Wow! While I was working, my brain was making new connections!",
       level1_5: "I just learned how to do a new math problem!",
