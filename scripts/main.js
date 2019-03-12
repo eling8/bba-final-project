@@ -73,5 +73,9 @@ subscribe("/init", function() {
 
   // Initialize Shtuff
   Interactive.init();
+<<<<<<< Updated upstream
   Narrator.goto("LEVEL_HOME");
+=======
+  Narrator.goto("LEVEL_3");
+>>>>>>> Stashed changes
 });
