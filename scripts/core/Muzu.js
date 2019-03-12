@@ -82,7 +82,6 @@ window.Muzu = new function() {
     } else {
       ctx.drawImage(self.get_image(), -25, ctx.canvas.clientHeight - 280, 260, 260);
     }
-    ctx.drawImage(images.muzu_brain, -25, ctx.canvas.clientHeight - 280, 260, 260);
     ctx.restore();
   };
 
