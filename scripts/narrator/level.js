@@ -273,6 +273,7 @@ Narrator.addStates({
 
       Narrator.interrupt()
         .scene("LevelIntro")
+        .message("/level/showLevel", ["Level 3"])
         .message("/muzu", ["brain"])
         .talk("l3p1", "l3p2")
         .scene("Synapses")
@@ -319,11 +320,14 @@ Narrator.addStates({
       publish("/toolbar/show", [true, true, true, true]);
       Narrator.interrupt()
         .scene("LevelIntro")
+        .message("/level/showLevel", ["Level 4"])
         .message("/muzu", ["brain"])
         .talk("l4p1", "l4p2", "l4p3", "l4p4", "l4p5")
         .scene("preLevel4")
+        .message("/muzu", ["math"])
         .talk("l4p6", "l4p7")
         .scene("Level4")
+        .message("/muzu", ["brain"])
         .talk("l4p8", "l4p9", "l4p10")
         .message("/muzu", ["math"]);
       state._listener = subscribe("/level/nextLevel", function() {
@@ -349,7 +353,7 @@ Narrator.addStates({
 
       Narrator.interrupt()
         .scene("Level5")
-        .message("/muzu", ["brain"]);
+        .message("/muzu", ["math"]);
       state._listener = subscribe("/level/nextLevel", function() {
         unsubscribe(state._listener);
         console.log("Level 5 passed!");
@@ -371,7 +375,7 @@ Narrator.addStates({
       Interactive.show_thresholds = true;
       Narrator.interrupt()
         .scene("Level6")
-        .message("/muzu", ["brain"]);
+        .message("/muzu", ["math"]);
       state._listener = subscribe("/level/nextLevel", function() {
         unsubscribe(state._listener);
         console.log("Level 6 passed!");

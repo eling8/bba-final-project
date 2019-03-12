@@ -271,7 +271,7 @@ function Neuron(scene, neuron_type, neuron_function) {
     if (
       self.neuron_function == NeuronFunction.STARTING &&
       self.update_counter % 50 == 0
-      // && Muzu.curr_state === "math" // Muzu must be working for the neuron to fire!
+      && (Muzu.curr_state === "math" || Muzu.curr_state === "cheerful") // Muzu must be working for the neuron to fire!
     ) {
       self.pulse();
 
