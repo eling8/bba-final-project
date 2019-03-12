@@ -35,16 +35,17 @@ window.Captions = {
       level1_0:
         "Right now, there are no connections because I haven’t practiced math in a LONG time.",
       level1_1:
-        "But as I start practicing, new connections can start forming in my brain!",
-      level1_2: "Can you help me rewire my brain while I work? Try it out!",
+        "But as I start practicing math, this first neuron on the left will start firing.",
+      level1_1_1: "Because I'm working hard, then new connections can start forming in my brain!",
+      level1_2: "Can you help me rewire my brain while I work? Let's try it out!",
       level1_3:
         "To make a connection, click on a neuron, then click on the neuron you want it to form a synapse with.",
       level1_4:
         "Wow! While I was working, my brain was making new connections!",
-      level1_5: "I just learned a new math problem!",
+      level1_5: "I just learned how to do a new math problem!",
       // level1_6: "Thanks for helping me rewire my brain!",
       level1_7:
-        "Now that you know how to connect two neurons, go ahead and click on the next level!",
+        "Now that you know how to connect two neurons, go ahead and click on the next level.",
 
       /////////////
       // LEVEL 2: Dragging on new neurons //

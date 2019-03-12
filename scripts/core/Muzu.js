@@ -76,12 +76,11 @@ window.Muzu = new function() {
     ctx.save();
     ctx.translate(self.wobble_x, self.wobble_y);
     if (self.curr_state == "math") {
-      var new_size = 160 * 1200 / 722;
-      var x_adjust = 29;
-      var y_adjust = 86;
-      ctx.drawImage(self.get_image(), 30 - x_adjust, ctx.canvas.clientHeight - 250 - y_adjust, new_size, new_size);
+      var x_adjust = 138 * 260 / 1200;
+      var y_adjust = 208 * 260 / 1200;
+      ctx.drawImage(self.get_image(), -25 + x_adjust, ctx.canvas.clientHeight - 280 - y_adjust, 260, 260);
     } else {
-      ctx.drawImage(self.get_image(), 30, ctx.canvas.clientHeight - 250, 160, 160);
+      ctx.drawImage(self.get_image(), -25, ctx.canvas.clientHeight - 280, 260, 260);
     }
     ctx.restore();
   };
