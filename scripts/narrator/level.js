@@ -60,10 +60,14 @@ Narrator.addNarration({
     //level 3 set up
     l3p14: ["0:00.0", "0:03.0"], //"Let's give it a try as I do some math!",
     l3p15: ["0:00.0", "0:03.0"], //"While I'm working, I'll get discouraged sometimes and stop",
-    l3p16: ["0:00.0", "0:03.0"],
+    //l3p16: ["0:00.0", "0:03.0"],
     //"When that happens, my neurons won't fire, and I'll start forgetting!",
-    l3p17: ["0:00.0", "0:03.0"], //"You'll have encourage me to start working again.",
-    l3p18: ["0:00.0", "0:03.0"], //"So that I can continue learning!"
+    // l3p17: ["0:00.0", "0:03.0"], //"You'll have encourage me to start working again.",
+    // l3p18: ["0:00.0", "0:03.0"], //"So that I can continue learning!"
+    l3pwait: ["0:00.0", "0:20.0"],
+    l3pyoutube: ["0:00.0", "0:10.0"],
+    l3p19: ["0:00.0", "0:04.0"], //but I just remembered my brain is growing as I work hard!
+    l3p20: ["0:00.0", "0:04.0"], //I guess I'll go back to practicing math!
 
     l4p1: ["0:00.0", "0:03.0"], //"So far, we’ve only been working with neurons...",
     l4p2: ["0:00.0", "0:03.0"], //"that send signals to make other neurons fire.",
@@ -294,8 +298,12 @@ Narrator.addStates({
         .talk("l3p13")
         .message("/muzu", ["brain"])
         .talk("l3p14")
+        .talk("l3p15")
         .scene("Level3")
-        .talk("l3p15", "l3p16", "l3p17", "l3p18")
+        .message("/muzu", ["math"])
+        .talk("l3pwait")
+        .message("/muzu", ["sad"])
+        .talk("l3pyoutube", "l3p19", "l3p20")
         .message("/muzu", ["math"]);
       state._listener = subscribe("/level/nextLevel", function() {
         unsubscribe(state._listener);

@@ -101,11 +101,15 @@ window.Captions = {
       l3p13: "My neurons will fire, and my synapses will grow and stay strong!",
       //level 3 set up
       l3p14: "Let's give it a try as I do some math!",
-      l3p15: "While I'm working, I'll get discouraged sometimes and stop",
-      l3p16:
-        "When that happens, my neurons won't fire, and I'll start forgetting!",
-      l3p17: "You'll have encourage me to start working again.",
-      l3p18: "So that I can continue learning!",
+      // l3p15: "While I'm working, I'll get discouraged sometimes and stop",
+      // l3p16:
+      //   "When that happens, my neurons won't fire, and I'll start forgetting!",
+      // l3p17: "You'll have encourage me to start working again.",
+      // l3p18: "So that I can continue learning!",
+      l3pwait: "",
+      l3pyoutube: "I'm frustrated doing math, I'm going to watch some youtube!",
+      l3p19: "but I just remembered my brain is growing as I work hard!",
+      l3p20: "I guess I'll go back to practicing math!",
 
       /////////////
       // LEVEL 4: Inhibition //
