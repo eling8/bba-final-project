@@ -36,8 +36,10 @@ window.Captions = {
         "Right now, there are no connections because I haven’t practiced math in a LONG time.",
       level1_1:
         "But as I start practicing math, this first neuron on the left will start firing.",
-      level1_1_1: "Because I'm working hard, then new connections can start forming in my brain!",
-      level1_2: "Can you help me rewire my brain while I work? Let's try it out!",
+      level1_1_1:
+        "Because I'm working hard, then new connections can start forming in my brain!",
+      level1_2:
+        "Can you help me rewire my brain while I work? Let's try it out!",
       level1_3:
         "To make a connection, click on a neuron, then click on the neuron you want it to form a synapse with.",
       level1_3_1:
@@ -95,8 +97,8 @@ window.Captions = {
       l3p10: "will weaken a little (by getting thinner)...",
       l3p11: "every time the bar at the top reaches the end.",
       //muzu practicing, and neurons fire
-      l3p12: "But if I keep practicing, my neurons will fire, ",
-      l3p13: "And my synapses will grow and stay strong!",
+      l3p12: "But if I keep practicing... ",
+      l3p13: "My neurons will fire, and my synapses will grow and stay strong!",
       //level 3 set up
       l3p14: "Let's give it a try as I do some math!",
       l3p15: "While I'm working, I'll get discouraged sometimes and stop",
