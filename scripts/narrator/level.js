@@ -281,7 +281,7 @@ Narrator.addStates({
 
       // show all buttons
       publish("/toolbar/show", [true, true, true, true]);
-      Narrator.scene("")
+      Narrator.scene("LevelIntro")
         .talk("l4p1", "l4p2", "l4p3", "l4p4", "l4p5")
         .scene("preLevel4")
         .talk("l4p6", "l4p7")
