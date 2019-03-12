@@ -286,10 +286,10 @@ Narrator.addStates({
           "l3p8",
           "l3p9",
           "l3p10",
-          "l3p11"
+          "l3p11",
+          "l3p12"
         )
         .message("/muzu", ["math"])
-        .talk("l3p12")
         .scene("preLevel3")
         .talk("l3p13")
         .message("/muzu", ["brain"])
@@ -300,10 +300,10 @@ Narrator.addStates({
       state._listener = subscribe("/level/nextLevel", function() {
         unsubscribe(state._listener);
         console.log("Level 3 passed!");
-        Narrator.goto("LEVEL_4");
+        Narrator.interrupt().goto("LEVEL_4");
       });
       state._resetListener = subscribe("/level/reset", function() {
-        Narrator.scene("Level3");
+        Narrator.interrupt().scene("Level3");
       });
     },
     kill: function(state) {
@@ -314,7 +314,7 @@ Narrator.addStates({
 
   LEVEL_4: {
     start: function(state) {
-      Interactive.show_thresholds = true; // hide activation bars
+      Interactive.show_thresholds = true; // show activation bars
 
       // show all buttons
       publish("/toolbar/show", [true, true, true, true]);
@@ -333,10 +333,10 @@ Narrator.addStates({
       state._listener = subscribe("/level/nextLevel", function() {
         unsubscribe(state._listener);
         console.log("Level 4 passed!");
-        Narrator.goto("LEVEL_5");
+        Narrator.interrupt().goto("LEVEL_5");
       });
       state._resetListener = subscribe("/level/reset", function() {
-        Narrator.scene("Level4");
+        Narrator.interrupt().scene("Level4");
       });
     },
     kill: function(state) {
@@ -349,7 +349,7 @@ Narrator.addStates({
     start: function(state) {
       // show all buttons
       publish("/toolbar/show", [true, true, true, true]);
-      Interactive.show_thresholds = true; // hide activation bars
+      Interactive.show_thresholds = true; // show activation bars
 
       Narrator.interrupt()
         .scene("Level5")
@@ -395,13 +395,13 @@ Narrator.addStates({
     start: function(state) {
       // show all buttons
       publish("/toolbar/show", [true, true, true, true]);
-      Interactive.show_thresholds = true; // hide activation bars
+      Interactive.show_thresholds = true; // show activation bars
 
       Narrator.interrupt()
         .scene("LevelEnd")
         .message("/muzu", ["brain"]);
       state._resetListener = subscribe("/level/reset", function() {
-        Narrator.scene("LevelEnd");
+        Narrator.interrupt().scene("LevelEnd");
       });
     },
     kill: function(state) {
