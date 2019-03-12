@@ -15,6 +15,7 @@ function Scene_LevelHome() {
     "Level 3",
     "Level 4",
     "Level 5",
+    "Level 6",
     "Create your own"
   ];
   self.curr_level_hover = -1;
@@ -82,7 +83,7 @@ function Scene_LevelHome() {
         case 0:
           Narrator.goto("LEVEL_INTRO");
           break;
-        case 6:
+        case 7:
           Narrator.goto("LEVEL_END");
           break;
         default:
@@ -256,7 +257,7 @@ function Scene_Level4() {
   publish("/level/showLevel", ["Level 4"]);
 
   NEURONS_SERIALIZED =
-    '{"neurons":[[277,289,3,2],[748,289,3,3],[635,372,2,1],[628,224,3,1]],"connections":[[2,1,2,1],[3,1,2,1]]}';
+    '{"neurons":[[277,289,3,2],[748,289,3,3],[635,372,2,4],[628,224,3,4]],"connections":[[2,1,2,2],[3,1,2,2]]}';
   Neuron.unserialize(self, NEURONS_SERIALIZED, true);
 
   publish("/level/loaded");
@@ -270,6 +271,36 @@ function Scene_Level5() {
 
   NEURONS_SERIALIZED =
     '{"neurons":[[150,295,3,2],[759,274,3,3],[575,350,2,4],[266,187,2,4],[583,232,3,4],[269,425,2,4],[377,447,3,4]],"connections":[[0,3,2,2],[2,1,2,2],[4,1,2,2],[5,6,2,2]]}';
+  Neuron.unserialize(self, NEURONS_SERIALIZED, true);
+}
+
+function Scene_Level6() {
+  var self = this;
+  LevelScene.call(self);
+
+  publish("/level/showLevel", ["Level 6"]);
+
+  NEURONS_SERIALIZED = `{"neurons":[
+			[244,292,3,2],
+			[653,154,3,3],
+			[656,287,3,3],
+			[654,419,3,3],
+			[376,155,3,1],
+			[374,415,3,1],
+			[509,221,2,1],
+			[512,353,2,1],
+			[372,280,3,1]],
+			"connections":[[0,4,5,1],
+			[0,5,5,1],
+			[0,8,5,1],
+			[8,7,5,1],
+			[8,6,5,1],
+			[4,1,5,1],
+			[5,3,5,1],
+			[6,1,5,1],
+			[7,3,5,1],
+			[8,2,5,1]]}`;
+
   Neuron.unserialize(self, NEURONS_SERIALIZED, true);
 }
 

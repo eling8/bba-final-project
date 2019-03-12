@@ -70,7 +70,7 @@ Narrator.addNarration({
     l4p4: ["0:00.0", "0:03.0"], //"But what about neurons that cause other neurons to NOT fire?",
     //inhibitory neuron appears
     l4p5: ["0:00.0", "0:03.0"], //"These are called inhibitory neurons.",
-    l4p6: ["0:00.0", "0:04.0"],
+    l4p6: ["0:00.0", "0:06.0"],
     //"On the left, the excitatory neuron makes its neighbors firing bar go up.",
     l4p7: ["0:00.0", "0:06.0"],
     //"But on the right, the inhibitory neuron makes its neighbors firing bar go down.",
@@ -321,6 +321,14 @@ Narrator.addStates({
     kill: function(state) {
       unsubscribe(state._listener);
       unsubscribe(state._resetListener);
+    }
+  },
+
+  LEVEL_6: {
+    start: function(state) {
+      publish("/toolbar/show", [true, true, true, false]);
+      Interactive.show_thresholds = true;
+      Narrator.scene("Level6");
     }
   },
 
