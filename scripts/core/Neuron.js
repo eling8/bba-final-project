@@ -270,8 +270,8 @@ function Neuron(scene, neuron_type, neuron_function) {
     // Fire starting neuron once every 1.67 seconds
     if (
       self.neuron_function == NeuronFunction.STARTING &&
-      self.update_counter % 50 == 0 &&
-      Muzu.curr_state === "math" // Muzu must be working for the neuron to fire!
+      self.update_counter % 50 == 0
+      // && Muzu.curr_state === "math" // Muzu must be working for the neuron to fire!
     ) {
       self.pulse();
 
