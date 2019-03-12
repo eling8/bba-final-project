@@ -230,6 +230,7 @@ Narrator.addStates({
       unsubscribe(state._winListener);
       unsubscribe(state._listener);
       unsubscribe(state._resetListener);
+      unsubscribe(state._addOneNeuronListener);
     }
   },
 
@@ -292,7 +293,7 @@ Narrator.addStates({
         Narrator.goto("LEVEL_5");
       });
       state._resetListener = subscribe("/level/reset", function() {
-        Narrator.scene("Level5");
+        Narrator.scene("Level4");
       });
     },
     kill: function(state) {

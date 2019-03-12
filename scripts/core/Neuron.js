@@ -163,6 +163,10 @@ function Neuron(scene, neuron_type, neuron_function) {
     self.strengthenedConnections = [];
   };
 
+  self.is_activated = function() {
+    return self.activation_level >= self.firing_threshold;
+  }
+
   self.pulse = function(signal, FAKE) {
     // It should lose strength in the neuron
     // If there's no passed-on signal, create a brand new one.
@@ -200,10 +204,9 @@ function Neuron(scene, neuron_type, neuron_function) {
         );
       }
     }
-    var is_activated = self.activation_level >= self.firing_threshold;
 
     // If we've activated the ending neuron, win level
-    if (is_activated && self.neuron_function == NeuronFunction.ENDING) {
+    if (self.is_activated() && self.neuron_function == NeuronFunction.ENDING) {
       // But only if every neuron on screen has inputs!!
       if (Neuron.level_is_complete()) {
         self.win_pulse_count += 1;
@@ -211,7 +214,6 @@ function Neuron(scene, neuron_type, neuron_function) {
         // Ending neuron must pulse 3 times before winning
         if (self.win_pulse_count >= 3) {
           publish("/level/winLevel");
-          publish("/alert", ["Nice job! You passed this level!"]);
         }
       } else {
         // Show some feedback that all neurons need to be connected
@@ -233,7 +235,7 @@ function Neuron(scene, neuron_type, neuron_function) {
 
     // If there's still strength in the neuron, pass it down immediately.
     // if (signal.strength > 0) {
-    if (new_signal || (is_activated && signal.strength > 0)) {
+    if (new_signal || (self.is_activated() && signal.strength > 0)) {
       for (var i = 0; i < self.senders.length; i++) {
         var sender = self.senders[i];
         sender.pulse({
@@ -247,7 +249,7 @@ function Neuron(scene, neuron_type, neuron_function) {
     }
 
     // Weaken highlight if the neuron doesn't propagate due to inhibition
-    if (!is_activated && !new_signal) {
+    if (!self.is_activated() && !new_signal) {
       self.highlight = 0.2;
     } else {
       // If activation is high enough to fire, reset activation level

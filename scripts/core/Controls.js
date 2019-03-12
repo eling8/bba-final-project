@@ -17,8 +17,18 @@ subscribe("/load",function(ratio){
 var next_level_button = document.getElementById("next_level");
 var level_controls_div = document.getElementById("level_controls");
 var level_listener = subscribe("/level/winLevel", function() {
+	var neurons = Interactive.scene.neurons;
+	for (var i = 0; i < neurons.length; i++) {
+		if (neurons[i].neuron_function == NeuronFunction.ENDING) {
+			if (neurons[i].win_pulse_count < 3) {
+				publish("/alert", ["Make sure to activate all of the ending neurons at once!"]);
+				return;
+			}
+		}
+	}
 	_showLevel(true);
 	console.log("Level passed!");
+	publish("/alert", ["Nice job! You passed this level!"]);
 });
 var level_reset_listener = subscribe("/level/reset", function() {
 	_showLevel(false);
