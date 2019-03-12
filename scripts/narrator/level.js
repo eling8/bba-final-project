@@ -276,9 +276,9 @@ Narrator.addStates({
       Interactive.show_thresholds = false; // hide activation bars
 
       Narrator.interrupt()
-        .scene("LevelIntro")
         .message("/level/showLevel", ["Level 3"])
         .message("/muzu", ["brain"])
+        .scene("LevelIntro")
         .talk("l3p1", "l3p2")
         .scene("Synapses")
         .talk(
@@ -297,10 +297,9 @@ Narrator.addStates({
         .scene("preLevel3")
         .talk("l3p13")
         .message("/muzu", ["brain"])
-        .talk("l3p14")
-        .talk("l3p15")
-        .scene("Level3")
+        .talk("l3p14", "l3p15")
         .message("/muzu", ["math"])
+        .scene("Level3")
         .talk("l3pwait")
         .message("/muzu", ["sad"])
         .talk("l3pyoutube", "l3p19", "l3p20")
@@ -327,15 +326,15 @@ Narrator.addStates({
       // show all buttons
       publish("/toolbar/show", [true, true, true, true]);
       Narrator.interrupt()
-        .scene("LevelIntro")
         .message("/level/showLevel", ["Level 4"])
         .message("/muzu", ["brain"])
+        .scene("LevelIntro")
         .talk("l4p1", "l4p2", "l4p3", "l4p4", "l4p5")
-        .scene("preLevel4")
         .message("/muzu", ["math"])
+        .scene("preLevel4")
         .talk("l4p6", "l4p7")
-        .scene("Level4")
         .message("/muzu", ["brain"])
+        .scene("Level4")
         .talk("l4p8", "l4p9", "l4p10")
         .message("/muzu", ["math"]);
       state._listener = subscribe("/level/nextLevel", function() {
