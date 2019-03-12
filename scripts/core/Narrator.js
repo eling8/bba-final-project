@@ -235,14 +235,11 @@ window.Narrator = new function() {
             startTime: marker[1],
             duration: marker[2] - marker[1]
           });
-          console.log(marker);
-          console.log(marker[1], marker[2] - marker[1]);
           soundInstance._TYPE_ = "voice";
           soundInstance._MARKER_ID_ = markerID;
           self.soundInstances.push(soundInstance);
 
           soundInstance.on("complete", function() {
-            console.log("DONE");
             var index = self.soundInstances.indexOf(soundInstance);
             if (index >= 0) self.soundInstances.splice(index, 1);
             p.done();
