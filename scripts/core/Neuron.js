@@ -214,12 +214,16 @@ function Neuron(scene, neuron_type, neuron_function) {
         // Ending neuron must pulse 3 times before winning
         if (self.win_pulse_count >= 3) {
           publish("/level/winLevel");
+        } else {
+          publish("/alert", [
+            "Almost there! Let's wait for the end neuron to fire a few more times."
+          ]);
         }
       } else {
         // Show some feedback that all neurons need to be connected
         console.log("All neurons need to be connected!");
         publish("/alert", [
-          "Almost there! Make sure that all neurons are connected to the start."
+          "We're getting closer! Make sure that all neurons are connected to the start."
         ]);
       }
     }
