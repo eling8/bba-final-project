@@ -72,7 +72,7 @@ Narrator.addNarration({
     l4p5: ["0:00.0", "0:03.0"], //"These are called inhibitory neurons.",
     l4p6: ["0:00.0", "0:04.0"],
     //"On the left, the excitatory neuron makes its neighbors firing bar go up.",
-    l4p7: ["0:00.0", "0:04.0"],
+    l4p7: ["0:00.0", "0:06.0"],
     //"But on the right, the inhibitory neuron makes its neighbors firing bar go down.",
     l4p8: ["0:00.0", "0:03.0"], //"As I work on my next math problem, ...",
     l4p9: ["0:00.0", "0:03.0"], //"you’ll have to help me learn by making the last neuron fire...",
@@ -240,8 +240,8 @@ Narrator.addStates({
 
       Interactive.show_thresholds = false; // hide activation bars
 
-      Narrator.scene("Level3");
-      Narrator.talk("l3p1", "l3p2")
+      Narrator.scene("LevelIntro")
+        .talk("l3p1", "l3p2")
         .scene("Synapses")
         .talk(
           "l3p3",
@@ -256,14 +256,16 @@ Narrator.addStates({
           "l3p12"
         )
         .scene("preLevel3")
-        .talk("l3p13");
+        .talk("l3p13")
+        .scene("Level3")
+        .talk("l3p14", "l3p15", "l3p16", "l3p17", "l3p18");
       state._listener = subscribe("/level/nextLevel", function() {
         unsubscribe(state._listener);
         console.log("Level 3 passed!");
-        Narrator.goto("LEVEL_5");
+        Narrator.goto("LEVEL_4");
       });
       state._resetListener = subscribe("/level/reset", function() {
-        Narrator.scene("Level5");
+        Narrator.scene("Level3");
       });
     },
     kill: function(state) {
@@ -274,12 +276,19 @@ Narrator.addStates({
 
   LEVEL_4: {
     start: function(state) {
+      Interactive.show_thresholds = true; // hide activation bars
+
       // show all buttons
       publish("/toolbar/show", [true, true, true, true]);
-      Narrator.scene("Level4");
+      Narrator.scene("")
+        .talk("l4p1", "l4p2", "l4p3", "l4p4", "l4p5")
+        .scene("preLevel4")
+        .talk("l4p6", "l4p7")
+        .scene("Level4")
+        .talk("l4p8", "l4p9", "l4p10");
       state._listener = subscribe("/level/nextLevel", function() {
         unsubscribe(state._listener);
-        console.log("Level 3 passed!");
+        console.log("Level 4 passed!");
         Narrator.goto("LEVEL_5");
       });
       state._resetListener = subscribe("/level/reset", function() {

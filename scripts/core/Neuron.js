@@ -8,7 +8,7 @@ var NeuronFunction = {
   REGULAR: 1,
   STARTING: 2, // for the first neuron in a level, fires at a constant rate
   ENDING: 3, // for the goal neuron in a level
-  FIXED: 4, // neurons that can't be moved
+  FIXED: 4 // neurons that can't be moved
 };
 
 function Neuron(scene, neuron_type, neuron_function) {
@@ -92,7 +92,7 @@ function Neuron(scene, neuron_type, neuron_function) {
     if (self.neuron_type == NeuronType.EXCITATORY) {
       self.body_image = images.neuron_body_blue;
       self.connectionStrokeStyle = "#78BCBC";
-      self.highlightFill = "#53cccc";// "#A2FFFF";
+      self.highlightFill = "#53cccc"; // "#A2FFFF";
       self.icon = images.icon_calm;
     }
     if (self.neuron_type == NeuronType.INHIBITORY) {
@@ -187,10 +187,17 @@ function Neuron(scene, neuron_type, neuron_function) {
     if (!new_signal) {
       if (signal.signal_type == NeuronType.INHIBITORY) {
         self.activation_level -= 1.1;
-        self.activation_level = Math.max(self.min_activation, self.activation_level);
-      } else { // excitatory
+        self.activation_level = Math.max(
+          self.min_activation,
+          self.activation_level
+        );
+      } else {
+        // excitatory
         self.activation_level += 1;
-        self.activation_level = Math.min(self.firing_threshold + 1, self.activation_level);
+        self.activation_level = Math.min(
+          self.firing_threshold + 1,
+          self.activation_level
+        );
       }
     }
     var is_activated = self.activation_level >= self.firing_threshold;
@@ -209,7 +216,9 @@ function Neuron(scene, neuron_type, neuron_function) {
       } else {
         // Show some feedback that all neurons need to be connected
         console.log("All neurons need to be connected!");
-        publish("/alert", ["Almost there! Make sure that all neurons are connected to the start."]);
+        publish("/alert", [
+          "Almost there! Make sure that all neurons are connected to the start."
+        ]);
       }
     }
 
@@ -237,7 +246,6 @@ function Neuron(scene, neuron_type, neuron_function) {
       }
     }
 
-
     // Weaken highlight if the neuron doesn't propagate due to inhibition
     if (!is_activated && !new_signal) {
       self.highlight = 0.2;
@@ -258,7 +266,10 @@ function Neuron(scene, neuron_type, neuron_function) {
     self.activation_level *= 0.95;
 
     // Fire starting neuron once every 1.67 seconds
-    if (self.neuron_function == NeuronFunction.STARTING && self.update_counter % 50 == 0) {
+    if (
+      self.neuron_function == NeuronFunction.STARTING &&
+      self.update_counter % 50 == 0
+    ) {
       self.pulse();
 
       self.win_pulse_count *= 0.5;
@@ -311,8 +322,10 @@ function Neuron(scene, neuron_type, neuron_function) {
     // Mouse
     var gotoHoverAlpha = 0;
     // Don't allow deleting of fixed neurons
-    if ((!Interactive.delete_on && self.isMouseOver())
-        || (Interactive.delete_on && self.isMouseHover() && self.isModifiable())) {
+    if (
+      (!Interactive.delete_on && self.isMouseOver()) ||
+      (Interactive.delete_on && self.isMouseHover() && self.isModifiable())
+    ) {
       canvas.style.cursor = "pointer";
       if (self.mouse_down) {
         gotoHoverAlpha = 1;
@@ -347,8 +360,8 @@ function Neuron(scene, neuron_type, neuron_function) {
   };
 
   self.isModifiable = function() {
-    return (self.neuron_function == NeuronFunction.REGULAR);
-  }
+    return self.neuron_function == NeuronFunction.REGULAR;
+  };
 
   self.click_listener = subscribe("/mouse/click", function() {
     if (self.isMouseHover() && self.isModifiable() && Interactive.delete_on) {
@@ -427,7 +440,10 @@ function Neuron(scene, neuron_type, neuron_function) {
     ctx.save();
     ctx.rotate(self.rotation);
     // DELETE
-    if (Interactive.delete_on && self.neuron_function == NeuronFunction.REGULAR) {
+    if (
+      Interactive.delete_on &&
+      self.neuron_function == NeuronFunction.REGULAR
+    ) {
       ctx.globalAlpha = 0.8;
       ctx.drawImage(images.neuron_delete, -60, -60);
     }
@@ -462,9 +478,13 @@ function Neuron(scene, neuron_type, neuron_function) {
     ctx.save();
 
     // draw bar for end neuron, or when mouse is hovering but not pressed (except for starting neuron)
-    if (self.neuron_function == NeuronFunction.ENDING 
-        || (Interactive.show_thresholds && self.isMouseHover() 
-            && !self.mouse_down && self.neuron_function != NeuronFunction.STARTING)) {
+    if (
+      self.neuron_function == NeuronFunction.ENDING ||
+      (Interactive.show_thresholds &&
+        self.isMouseHover() &&
+        !self.mouse_down &&
+        self.neuron_function != NeuronFunction.STARTING)
+    ) {
       ctx.globalAlpha = 1;
       ctx.fillStyle = "gray";
       if (self.activation_level >= self.firing_threshold) {
@@ -475,7 +495,8 @@ function Neuron(scene, neuron_type, neuron_function) {
       ctx.save();
 
       var scale = self.firing_threshold - self.min_activation + 1;
-      var threshold_height = (self.activation_level - self.min_activation) * 120 / scale;
+      var threshold_height =
+        ((self.activation_level - self.min_activation) * 120) / scale;
       ctx.fillStyle = "#78BCBC";
       ctx.fillRect(40, 60 - threshold_height, 35, threshold_height);
 
@@ -514,7 +535,7 @@ Neuron.level_is_complete = function(scene) {
     }
   }
   return true;
-}
+};
 
 Neuron.add = function(x, y, neuron_type, neuron_function, scene) {
   scene = scene || Interactive.scene;
