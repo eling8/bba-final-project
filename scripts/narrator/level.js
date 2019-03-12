@@ -190,7 +190,7 @@ Narrator.addStates({
 
       state._loadListener = subscribe("/level/loaded", function() {
         unsubscribe(state._loadListener);
-        Narrator.goto("LEVEL_2_LOADED");
+        Narrator.interrupt().goto("LEVEL_2_LOADED");
       });
 
       Narrator.interrupt().scene("Level2");
@@ -357,10 +357,10 @@ Narrator.addStates({
       state._listener = subscribe("/level/nextLevel", function() {
         unsubscribe(state._listener);
         console.log("Level 5 passed!");
-        Narrator.goto("LEVEL_END");
+        Narrator.interrupt().goto("LEVEL_END");
       });
       state._resetListener = subscribe("/level/reset", function() {
-        Narrator.scene("Level5");
+        Narrator.interrupt().scene("Level5");
       });
     },
     kill: function(state) {
