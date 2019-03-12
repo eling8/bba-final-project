@@ -92,8 +92,8 @@ window.Captions = {
       l3p10: "will weaken a little (by getting thinner)...",
       l3p11: "every time the bar at the top reaches the end.",
       //muzu practicing, and neurons fire
-      l3p12: "But if I keep practicing, my neurons will fire, ",
-      l3p13: "And my synapses will grow and stay strong!",
+      l3p12: "But if I keep practicing... ",
+      l3p13: "My neurons will fire, and my synapses will grow and stay strong!",
       //level 3 set up
       l3p14: "Let's give it a try as I do some math!",
       l3p15: "While I'm working, I'll get discouraged sometimes and stop",

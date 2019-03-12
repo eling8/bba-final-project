@@ -53,8 +53,8 @@ Narrator.addNarration({
     l3p10: ["0:00.0", "0:03.0"], // will weaken a little (by getting thinner)...
     l3p11: ["0:00.0", "0:05.0"], // Every time the bar at the top reaches the end.
     //muzu practicing, and neurons fire
-    l3p12: ["0:00.0", "0:05.0"], // But if I keep practicing, my neurons will fire,
-    l3p13: ["0:00.0", "0:05.0"], //And my synapses will grow and stay strong!
+    l3p12: ["0:00.0", "0:03.0"], // But if I keep practicing...
+    l3p13: ["0:00.0", "0:05.0"], // my neurons will fire,And my synapses will grow and stay strong!
     //level 3 set up
     l3p14: ["0:00.0", "0:03.0"], //"Let's give it a try as I do some math!",
     l3p15: ["0:00.0", "0:03.0"], //"While I'm working, I'll get discouraged sometimes and stop",
@@ -87,7 +87,9 @@ Narrator.addStates({
       publish("/toolbar/show", [false, false, false, false]);
       Interactive.show_thresholds = false; // hide activation bars
 
-      Narrator.interrupt().scene("LevelHome").message("/muzu", ["brain"]);
+      Narrator.interrupt()
+        .scene("LevelHome")
+        .message("/muzu", ["brain"]);
 
       state._resetListener = subscribe("/level/reset", function() {
         unsubscribe(state._resetListener);
@@ -267,7 +269,8 @@ Narrator.addStates({
 
       Interactive.show_thresholds = false; // hide activation bars
 
-      Narrator.interrupt().scene("LevelIntro")
+      Narrator.interrupt()
+        .scene("LevelIntro")
         .message("/muzu", ["brain"])
         .talk("l3p1", "l3p2")
         .scene("Synapses")
@@ -280,10 +283,17 @@ Narrator.addStates({
           "l3p8",
           "l3p9",
           "l3p10",
-          "l3p11",
-          "l3p12"
+          "l3p11"
         )
-        .scene("preLevel3");
+        .message("/muzu", ["math"])
+        .talk("l3p12")
+        .scene("preLevel3")
+        .talk("l3p13")
+        .message("/muzu", ["brain"])
+        .talk("l3p14")
+        .scene("Level3")
+        .talk("l3p15", "l3p16", "l3p17", "l3p18")
+        .message("/muzu", ["math"]);
       state._listener = subscribe("/level/nextLevel", function() {
         unsubscribe(state._listener);
         console.log("Level 3 passed!");
@@ -305,13 +315,15 @@ Narrator.addStates({
 
       // show all buttons
       publish("/toolbar/show", [true, true, true, true]);
-      Narrator.interrupt().scene("LevelIntro")
+      Narrator.interrupt()
+        .scene("LevelIntro")
         .message("/muzu", ["brain"])
         .talk("l4p1", "l4p2", "l4p3", "l4p4", "l4p5")
         .scene("preLevel4")
         .talk("l4p6", "l4p7")
         .scene("Level4")
-        .talk("l4p8", "l4p9", "l4p10");
+        .talk("l4p8", "l4p9", "l4p10")
+        .message("/muzu", ["math"]);
       state._listener = subscribe("/level/nextLevel", function() {
         unsubscribe(state._listener);
         console.log("Level 4 passed!");
@@ -333,7 +345,9 @@ Narrator.addStates({
       publish("/toolbar/show", [true, true, true, true]);
       Interactive.show_thresholds = true; // hide activation bars
 
-      Narrator.interrupt().scene("Level5").message("/muzu", ["brain"]);
+      Narrator.interrupt()
+        .scene("Level5")
+        .message("/muzu", ["brain"]);
       state._listener = subscribe("/level/nextLevel", function() {
         unsubscribe(state._listener);
         console.log("Level 5 passed!");
@@ -353,7 +367,9 @@ Narrator.addStates({
     start: function(state) {
       publish("/toolbar/show", [true, true, true, true]);
       Interactive.show_thresholds = true;
-      Narrator.interrupt().scene("Level6").message("/muzu", ["brain"]);
+      Narrator.interrupt()
+        .scene("Level6")
+        .message("/muzu", ["brain"]);
       state._listener = subscribe("/level/nextLevel", function() {
         unsubscribe(state._listener);
         console.log("Level 6 passed!");
@@ -375,7 +391,9 @@ Narrator.addStates({
       publish("/toolbar/show", [true, true, true, true]);
       Interactive.show_thresholds = true; // hide activation bars
 
-      Narrator.interrupt().scene("LevelEnd").message("/muzu", ["brain"]);
+      Narrator.interrupt()
+        .scene("LevelEnd")
+        .message("/muzu", ["brain"]);
       state._resetListener = subscribe("/level/reset", function() {
         Narrator.scene("LevelEnd");
       });
