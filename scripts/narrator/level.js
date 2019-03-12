@@ -311,7 +311,7 @@ Narrator.addStates({
         Narrator.interrupt().goto("LEVEL_4");
       });
       state._resetListener = subscribe("/level/reset", function() {
-        Narrator.interrupt().scene("Level3");
+        Narrator.interrupt().goto("LEVEL_3");
       });
     },
     kill: function(state) {
@@ -344,7 +344,7 @@ Narrator.addStates({
         Narrator.interrupt().goto("LEVEL_5");
       });
       state._resetListener = subscribe("/level/reset", function() {
-        Narrator.interrupt().scene("Level4");
+        Narrator.interrupt().goto("LEVEL_4");
       });
     },
     kill: function(state) {
@@ -368,7 +368,7 @@ Narrator.addStates({
         Narrator.interrupt().goto("LEVEL_END");
       });
       state._resetListener = subscribe("/level/reset", function() {
-        Narrator.interrupt().scene("Level5");
+        Narrator.interrupt().goto("LEVEL_5");
       });
     },
     kill: function(state) {
@@ -409,7 +409,7 @@ Narrator.addStates({
         .scene("LevelEnd")
         .message("/muzu", ["brain"]);
       state._resetListener = subscribe("/level/reset", function() {
-        Narrator.interrupt().scene("LevelEnd");
+        Narrator.interrupt().goto("LEVEL_END");
       });
     },
     kill: function(state) {
